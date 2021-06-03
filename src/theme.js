@@ -1,3 +1,5 @@
 export const THEME = {
-    MAIN_COLOR: 'red'
+    COLOR_MAIN: 'red',
+    FONT_MAIN: 'open-regular',
+    FONT_BOLD: 'open-bold',
 }

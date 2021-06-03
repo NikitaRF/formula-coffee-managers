@@ -34,7 +34,7 @@ export default function App() {
 const styles = StyleSheet.create({
     text: {
         fontFamily: 'open-bold',
-        color: THEME.MAIN_COLOR
+        color: THEME.COLOR_MAIN
     },
     center: {
         flex: 1,
