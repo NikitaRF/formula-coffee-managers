@@ -1,10 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import AppLoading from "expo-app-loading";
-import { StyleSheet, Text, View } from 'react-native';
-import {THEME} from "./src/theme";
+import { Provider } from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
 
-import {bootstrap} from "./src/bootstrap";
+import { bootstrap } from "./src/bootstrap";
+import { MenuDrawer } from "./src/navigation/MenuDrawer";
+
 
 export default function App() {
     const [isReady, setIsReady] = useState(false)
@@ -20,26 +21,13 @@ export default function App() {
     }
 
 
-
-
-
   return (
-    <View style={styles.center}>
-      <Text style={styles.text}>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <NavigationContainer>
+          <MenuDrawer />
+      </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-    text: {
-        fontFamily: 'open-bold',
-        color: THEME.COLOR_MAIN
-    },
-    center: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-})
+
+
 
