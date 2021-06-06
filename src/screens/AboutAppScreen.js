@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 
 
 
-export const AboutScreen = () => {
+export const AboutAppScreen = () => {
     return (
         <View style={styles.center}>
-            <Text>Приложение для личных заметок</Text>
+            <Text>Formula-Coffee</Text>
             <Text>Версия приложения <Text style={styles.version}>1.0</Text></Text>
         </View>
     )

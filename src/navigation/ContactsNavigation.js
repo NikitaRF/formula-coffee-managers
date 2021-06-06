@@ -1,13 +1,13 @@
 import {createStackNavigator} from '@react-navigation/stack';
+import {ContactsScreen} from "../screens/ContactsScreen";
 import React from "react";
-import {AboutScreen} from "../screens/AboutScreen";
 import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import {AppHeaderIcon} from "../components/AppHeaderIcon";
 
 
 const Stack = createStackNavigator();
 
-export const AboutNavigation = () =>  {
+export const ContactsNavigation = () =>  {
 
     return (
         <Stack.Navigator
@@ -21,7 +21,11 @@ export const AboutNavigation = () =>  {
                 ),
             })}
         >
-            <Stack.Screen name="About" component={AboutScreen} />
+            <Stack.Screen name="Контакты" component={ContactsScreen} />
         </Stack.Navigator>
     );
 }
+
+
+
+
