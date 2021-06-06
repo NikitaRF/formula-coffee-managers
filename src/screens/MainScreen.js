@@ -1,14 +1,10 @@
 import React from "react";
 import {Platform, StyleSheet, Text, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
-import { HeaderButtons, Item} from "react-navigation-header-buttons";
 
-import { AppHeaderIcon } from "../components/AppHeaderIcon";
 import {THEME} from "../theme";
 
 export const MainScreen = () => {
-
-
 
     return (
         <View style={styles.center}>
@@ -17,6 +13,7 @@ export const MainScreen = () => {
         </View>
     )
 }
+
 
 
 const styles = StyleSheet.create({
