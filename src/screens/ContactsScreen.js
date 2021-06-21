@@ -19,7 +19,7 @@ export const ContactsScreen = () => {
 const styles = StyleSheet.create({
     text: {
         fontFamily: 'open-bold',
-        color: THEME.COLOR_MAIN
+        color: THEME.COLOR_MAIN_DARK
     },
     center: {
         flex: 1,

@@ -8,6 +8,8 @@ import {MainNavigation} from "./MainNavigation";
 import {AboutAppNavigation} from "./AboutAppNavigation";
 import {ContactsNavigation} from "./ContactsNavigation";
 import {MenuNavigation} from "./MenuNavigation";
+import { THEME } from "../theme";
+
 
 function CustomDrawerContent(props) {
     const currentYear = new Date().getFullYear()
@@ -19,9 +21,9 @@ function CustomDrawerContent(props) {
                         style={styles.logo}
                         source={require('../../assets/logo2.png')}
                     />
-                    <View style={styles.infoText}>
-                        <Text>Часы работы</Text>
-                        <Text>8:30 - 23:00</Text>
+                    <View style={styles.infoBlock}>
+                        <Text style={styles.infoBlockText}>Часы работы</Text>
+                        <Text style={styles.infoBlockText}>8:30 - 23:00</Text>
                     </View>
                 </View>
                 <View>
@@ -29,11 +31,11 @@ function CustomDrawerContent(props) {
                 </View>
                 <View style={styles.bottomWrapper}>
                     <View style={styles.socials}>
-                        <AntDesign name="facebook-square" size={32} color="black" />
-                        <AntDesign name="instagram" size={32} color="black" />
-                        <Entypo name="tripadvisor" size={32} color="black" />
+                        <AntDesign name="facebook-square" size={32} color={THEME.COLOR_MAIN_DARK} />
+                        <AntDesign name="instagram" size={32} color={THEME.COLOR_MAIN_DARK} />
+                        <Entypo name="tripadvisor" size={32} color={THEME.COLOR_MAIN_DARK} />
                     </View>
-                    <Text> © {currentYear} Формула кофе</Text>
+                    <Text style={styles.copyrightText}> © {currentYear} Формула кофе</Text>
                 </View>
             </View>
 
@@ -43,13 +45,15 @@ function CustomDrawerContent(props) {
 
 export const MenuDrawer = () => {
     const Drawer = createDrawerNavigator();
+    const iconSize = 20;
 
     return (
         <Drawer.Navigator
             drawerType='front'
             drawerContent={props => <CustomDrawerContent {...props} />}
             drawerContentOptions={{
-                activeTintColor: '#2c2c2c',
+                activeTintColor: THEME.COLOR_MAIN_LIGHT,
+                inactiveTintColor: THEME.COLOR_MAIN_DARK,
             }}
         >
 
@@ -57,29 +61,44 @@ export const MenuDrawer = () => {
                 name="Главная"
                 component={MainNavigation}
                 options={{
-                    drawerIcon: () => <AntDesign name='home'/>
+                    drawerIcon: ({focused}) => <AntDesign
+                        name='home'
+                        size={iconSize}
+                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
+                    />
                 }}
             />
             <Drawer.Screen
                 name="Меню"
                 component={MenuNavigation}
                 options={{
-                    drawerIcon: () => <AntDesign name='menu-fold'/>
+                    drawerIcon: ({focused}) => <AntDesign
+                        name='menu-fold'
+                        size={iconSize}
+                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
+                    />
                 }}
             />
             <Drawer.Screen
                 name="Контакты"
                 component={ContactsNavigation}
                 options={{
-                    drawerIcon: () => <AntDesign name='contacts'/>,
-
+                    drawerIcon: ({focused}) => <AntDesign
+                        name='contacts'
+                        size={iconSize}
+                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
+                    />
                 }}
             />
             <Drawer.Screen
                 name="О приложении"
                 component={AboutAppNavigation}
                 options={{
-                    drawerIcon: () => <AntDesign name='info'/>
+                    drawerIcon: ({focused}) => <AntDesign
+                        name='info'
+                        size={iconSize}
+                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
+                    />
                 }}
             />
 
@@ -106,8 +125,11 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         paddingBottom: 15,
     },
-    infoText:{
+    infoBlock:{
         height: 120,
+    },
+    infoBlockText:{
+        color: THEME.COLOR_MAIN_DARK
     },
     logo: {
         width: 95,
@@ -127,4 +149,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
 
     },
+    copyrightText:{
+        color: THEME.COLOR_MAIN_DARK
+    }
 })
