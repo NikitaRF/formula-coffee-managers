@@ -124,7 +124,7 @@ export const SignupScreen = ({navigation}) => {
                     onPress={() => navigation.navigate('SignInScreen')}
                     style={styles.textBottom}
                 >
-                    Есть аккаунта? Вход
+                    Есть аккаунт? Вход
                 </Text>
             </View>
         </View>
