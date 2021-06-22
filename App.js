@@ -5,9 +5,11 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { bootstrap } from "./src/bootstrap";
 import { MenuDrawer } from "./src/navigation/MenuDrawer";
+import { SignupScreen } from "./src/screens/SignupScreen";
 
 
 export default function App() {
+    const [isLogin, setIsLogin] = useState(false)
     const [isReady, setIsReady] = useState(false)
 
     if(!isReady){
@@ -20,12 +22,20 @@ export default function App() {
         )
     }
 
+    if(isLogin){
+        return (
+            <NavigationContainer>
+                <MenuDrawer />
+            </NavigationContainer>
+        );
+    } else {
+        return (
+            <NavigationContainer>
+                <SignupScreen/>
+            </NavigationContainer>
+        )
+    }
 
-  return (
-      <NavigationContainer>
-          <MenuDrawer />
-      </NavigationContainer>
-  );
 }
 
 
