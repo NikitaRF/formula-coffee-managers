@@ -1,5 +1,5 @@
 import React from "react";
-import {Text, Image, StyleSheet, View, Linking} from "react-native";
+import {Text, Image, StyleSheet, View, Linking, Button, TouchableOpacity} from "react-native";
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -9,9 +9,19 @@ import {AboutAppNavigation} from "./AboutAppNavigation";
 import {ContactsNavigation} from "./ContactsNavigation";
 import {MenuNavigation} from "./MenuNavigation";
 import { THEME } from "../theme";
+import firebase from "firebase";
 
 
 function CustomDrawerContent(props) {
+    const userDisplayName = firebase.auth().currentUser.displayName
+
+    const signOut = () => {
+        firebase.auth().signOut().then(() => {
+            props.navigation.navigate('SignInScreen')
+        })
+            .catch(error => console.log(error))
+    }
+
     const currentYear = new Date().getFullYear()
     return (
         //<DrawerContentScrollView {...props}>
@@ -22,8 +32,15 @@ function CustomDrawerContent(props) {
                         source={require('../../assets/logo2.png')}
                     />
                     <View style={styles.infoBlock}>
-                        <Text style={styles.infoBlockText}>Часы работы</Text>
-                        <Text style={styles.infoBlockText}>8:30 - 23:00</Text>
+                        <Text style={styles.infoBlockText}>Привет!</Text>
+                        {/*<Text style={styles.infoBlockText}></Text>*/}
+                        <Text style={styles.infoBlockText}>{userDisplayName}</Text>
+                        <TouchableOpacity
+                            style={styles.buttonSignOutWrap}
+                            onPress={() => signOut()}
+                        >
+                                <Text style={styles.buttonSignOutText}>Выйти</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View>
@@ -124,15 +141,18 @@ const styles = StyleSheet.create({
         // paddingLeft: 10,
         paddingRight: 20,
         paddingBottom: 15,
+
     },
     infoBlock:{
         height: 120,
+        maxWidth: '50%',
     },
     infoBlockText:{
         color: THEME.COLOR_MAIN_DARK
     },
     logo: {
         width: 95,
+        maxWidth: '50%',
         height: 120,
     },
     bottomWrapper: {
@@ -150,6 +170,19 @@ const styles = StyleSheet.create({
 
     },
     copyrightText:{
+        color: THEME.COLOR_MAIN_DARK
+    },
+    buttonSignOutWrap:{
+        marginTop: 'auto',
+        width: '100%',
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+        borderRadius: 5,
+        backgroundColor: THEME.COLOR_MAIN_LIGHT,
+    },
+    buttonSignOutText: {
+        fontSize: 14,
+        textAlign: 'center',
         color: THEME.COLOR_MAIN_DARK
     }
 })
