@@ -12,19 +12,21 @@ export const SignupScreen = () => {
                 style={styles.logo}
                 source={require('../../assets/logo2.png')}
             />
-            <Text style={styles.title}>Вход</Text>
+            <Text style={styles.title}>Регистрация</Text>
             <View style={styles.inputWrap}>
+                <TextInput autoCorrect={false} placeholder='Имя' style={styles.input}/>
+                <TextInput autoCorrect={false} placeholder='Фвмилия' style={styles.input}/>
                 <TextInput autoCorrect={false} placeholder='Email' style={styles.input}/>
                 <TextInput autoCorrect={false} placeholder='Password' style={styles.input}/>
                 <View style={styles.buttonWrap}>
-                    <Button color={THEME.COLOR_MAIN_DARK} title='Вход'/>
+                    <Button color={THEME.COLOR_MAIN_DARK} title='Зарегистрироваться'/>
                 </View>
             </View>
             <View style={styles.textBottomWrap}>
                 <Text
                     style={styles.textBottom}
                 >
-                    Нет аккаунта? Зарегистрироваться
+                    Есть аккаунта? Вход
                 </Text>
             </View>
         </View>

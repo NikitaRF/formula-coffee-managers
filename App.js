@@ -6,6 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { bootstrap } from "./src/bootstrap";
 import { MenuDrawer } from "./src/navigation/MenuDrawer";
 import { SignInScreen } from "./src/screens/SignInScreen";
+import { SignupScreen } from "./src/screens/SignupScreen";
 
 
 export default function App() {
@@ -31,7 +32,7 @@ export default function App() {
     } else {
         return (
             <NavigationContainer>
-                <SignInScreen/>
+                <SignupScreen/>
             </NavigationContainer>
         )
     }
