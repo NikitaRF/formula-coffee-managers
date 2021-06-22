@@ -52,7 +52,15 @@ export const SignupScreen = ({navigation}) => {
                 })
                 .catch(error => {
                     if (error.code === 'auth/email-already-in-use') {
+                        Alert.alert('Этот адрес email уже зарегистрирован')
                         console.log('Этот адрес email уже зарегистрирован');
+                        setState({
+                            firstName: '',
+                            lastName: '',
+                            email: '',
+                            password: '',
+                            isLoading: false
+                        })
                     }
 
                     if (error.code === 'auth/invalid-email') {
@@ -91,7 +99,7 @@ export const SignupScreen = ({navigation}) => {
                 />
                 <TextInput
                     autoCorrect={false}
-                    placeholder='Фвмилия'
+                    placeholder='Фамилия'
                     style={styles.input}
                     onChangeText={(val) => updateInputVal(val, 'lastName')}
                 />

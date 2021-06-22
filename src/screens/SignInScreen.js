@@ -45,7 +45,15 @@ export const SignInScreen = ({navigation}) => {
                     })
                     navigation.navigate('MenuDrawer')
                 })
-                .catch(error => console.log(error))
+                .catch(error => {
+                    console.log(error)
+                    Alert.alert('Такого пользователя не существует')
+                    setState({
+                        isLoading: false,
+                        email: '',
+                        password: '',
+                    })
+                })
         }
     }
 
