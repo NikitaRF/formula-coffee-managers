@@ -7,12 +7,12 @@ import {THEME} from "../theme";
 export const SignupScreen = (navigation) => {
 
     return (
-        <View style={styles.center}>
+        <View style={styles.container}>
             <Image
                 style={styles.logo}
                 source={require('../../assets/logo2.png')}
             />
-            <Text style={styles.text}>Вход</Text>
+            <Text style={styles.title}>Вход</Text>
             <View style={styles.inputWrap}>
                 <TextInput autoCorrect={false} placeholder='Email' style={styles.input}/>
                 <TextInput autoCorrect={false} placeholder='Password' style={styles.input}/>
@@ -20,9 +20,9 @@ export const SignupScreen = (navigation) => {
                     <Button color={THEME.COLOR_MAIN_DARK} title='Вход'/>
                 </View>
             </View>
-            <View style={styles.textWrap}>
+            <View style={styles.textBottomWrap}>
                 <Text
-                    style={styles.text}
+                    style={styles.textBottom}
                 >
                     Нет аккаунта? Зарегистрироваться
                 </Text>
@@ -35,17 +35,7 @@ export const SignupScreen = (navigation) => {
 
 
 const styles = StyleSheet.create({
-    text: {
-        fontFamily: 'open-bold',
-        color: THEME.COLOR_MAIN_DARK
-    },
-    textWrap:{
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: 'grey',
-
-    },
-    center: {
+    container: {
         //flex: 1,
         alignItems: 'center',
         marginTop: '35%',
@@ -53,6 +43,11 @@ const styles = StyleSheet.create({
     logo: {
         width: 95,
         height: 120,
+    },
+    title: {
+        marginTop: 10,
+        fontFamily: 'open-bold',
+        color: THEME.COLOR_MAIN_DARK
     },
     inputWrap:{
         width: '75%',
@@ -63,7 +58,7 @@ const styles = StyleSheet.create({
         borderColor: THEME.COLOR_MAIN_DARK,
         borderBottomWidth: 1,
         width: '100%',
-        height: '15%',
+        height: 45,
         marginTop: 20,
     },
     buttonWrap:{
@@ -74,6 +69,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: THEME.COLOR_MAIN_LIGHT,
     },
-
+    textBottomWrap:{
+        marginTop: 20,
+    },
+    textBottom:{
+        fontFamily: 'open-bold',
+        color: THEME.COLOR_MAIN_DARK
+    },
 })
 
