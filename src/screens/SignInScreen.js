@@ -4,7 +4,7 @@ import {Button, Image, StyleSheet, Text, TextInput, View} from "react-native";
 
 import {THEME} from "../theme";
 
-export const SignupScreen = () => {
+export const SignInScreen = () => {
 
     return (
         <View style={styles.container}>
