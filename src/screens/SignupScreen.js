@@ -1,11 +1,79 @@
-import React from "react";
-import {Button, Image, StyleSheet, Text, TextInput, View} from "react-native";
+import React, {useState} from "react";
+import {Alert, Button, Image, StyleSheet, Text, TextInput, View, ActivityIndicator} from "react-native";
+import firebase from '../database/firebase';
+
 
 
 import {THEME} from "../theme";
 
-export const SignupScreen = () => {
+export const SignupScreen = ({navigation}) => {
 
+    const [state, setState] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        isLoading: false
+    })
+
+    if(state.isLoading){
+        return(
+            <View style={styles.preloader}>
+                <ActivityIndicator size="large" color={THEME.COLOR_MAIN_DARK}/>
+            </View>
+        )
+    }
+
+
+    const registerUser = () => {
+        if(state.email === '' && state.password === '' && state.firstName === '' && state.lastName === '') {
+            Alert.alert('Введите все данные для регистрации')
+        } else {
+            setState({
+                ...state,
+                isLoading: true,
+            })
+            firebase
+                .auth()
+                .createUserWithEmailAndPassword(state.email, state.password)
+                .then((res) => {
+                    res.user.updateProfile({
+                        displayName: state.firstName
+                    })
+                    console.log('Пользователь успешно создан');
+                    setState({
+                        firstName: '',
+                        lastName: '',
+                        email: '',
+                        password: '',
+                        isLoading: false
+                    })
+                    navigation.navigate('SignInScreen')
+                })
+                .catch(error => {
+                    if (error.code === 'auth/email-already-in-use') {
+                        console.log('Этот адрес email уже зарегистрирован');
+                    }
+
+                    if (error.code === 'auth/invalid-email') {
+                        console.log('Этот адрес email невалидный');
+                    }
+
+                    console.error(error);
+                });
+        }
+    }
+
+    const updateInputVal = (val, prop) => {
+        setState({...state, [prop]: val});
+    }
+
+
+
+
+    console.log('После', state)
+
+    console.log('111')
     return (
         <View style={styles.container}>
             <Image
@@ -14,16 +82,38 @@ export const SignupScreen = () => {
             />
             <Text style={styles.title}>Регистрация</Text>
             <View style={styles.inputWrap}>
-                <TextInput autoCorrect={false} placeholder='Имя' style={styles.input}/>
-                <TextInput autoCorrect={false} placeholder='Фвмилия' style={styles.input}/>
-                <TextInput autoCorrect={false} placeholder='Email' style={styles.input}/>
-                <TextInput autoCorrect={false} placeholder='Password' style={styles.input}/>
+                <TextInput
+                    autoCorrect={false}
+                    value={state.firstName}
+                    placeholder='Имя'
+                    style={styles.input}
+                    onChangeText={(val) => updateInputVal(val, 'firstName')}
+                />
+                <TextInput
+                    autoCorrect={false}
+                    placeholder='Фвмилия'
+                    style={styles.input}
+                    onChangeText={(val) => updateInputVal(val, 'lastName')}
+                />
+                <TextInput
+                    autoCorrect={false}
+                    placeholder='Email'
+                    style={styles.input}
+                    onChangeText={(val) => updateInputVal(val, 'email')}
+                />
+                <TextInput
+                    autoCorrect={false}
+                    placeholder='Password'
+                    style={styles.input}
+                    onChangeText={(val) => updateInputVal(val, 'password')}
+                />
                 <View style={styles.buttonWrap}>
-                    <Button color={THEME.COLOR_MAIN_DARK} title='Зарегистрироваться'/>
+                    <Button color={THEME.COLOR_MAIN_DARK} title='Зарегистрироваться' onPress={() => registerUser()}/>
                 </View>
             </View>
             <View style={styles.textBottomWrap}>
                 <Text
+                    onPress={() => navigation.navigate('SignInScreen')}
                     style={styles.textBottom}
                 >
                     Есть аккаунта? Вход
@@ -76,6 +166,16 @@ const styles = StyleSheet.create({
     textBottom:{
         fontFamily: 'open-bold',
         color: THEME.COLOR_MAIN_DARK
+    },
+    preloader: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff'
     },
 })
 

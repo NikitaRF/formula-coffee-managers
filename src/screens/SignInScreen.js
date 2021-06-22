@@ -1,10 +1,54 @@
-import React from "react";
-import {Button, Image, StyleSheet, Text, TextInput, View} from "react-native";
-
+import React, {useState} from "react";
+import {Button, Image, StyleSheet, Text, TextInput, View, ActivityIndicator, Alert} from "react-native";
+import firebase from '../database/firebase';
 
 import {THEME} from "../theme";
 
-export const SignInScreen = () => {
+export const SignInScreen = ({navigation}) => {
+
+    const [state, setState] = useState({
+        email: '',
+        password: '',
+        isLoading: false,
+    })
+
+    if(state.isLoading){
+        return(
+            <View style={styles.preloader}>
+                <ActivityIndicator size="large" color={THEME.COLOR_MAIN_DARK}/>
+            </View>
+        )
+    }
+
+    const updateInputVal = (val, prop) => {
+        setState({...state, [prop]: val});
+    }
+
+    const userLogin = () => {
+        if(state.email === '' && state.password === '') {
+            Alert.alert('Введите логин и пароль')
+        } else {
+            setState({
+                ...state,
+                isLoading: true,
+            })
+            firebase
+                .auth()
+                .signInWithEmailAndPassword(state.email, state.password)
+                .then((res) => {
+                    console.log(res)
+                    console.log('Пользователь успешно авторизован')
+                    setState({
+                        isLoading: false,
+                        email: '',
+                        password: '',
+                    })
+                    navigation.navigate('MenuDrawer')
+                })
+                .catch(error => console.log(error))
+        }
+    }
+
 
     return (
         <View style={styles.container}>
@@ -14,14 +58,29 @@ export const SignInScreen = () => {
             />
             <Text style={styles.title}>Вход</Text>
             <View style={styles.inputWrap}>
-                <TextInput autoCorrect={false} placeholder='Email' style={styles.input}/>
-                <TextInput autoCorrect={false} placeholder='Password' style={styles.input}/>
+                <TextInput
+                    autoCorrect={false}
+                    placeholder='Email'
+                    style={styles.input}
+                    onChangeText={(val) => updateInputVal(val, 'email')}
+                />
+                <TextInput
+                    autoCorrect={false}
+                    placeholder='Password'
+                    style={styles.input}
+                    onChangeText={(val) => updateInputVal(val, 'password')}
+                />
                 <View style={styles.buttonWrap}>
-                    <Button color={THEME.COLOR_MAIN_DARK} title='Вход'/>
+                    <Button
+                        color={THEME.COLOR_MAIN_DARK}
+                        title='Вход'
+                        onPress={() => userLogin()}
+                    />
                 </View>
             </View>
             <View style={styles.textBottomWrap}>
                 <Text
+                    onPress={() => navigation.navigate('SignupScreen')}
                     style={styles.textBottom}
                 >
                     Нет аккаунта? Зарегистрироваться
@@ -74,6 +133,16 @@ const styles = StyleSheet.create({
     textBottom:{
         fontFamily: 'open-bold',
         color: THEME.COLOR_MAIN_DARK
+    },
+    preloader: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff'
     },
 })
 
