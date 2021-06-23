@@ -120,12 +120,15 @@ export const SignupScreen = ({navigation}) => {
                 />
                 <TextInput
                     autoCorrect={false}
+                    autoCapitalize={false}
+                    keyboardType='email-address'
                     placeholder='Email'
                     style={styles.input}
                     onChangeText={(val) => updateInputVal(val, 'email')}
                 />
                 <TextInput
                     autoCorrect={false}
+                    autoCapitalize={false}
                     placeholder='Password'
                     style={styles.input}
                     onChangeText={(val) => updateInputVal(val, 'password')}

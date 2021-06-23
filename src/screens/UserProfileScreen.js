@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import firebase from "firebase";
 import {THEME} from "../theme";
@@ -8,6 +8,7 @@ import {THEME} from "../theme";
 export const UserProfileScreen = () => {
     const userUid = firebase.auth().currentUser.uid
     const db = firebase.firestore();
+    const userInfo = db.collection("users").doc(userUid);
 
     const [state, setState] = useState({
         firstName: '',
@@ -24,28 +25,37 @@ export const UserProfileScreen = () => {
         )
     }
 
-    const userInfo = db.collection("users").doc(userUid);
 
-    userInfo.get().then((doc) => {
-        setState({
-            ...state,
-            isLoading: true,
-        })
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
+
+    const getUserInfo = () => {
+        userInfo.get().then((doc) => {
             setState({
-                firstName: doc.data().firstName,
-                lastName: doc.data().lastName,
-                email: doc.data().email,
-                isLoading: false,
+                ...state,
+                isLoading: true,
             })
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                setState({
+                    firstName: doc.data().firstName,
+                    lastName: doc.data().lastName,
+                    email: doc.data().email,
+                    isLoading: false,
+                })
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+    }
+
+
+    useEffect(() => {
+      console.log(121212)
+
+    }, [])
+
 
     return (
         <View style={styles.center}>
@@ -63,5 +73,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    preloader: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff'
     },
 })
