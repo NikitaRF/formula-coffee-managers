@@ -8,6 +8,8 @@ import {THEME} from "../theme";
 
 export const SignupScreen = ({navigation}) => {
 
+    const db = firebase.firestore();
+
     const [state, setState] = useState({
         firstName: '',
         lastName: '',
@@ -41,6 +43,18 @@ export const SignupScreen = ({navigation}) => {
                         displayName: `${state.firstName} ${state.lastName}`,
                     })
                     console.log('Пользователь успешно создан');
+
+                    // заносим данные о пользователе в БД
+                    db.collection("users").doc(res.user.uid).set({
+                        id: res.user.uid,
+                        firstName: state.firstName,
+                        lastName: state.lastName,
+                        email: state.email,
+                    }).then(() => {
+                        console.log("Document successfully written!2222");
+                    })
+
+                    // очищаем состояние
                     setState({
                         firstName: '',
                         lastName: '',
@@ -48,6 +62,7 @@ export const SignupScreen = ({navigation}) => {
                         password: '',
                         isLoading: false
                     })
+
                     navigation.navigate('SignInScreen')
                 })
                 .catch(error => {

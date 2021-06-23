@@ -8,8 +8,11 @@ import {MainNavigation} from "./MainNavigation";
 import {AboutAppNavigation} from "./AboutAppNavigation";
 import {ContactsNavigation} from "./ContactsNavigation";
 import {MenuNavigation} from "./MenuNavigation";
+import {UserProfileNavigation} from "./UserProfileNavigation";
 import { THEME } from "../theme";
 import firebase from "firebase";
+
+
 
 
 function CustomDrawerContent(props) {
@@ -102,6 +105,17 @@ export const MenuDrawer = () => {
                 options={{
                     drawerIcon: ({focused}) => <AntDesign
                         name='contacts'
+                        size={iconSize}
+                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
+                    />
+                }}
+            />
+            <Drawer.Screen
+                name="Профиль"
+                component={UserProfileNavigation}
+                options={{
+                    drawerIcon: ({focused}) => <AntDesign
+                        name='profile'
                         size={iconSize}
                         color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
                     />
