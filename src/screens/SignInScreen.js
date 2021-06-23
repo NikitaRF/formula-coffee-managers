@@ -16,6 +16,7 @@ export const SignInScreen = ({navigation}) => {
 
     const [secure, setSecure] = useState(true);
 
+
     if(state.isLoading){
         return(
             <View style={styles.preloader}>
@@ -74,21 +75,23 @@ export const SignInScreen = ({navigation}) => {
             <View style={styles.inputWrap}>
                 <TextInput
                     autoCorrect={false}
-                    autoCapitalize={false}
+                    autoCapitalize='none'
                     keyboardType='email-address'
                     placeholder='Email'
                     textContentType='emailAddress'
                     style={styles.input}
+                    maxLength={35}
                     onChangeText={(val) => updateInputVal(val, 'email')}
                 />
                 <View style={styles.passwordView}>
                     <TextInput
                         autoCorrect={false}
-                        autoCapitalize={false}
+                        autoCapitalize='none'
                         secureTextEntry={secure}
                         placeholder='Password'
                         textContentType='password'
                         style={styles.input}
+                        maxLength={25}
                         onChangeText={(val) => updateInputVal(val, 'password')}
                     />
 
@@ -150,6 +153,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 45,
         marginTop: 20,
+
     },
     buttonWrap:{
         width: '100%',
@@ -183,6 +187,10 @@ const styles = StyleSheet.create({
     checkbox:{
         position: 'absolute',
         right: 5,
+        opacity: 0.7,
     },
+    focus: {
+        display: 'none'
+    }
 })
 

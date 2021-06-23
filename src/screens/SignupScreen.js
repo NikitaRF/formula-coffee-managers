@@ -20,8 +20,8 @@ export const SignupScreen = ({navigation}) => {
     })
 
 
-    if(state.isLoading){
-        return(
+    if (state.isLoading) {
+        return (
             <View style={styles.preloader}>
                 <ActivityIndicator size="large" color={THEME.COLOR_MAIN_DARK}/>
             </View>
@@ -30,7 +30,7 @@ export const SignupScreen = ({navigation}) => {
 
 
     const registerUser = () => {
-        if(state.email === '' && state.password === '' && state.firstName === '' && state.lastName === '') {
+        if (state.email === '' && state.password === '' && state.firstName === '' && state.lastName === '') {
             Alert.alert('Введите все данные для регистрации')
         } else {
             setState({
@@ -94,11 +94,9 @@ export const SignupScreen = ({navigation}) => {
     }
 
 
-
-
     console.log('После', state)
 
-    console.log('111')
+
     return (
         <View style={styles.container}>
             <Image
@@ -112,31 +110,35 @@ export const SignupScreen = ({navigation}) => {
                     value={state.firstName}
                     placeholder='Имя'
                     style={styles.input}
+                    maxLength={40}
                     onChangeText={(val) => updateInputVal(val, 'firstName')}
                 />
                 <TextInput
                     autoCorrect={false}
                     placeholder='Фамилия'
                     style={styles.input}
+                    maxLength={40}
                     onChangeText={(val) => updateInputVal(val, 'lastName')}
                 />
                 <TextInput
                     autoCorrect={false}
-                    autoCapitalize={false}
+                    autoCapitalize='none'
                     keyboardType='email-address'
                     placeholder='Email'
                     textContentType='emailAddress'
                     style={styles.input}
+                    maxLength={35}
                     onChangeText={(val) => updateInputVal(val, 'email')}
                 />
                 <View style={styles.passwordView}>
                     <TextInput
                         autoCorrect={false}
-                        autoCapitalize={false}
+                        autoCapitalize='none'
                         secureTextEntry={secure}
                         placeholder='Password'
                         textContentType='password'
                         style={styles.input}
+                        maxLength={25}
                         onChangeText={(val) => updateInputVal(val, 'password')}
                     />
 
@@ -165,8 +167,6 @@ export const SignupScreen = ({navigation}) => {
         </View>
     )
 }
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
     checkbox:{
         position: 'absolute',
         right: 5,
+        opacity: 0.7,
     },
 })
 
