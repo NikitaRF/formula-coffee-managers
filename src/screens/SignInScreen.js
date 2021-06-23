@@ -1,8 +1,10 @@
 import React, {useState} from "react";
 import {Button, Image, StyleSheet, Text, TextInput, View, ActivityIndicator, Alert} from "react-native";
 import firebase from '../database/firebase';
+import { Ionicons } from '@expo/vector-icons';
 
 import {THEME} from "../theme";
+
 
 export const SignInScreen = ({navigation}) => {
 
@@ -11,6 +13,8 @@ export const SignInScreen = ({navigation}) => {
         password: '',
         isLoading: false,
     })
+
+    const [secure, setSecure] = useState(true);
 
     if(state.isLoading){
         return(
@@ -58,6 +62,8 @@ export const SignInScreen = ({navigation}) => {
     }
 
 
+
+
     return (
         <View style={styles.container}>
             <Image
@@ -71,16 +77,31 @@ export const SignInScreen = ({navigation}) => {
                     autoCapitalize={false}
                     keyboardType='email-address'
                     placeholder='Email'
+                    textContentType='emailAddress'
                     style={styles.input}
                     onChangeText={(val) => updateInputVal(val, 'email')}
                 />
-                <TextInput
-                    autoCorrect={false}
-                    autoCapitalize={false}
-                    placeholder='Password'
-                    style={styles.input}
-                    onChangeText={(val) => updateInputVal(val, 'password')}
-                />
+                <View style={styles.passwordView}>
+                    <TextInput
+                        autoCorrect={false}
+                        autoCapitalize={false}
+                        secureTextEntry={secure}
+                        placeholder='Password'
+                        textContentType='password'
+                        style={styles.input}
+                        onChangeText={(val) => updateInputVal(val, 'password')}
+                    />
+
+                    <Ionicons
+                        style={styles.checkbox}
+                        name={secure ? 'eye' : 'eye-off'}
+                        size={24}
+                        color={THEME.COLOR_MAIN_DARK}
+                        onPress={() => setSecure(!secure)}
+                    />
+
+                </View>
+
                 <View style={styles.buttonWrap}>
                     <Button
                         color={THEME.COLOR_MAIN_DARK}
@@ -154,6 +175,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#fff'
+    },
+    passwordView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    checkbox:{
+        position: 'absolute',
+        right: 5,
     },
 })
 

@@ -4,7 +4,6 @@ import firebase from "firebase";
 import {THEME} from "../theme";
 
 
-
 export const UserProfileScreen = () => {
     const userUid = firebase.auth().currentUser.uid
     const db = firebase.firestore();
