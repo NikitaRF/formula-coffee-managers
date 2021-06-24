@@ -1,2 +1,1 @@
-import { createStore, combineReducers } from 'redux'
-
+export const GET_USERS_INFO = 'GET_USERS_INFO'

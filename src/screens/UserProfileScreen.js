@@ -1,18 +1,24 @@
 import React, {useEffect, useState} from "react";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import firebase from "firebase";
+
+
 import {THEME} from "../theme";
+import {getUserInfo} from "../store/actions/getUserInfo";
 
 
 export const UserProfileScreen = () => {
-    const userUid = firebase.auth().currentUser.uid
-    const db = firebase.firestore();
-    const userInfo = db.collection("users").doc(userUid);
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getUserInfo())
+    }, [])
+
+    const userData = useSelector(state => state.user.userInfo)
+    console.log('Мы получили данные о пользователе', userData)
 
     const [state, setState] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
         isLoading: false
     })
 
@@ -24,44 +30,12 @@ export const UserProfileScreen = () => {
         )
     }
 
-
-
-    const getUserInfo = () => {
-        userInfo.get().then((doc) => {
-            setState({
-                ...state,
-                isLoading: true,
-            })
-            if (doc.exists) {
-                console.log("Document data:", doc.data());
-                setState({
-                    firstName: doc.data().firstName,
-                    lastName: doc.data().lastName,
-                    email: doc.data().email,
-                    isLoading: false,
-                })
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
-    }
-
-
-    useEffect(() => {
-      console.log(121212)
-
-    }, [])
-
-
     return (
         <View style={styles.center}>
             <Text>{firebase.auth().currentUser.displayName}</Text>
-            <Text>{state.firstName}</Text>
-            <Text>{state.lastName}</Text>
-            <Text>{state.email}</Text>
+            <Text>{userData.firstName}</Text>
+            <Text>{userData.lastName}</Text>
+            <Text>{userData.email}</Text>
         </View>
     )
 }

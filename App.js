@@ -8,6 +8,7 @@ import { bootstrap } from "./src/bootstrap";
 import { MenuDrawer } from "./src/navigation/MenuDrawer";
 import { SignInScreen } from "./src/screens/SignInScreen";
 import { SignupScreen } from "./src/screens/SignupScreen";
+import store from './src/store';
 
 const MyTheme = {
     ...DefaultTheme,
@@ -43,15 +44,20 @@ export default function App() {
         );
     } else {
         return (
-            <NavigationContainer theme={MyTheme}>
-                <Stack.Navigator screenOptions={{
-                    headerShown: false,
-                }} initialRouteName="SignInScreen">
-                    <Stack.Screen name="SignInScreen" component={SignInScreen} />
-                    <Stack.Screen name="SignupScreen" component={SignupScreen} />
-                    <Stack.Screen name="MenuDrawer" component={MenuDrawer} />
-                </Stack.Navigator>
-            </NavigationContainer>
+
+            <Provider store={store}>
+                <NavigationContainer theme={MyTheme}>
+                    <Stack.Navigator screenOptions={{
+                        headerShown: false,
+                    }} initialRouteName="SignInScreen">
+                        <Stack.Screen name="SignInScreen" component={SignInScreen} />
+                        <Stack.Screen name="SignupScreen" component={SignupScreen} />
+                        <Stack.Screen name="MenuDrawer" component={MenuDrawer} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </Provider>
+
+
             // <NavigationContainer>
             //     <SignupScreen/>
             // </NavigationContainer>
