@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import {StyleSheet, Text, View, ActivityIndicator, TextInput, Button} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import firebase from "firebase";
 
@@ -10,6 +10,10 @@ import {getUserInfo} from "../store/actions/getUserInfo";
 
 export const UserProfileScreen = () => {
 
+    const userUid = firebase.auth().currentUser.uid
+    const db = firebase.firestore();
+    const userInfo = db.collection("users").doc(userUid);
+
     const [state, setState] = useState({
         isLoading: false
     })
@@ -18,10 +22,12 @@ export const UserProfileScreen = () => {
 
     const asyncGetUserInfo = async () => {
         setState({
+            ...state,
             isLoading: true
         })
         const result = await dispatch(getUserInfo())
         setState({
+            ...state,
             isLoading: false
         })
         return result
@@ -33,9 +39,7 @@ export const UserProfileScreen = () => {
 
     const userData = useSelector(state => state.user.userInfo)
     console.log('Мы получили данные о пользователе', userData)
-
-
-
+    console.log('Локальное состояние', state)
 
 
     if(state.isLoading){
@@ -46,9 +50,43 @@ export const UserProfileScreen = () => {
         )
     }
 
+    const updateInputVal = (val, prop) => {
+        setState({
+            ...state,
+            [prop]: val
+        });
+    }
+
+    const saveChanges = async (key, data) => {
+        await userInfo.set({
+            [key]: data
+        }, { merge: true });
+        asyncGetUserInfo()
+    }
+
     return (
         <View style={styles.center}>
             <Text>{firebase.auth().currentUser.displayName}</Text>
+            <TextInput />
+
+
+            <Text>Имя</Text>
+            <TextInput
+                autoCorrect={false}
+                value={state.firstName}
+                placeholder='Имя'
+                style={styles.input}
+                maxLength={40}
+                defaultValue={userData.firstName}
+                onChangeText={(val) => updateInputVal(val, 'firstName')}
+            />
+            <Button
+                color={THEME.COLOR_MAIN_DARK}
+                title='Сохранить'
+                onPress={() => saveChanges('firstName', state.firstName)}
+            />
+
+
             <Text>{userData.firstName}</Text>
             <Text>{userData.lastName}</Text>
             <Text>{userData.email}</Text>
@@ -73,4 +111,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#fff'
     },
+    input: {
+
+    }
 })
