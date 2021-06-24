@@ -9,6 +9,7 @@ import { MenuDrawer } from "./src/navigation/MenuDrawer";
 import { SignInScreen } from "./src/screens/SignInScreen";
 import { SignupScreen } from "./src/screens/SignupScreen";
 import store from './src/store';
+import firebase from "firebase";
 
 const MyTheme = {
     ...DefaultTheme,
@@ -19,10 +20,19 @@ const MyTheme = {
 
 };
 
+const user = firebase.auth().currentUser
+
 
 export default function App() {
-    const [isLogin, setIsLogin] = useState(false)
+    console.log(user)
+   // const [isLogin, setIsLogin] = useState(false)
     const [isReady, setIsReady] = useState(false)
+
+    // if (user !== null) {
+    //     setIsLogin(true)
+    // } else {
+    //     setIsLogin(false)
+    // }
 
     const Stack = createStackNavigator ( ) ;
 
@@ -36,34 +46,19 @@ export default function App() {
         )
     }
 
-    if(isLogin){
         return (
-            <NavigationContainer>
-                <MenuDrawer />
-            </NavigationContainer>
-        );
-    } else {
-        return (
-
             <Provider store={store}>
                 <NavigationContainer theme={MyTheme}>
                     <Stack.Navigator screenOptions={{
                         headerShown: false,
-                    }} initialRouteName="SignInScreen">
+                    }} initialRouteName='SignInScreen'>
                         <Stack.Screen name="SignInScreen" component={SignInScreen} />
                         <Stack.Screen name="SignupScreen" component={SignupScreen} />
                         <Stack.Screen name="MenuDrawer" component={MenuDrawer} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </Provider>
-
-
-            // <NavigationContainer>
-            //     <SignupScreen/>
-            // </NavigationContainer>
         )
-    }
-
 }
 
 

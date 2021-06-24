@@ -9,18 +9,34 @@ import {getUserInfo} from "../store/actions/getUserInfo";
 
 
 export const UserProfileScreen = () => {
+
+    const [state, setState] = useState({
+        isLoading: false
+    })
+
     const dispatch = useDispatch()
 
+    const asyncGetUserInfo = async () => {
+        setState({
+            isLoading: true
+        })
+        const result = await dispatch(getUserInfo())
+        setState({
+            isLoading: false
+        })
+        return result
+    }
+
     useEffect(() => {
-        dispatch(getUserInfo())
+        asyncGetUserInfo()
     }, [])
 
     const userData = useSelector(state => state.user.userInfo)
     console.log('Мы получили данные о пользователе', userData)
 
-    const [state, setState] = useState({
-        isLoading: false
-    })
+
+
+
 
     if(state.isLoading){
         return(
