@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, Text, View, ActivityIndicator, TextInput, Button} from "react-native";
+import {StyleSheet, Text, View, ActivityIndicator, TextInput, Button, ScrollView} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import firebase from "firebase";
 import { AntDesign } from '@expo/vector-icons';
@@ -66,43 +66,86 @@ export const UserProfileScreen = () => {
     }
 
     return (
-        <View style={styles.center}>
-            <Text>{firebase.auth().currentUser.displayName}</Text>
-            <TextInput />
 
-            <View style={styles.inputContainer}>
-                <Text>Имя</Text>
-                <View style={styles.inputWrap}>
-                    <TextInput
-                        autoCorrect={false}
-                        value={state.firstName}
-                        placeholder='Имя'
-                        style={styles.input}
-                        maxLength={40}
-                        defaultValue={userData.firstName}
-                        onChangeText={(val) => updateInputVal(val, 'firstName')}
-                    />
-                    <AntDesign
-                        name="checksquare"
-                        size={24}
-                        style={styles.allowIcon}
-                        color={THEME.COLOR_MAIN_DARK}
-                        onPress={() => saveChanges('firstName', state.firstName)}
-                    />
+            <View style={styles.center}>
+
+                <View style={styles.inputContainer}>
+                    <View style={styles.inputTitleWrap}>
+                        <Text style={styles.inputTitle}>Имя</Text>
+                    </View>
+                    <View style={styles.inputWrap}>
+                        <TextInput
+                            autoCorrect={false}
+                            value={state.firstName}
+                            placeholder='Имя'
+                            style={styles.input}
+                            maxLength={40}
+                            defaultValue={userData.firstName}
+                            onChangeText={(val) => updateInputVal(val, 'firstName')}
+                        />
+                        <AntDesign
+                            name="checksquare"
+                            size={24}
+                            style={styles.allowIcon}
+                            color={THEME.COLOR_MAIN_DARK}
+                            onPress={() => saveChanges('firstName', state.firstName)}
+                        />
+                    </View>
                 </View>
+
+                <View style={styles.inputContainer}>
+                    <View style={styles.inputTitleWrap}>
+                        <Text style={styles.inputTitle}>Фамилия</Text>
+                    </View>
+                    <View style={styles.inputWrap}>
+                        <TextInput
+                            autoCorrect={false}
+                            value={state.lastName}
+                            placeholder='Фамилия'
+                            style={styles.input}
+                            maxLength={40}
+                            defaultValue={userData.lastName}
+                            onChangeText={(val) => updateInputVal(val, 'lastName')}
+                        />
+                        <AntDesign
+                            name="checksquare"
+                            size={24}
+                            style={styles.allowIcon}
+                            color={THEME.COLOR_MAIN_DARK}
+                            onPress={() => saveChanges('lastName', state.lastName)}
+                        />
+                    </View>
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <View style={styles.inputTitleWrap}>
+                        <Text style={styles.inputTitle}>Email</Text>
+                    </View>
+                    <View style={styles.inputWrap}>
+                        <TextInput
+                            autoCorrect={false}
+                            value={state.email}
+                            placeholder='Email'
+                            style={styles.input}
+                            maxLength={40}
+                            defaultValue={userData.email}
+                            onChangeText={(val) => updateInputVal(val, 'email')}
+                        />
+                        <AntDesign
+                            name="checksquare"
+                            size={24}
+                            style={styles.allowIcon}
+                            color={THEME.COLOR_MAIN_DARK}
+                            onPress={() => saveChanges('email', state.email)}
+                        />
+                    </View>
+                </View>
+
+                <Text>{userData.firstName}</Text>
+                <Text>{userData.lastName}</Text>
+                <Text>{userData.email}</Text>
             </View>
 
-            <Button
-                color={THEME.COLOR_MAIN_DARK}
-                title='Сохранить'
-                onPress={() => saveChanges('firstName', state.firstName)}
-            />
-
-
-            <Text>{userData.firstName}</Text>
-            <Text>{userData.lastName}</Text>
-            <Text>{userData.email}</Text>
-        </View>
     )
 }
 
@@ -110,8 +153,9 @@ export const UserProfileScreen = () => {
 const styles = StyleSheet.create({
     center: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
+        marginTop: 20,
     },
     preloader: {
         left: 0,
@@ -138,6 +182,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 45,
         marginTop: 20,
+    },
+    inputTitleWrap: {
+        marginRight: 'auto'
+    },
+    inputTitle: {
+        marginTop: 20,
+
     },
     allowIcon: {
         position: 'absolute',
