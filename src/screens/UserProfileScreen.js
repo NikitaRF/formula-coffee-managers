@@ -18,9 +18,12 @@ import { AntDesign } from '@expo/vector-icons';
 import {THEME} from "../theme";
 import {getUserInfo} from "../store/actions/getUserInfo";
 import {userAuth} from "../store/actions/userAuth";
+import {userLogout} from "../store/actions/userLogout";
+
 
 
 export const UserProfileScreen = () => {
+    const user = firebase.auth().currentUser;
 
     const userUid = firebase.auth().currentUser.uid
     const db = firebase.firestore();
@@ -77,13 +80,13 @@ export const UserProfileScreen = () => {
             [key]: data
         }, { merge: true });
         if (key === "firstName") {
-            await firebase.auth().currentUser.updateProfile({
+            await user.updateProfile({
                 displayName: data
             })
             dispatch(userAuth())
         }
         if (key === 'email') {
-            await firebase.auth().currentUser.updateEmail(data).then(() => {
+            await user.updateEmail(data).then(() => {
 
                 console.log('Email Changed')
             }).catch((error) => {
@@ -94,6 +97,48 @@ export const UserProfileScreen = () => {
             isLoading: false,
         })
         asyncGetUserInfo()
+    }
+
+
+
+    const deleteAccount = () => {
+
+        // const credential = firebase
+        //     .auth()
+        //     .signInWithEmailAndPassword(userData.email, userData.password)
+        //     .then((res) => {
+        //         return res
+        //         console.log("Заново")})
+
+        Alert.alert(
+            'Удаление аккаунта',
+            `Вы уверены, что хотите удалить свой аккаунт? Это действие не обратимо`,
+            [
+                {
+                    text: 'Отмена',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Удалить',
+                    style: 'destructive',
+                    onPress: async () => {
+                       await user.delete().then(() => {
+                           user.reauthenticateWithCredential(credential).then(() => {
+                               console.log('Пользователь удален')
+                               dispatch(userLogout())
+
+                           }).catch((error) => {
+                               console.log(error)
+                           });
+                           console.log('Пользователь удален')
+                        }).catch((error) => {
+                            console.log(error)
+                        });
+                    }
+                }
+            ],
+            { cancelable: false }
+        )
     }
 
     return (
@@ -202,7 +247,13 @@ export const UserProfileScreen = () => {
                     </View>
                 </View>
 
-                <Button title='Удалить'/>
+                <View style={styles.buttonWrap}>
+                    <Button
+                        color={THEME.COLOR_MAIN_DARK}
+                        title='Удалить'
+                        onPress={() => deleteAccount()}
+                    />
+                </View>
 
                 {/*<Text>{userData.firstName}</Text>*/}
                 {/*<Text>{userData.lastName}</Text>*/}
@@ -260,5 +311,15 @@ const styles = StyleSheet.create({
         opacity: 0.7,
 
     },
+    buttonWrap: {
+
+        width: '50%',
+        marginTop: 'auto',
+        marginBottom: 40,
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+        borderRadius: 5,
+        backgroundColor: THEME.COLOR_MAIN_LIGHT,
+    }
 
 })
