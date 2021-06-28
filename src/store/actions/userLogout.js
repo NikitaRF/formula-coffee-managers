@@ -5,7 +5,6 @@ export const userLogout = () => {
 
         dispatch({
             type: USER_LOGOUT,
-            payload: null
         })
     }
 }

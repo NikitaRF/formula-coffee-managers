@@ -8,7 +8,7 @@ import {
     Button,
     ScrollView,
     Keyboard,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback, Alert
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import firebase from "firebase";
@@ -54,7 +54,6 @@ export const UserProfileScreen = () => {
     console.log('Мы получили данные о пользователе', userData)
     console.log('Локальное состояние', state)
 
-
     if(state.isLoading){
         return(
             <View style={styles.preloader}>
@@ -71,6 +70,9 @@ export const UserProfileScreen = () => {
     }
 
     const saveChanges = async (key, data) => {
+        setState({
+            isLoading: true,
+        })
         await userInfo.set({
             [key]: data
         }, { merge: true });
@@ -80,6 +82,17 @@ export const UserProfileScreen = () => {
             })
             dispatch(userAuth())
         }
+        if (key === 'email') {
+            await firebase.auth().currentUser.updateEmail(data).then(() => {
+
+                console.log('Email Changed')
+            }).catch((error) => {
+                Alert.alert(`${error}`)
+            });
+        }
+        setState({
+            isLoading: false,
+        })
         asyncGetUserInfo()
     }
 
@@ -93,6 +106,7 @@ export const UserProfileScreen = () => {
                     </View>
                     <View style={styles.inputWrap}>
                         <TextInput
+                            color={THEME.COLOR_MAIN_DARK}
                             autoCorrect={false}
                             value={state.firstName}
                             placeholder='Имя'
@@ -117,6 +131,7 @@ export const UserProfileScreen = () => {
                     </View>
                     <View style={styles.inputWrap}>
                         <TextInput
+                            color={THEME.COLOR_MAIN_DARK}
                             autoCorrect={false}
                             value={state.lastName}
                             placeholder='Фамилия'
@@ -141,12 +156,14 @@ export const UserProfileScreen = () => {
                     </View>
                     <View style={styles.inputWrap}>
                         <TextInput
+                            color={THEME.COLOR_MAIN_DARK}
                             autoCorrect={false}
                             value={state.email}
                             placeholder='Email'
                             style={styles.input}
                             maxLength={40}
                             defaultValue={userData.email}
+                            keyboardType='email-address'
                             onChangeText={(val) => updateInputVal(val, 'email')}
                         />
                         <AntDesign
@@ -159,9 +176,37 @@ export const UserProfileScreen = () => {
                     </View>
                 </View>
 
-                <Text>{userData.firstName}</Text>
-                <Text>{userData.lastName}</Text>
-                <Text>{userData.email}</Text>
+                <View style={styles.inputContainer}>
+                    <View style={styles.inputTitleWrap}>
+                        <Text style={styles.inputTitle}>Телефон</Text>
+                    </View>
+                    <View style={styles.inputWrap}>
+                        <TextInput
+                            color={THEME.COLOR_MAIN_DARK}
+                            autoCorrect={false}
+                            value={state.phone}
+                            placeholder='Телефон'
+                            style={styles.input}
+                            maxLength={11}
+                            defaultValue={userData.phone}
+                            keyboardType='phone-pad'
+                            onChangeText={(val) => updateInputVal(val, 'phone')}
+                        />
+                        <AntDesign
+                            name="checksquare"
+                            size={24}
+                            style={styles.allowIcon}
+                            color={THEME.COLOR_MAIN_DARK}
+                            onPress={() => saveChanges('phone', state.phone)}
+                        />
+                    </View>
+                </View>
+
+                <Button title='Удалить'/>
+
+                {/*<Text>{userData.firstName}</Text>*/}
+                {/*<Text>{userData.lastName}</Text>*/}
+                {/*<Text>{userData.email}</Text>*/}
             </View>
         </TouchableWithoutFeedback >
     )
@@ -206,7 +251,8 @@ const styles = StyleSheet.create({
     },
     inputTitle: {
         marginTop: 20,
-
+        fontFamily: 'open-bold',
+        color: THEME.COLOR_MAIN_DARK
     },
     allowIcon: {
         position: 'absolute',

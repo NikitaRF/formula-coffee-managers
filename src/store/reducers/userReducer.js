@@ -18,10 +18,11 @@ export const userReducer = (state = initialState, action) => {
             userAuth: action.payload
         }
         case USER_LOGOUT: return {
-            ...state,
-            userAuth: null
+            userAuth: null,
+            userInfo: {},
+            userHistoryOfOrder: [],
+            isLoading: false,
         }
-
     }
 
     return state

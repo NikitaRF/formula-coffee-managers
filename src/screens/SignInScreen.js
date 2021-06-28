@@ -56,7 +56,8 @@ export const SignInScreen = ({navigation}) => {
                 .signInWithEmailAndPassword(state.email, state.password)
                 .then((res) => {
                     // console.log(res)
-                    if (res.user.emailVerified) {
+                    // Когда закончу тестировать - поставить заново проверку на emailVerified (убрать !)
+                    if (!res.user.emailVerified) {
                         console.log('Пользователь успешно авторизован')
                         setState({
                             isLoading: false,
