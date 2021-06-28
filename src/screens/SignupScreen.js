@@ -55,6 +55,10 @@ export const SignupScreen = ({navigation}) => {
                     res.user.updateProfile({
                         displayName: state.firstName,
                     })
+                    res.user.sendEmailVerification().then(
+                        console.log('Письмо для подтверждения ящика - отправлено')
+                    )
+                    Alert.alert('Проверьте ваш почтовый ящик и подтвердите email')
                     console.log('Пользователь успешно создан');
 
                     // заносим данные о пользователе в БД
@@ -64,7 +68,7 @@ export const SignupScreen = ({navigation}) => {
                         lastName: state.lastName,
                         email: state.email,
                     }).then(() => {
-                        console.log("Document successfully written!2222");
+                        console.log("Document successfully written!");
                     })
 
                     // очищаем состояние

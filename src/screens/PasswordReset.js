@@ -12,23 +12,14 @@ import {
     Keyboard
 } from "react-native";
 import firebase from '../database/firebase';
-import { Ionicons } from '@expo/vector-icons';
-
 import {THEME} from "../theme";
-import {useDispatch, useSelector} from "react-redux";
-import {userAuth} from "../store/actions/userAuth";
 
-
-export const SignInScreen = ({navigation}) => {
-    const dispatch = useDispatch()
+export const PasswordReset = ({navigation}) => {
 
     const [state, setState] = useState({
         email: '',
-        password: '',
         isLoading: false,
     })
-
-    const [secure, setSecure] = useState(true);
 
 
     if(state.isLoading){
@@ -43,50 +34,19 @@ export const SignInScreen = ({navigation}) => {
         setState({...state, [prop]: val});
     }
 
-    const userLogin = () => {
-        if(state.email === '' && state.password === '') {
-            Alert.alert('Введите логин и пароль')
-        } else {
-            setState({
-                ...state,
-                isLoading: true,
-            })
-            firebase
-                .auth()
-                .signInWithEmailAndPassword(state.email, state.password)
-                .then((res) => {
-                    // console.log(res)
-                    if (res.user.emailVerified) {
-                        console.log('Пользователь успешно авторизован')
-                        setState({
-                            isLoading: false,
-                            email: '',
-                            password: '',
-                        })
-                        dispatch(userAuth())
-                        navigation.navigate('MenuDrawer')
-                    } else {
-                        Alert.alert('Подтвердите Email')
-                        setState({
-                            isLoading: false,
-                            email: '',
-                            password: '',
-                        })
-                        navigation.navigate('SignInScreen')
-                    }
-                })
-                .catch(error => {
-                    console.log(error)
-                    Alert.alert('Такого пользователя не существует')
-                    setState({
-                        isLoading: false,
-                        email: '',
-                        password: '',
-                    })
-                })
+    const passwordReset = () => {
+        if (state.email === '') {
+            return Alert.alert('Введите Ваш email')
         }
+        firebase.auth().sendPasswordResetEmail(state.email).then( () => {
+            Alert.alert('Запрос отправлен. Проверьте ваш почтовый ящик')
+            console.log('Запрос отправлен')
+            navigation.navigate('SignInScreen')
+        }).catch((error) => {
+            console.log(error)
+            Alert.alert(`${error}`)
+        })
     }
-
 
 
 
@@ -97,7 +57,7 @@ export const SignInScreen = ({navigation}) => {
                     style={styles.logo}
                     source={require('../../assets/logo2.png')}
                 />
-                <Text style={styles.title}>Вход</Text>
+                <Text style={styles.title}>Сброс пароля</Text>
                 <View style={styles.inputWrap}>
                     <TextInput
                         autoCorrect={false}
@@ -109,33 +69,12 @@ export const SignInScreen = ({navigation}) => {
                         maxLength={35}
                         onChangeText={(val) => updateInputVal(val, 'email')}
                     />
-                    <View style={styles.passwordView}>
-                        <TextInput
-                            autoCorrect={false}
-                            autoCapitalize='none'
-                            secureTextEntry={secure}
-                            placeholder='Password'
-                            textContentType='password'
-                            style={styles.input}
-                            maxLength={25}
-                            onChangeText={(val) => updateInputVal(val, 'password')}
-                        />
-
-                        <Ionicons
-                            style={styles.checkbox}
-                            name={secure ? 'eye' : 'eye-off'}
-                            size={24}
-                            color={THEME.COLOR_MAIN_DARK}
-                            onPress={() => setSecure(!secure)}
-                        />
-
-                    </View>
 
                     <View style={styles.buttonWrap}>
                         <Button
                             color={THEME.COLOR_MAIN_DARK}
-                            title='Вход'
-                            onPress={() => userLogin()}
+                            title='Отправить'
+                            onPress={() => passwordReset()}
                         />
                     </View>
                 </View>
@@ -147,10 +86,10 @@ export const SignInScreen = ({navigation}) => {
                         Нет аккаунта? Зарегистрироваться
                     </Text>
                     <Text
-                        onPress={() => navigation.navigate('PasswordReset')}
+                        onPress={() => navigation.navigate('SignInScreen')}
                         style={styles.textBottom}
                     >
-                        Забыли пароль?
+                        На страницу входа
                     </Text>
                 </View>
             </View>
@@ -215,17 +154,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#fff'
     },
-    passwordView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    checkbox:{
-        position: 'absolute',
-        right: 5,
-        opacity: 0.7,
-    },
-    focus: {
-        display: 'none'
-    }
 })
 

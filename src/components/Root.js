@@ -1,11 +1,12 @@
 import {DefaultTheme, NavigationContainer} from "@react-navigation/native";
 import React from "react";
+import {createStackNavigator} from "@react-navigation/stack";
+import {useSelector} from "react-redux";
 
 import {SignInScreen} from "../screens/SignInScreen";
 import {SignupScreen} from "../screens/SignupScreen";
 import {MenuDrawer} from "../navigation/MenuDrawer";
-import {createStackNavigator} from "@react-navigation/stack";
-import {useDispatch, useSelector} from "react-redux";
+import {PasswordReset} from "../screens/PasswordReset";
 
 const MyTheme = {
     ...DefaultTheme,
@@ -34,6 +35,7 @@ export const Root = () => {
                     <>
                         <Stack.Screen name="SignInScreen" component={SignInScreen} />
                         <Stack.Screen name="SignupScreen" component={SignupScreen} />
+                        <Stack.Screen name="PasswordReset" component={PasswordReset} />
                     </>
                 ) : (
                     <Stack.Screen name="MenuDrawer" component={MenuDrawer} />

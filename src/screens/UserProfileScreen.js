@@ -17,6 +17,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import {THEME} from "../theme";
 import {getUserInfo} from "../store/actions/getUserInfo";
+import {userAuth} from "../store/actions/userAuth";
 
 
 export const UserProfileScreen = () => {
@@ -73,6 +74,12 @@ export const UserProfileScreen = () => {
         await userInfo.set({
             [key]: data
         }, { merge: true });
+        if (key === "firstName") {
+            await firebase.auth().currentUser.updateProfile({
+                displayName: data
+            })
+            dispatch(userAuth())
+        }
         asyncGetUserInfo()
     }
 
