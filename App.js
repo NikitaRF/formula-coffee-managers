@@ -34,6 +34,7 @@ export default function App() {
     //     setIsLogin(false)
     // }
 
+
     const Stack = createStackNavigator ( ) ;
 
     if(!isReady){
@@ -49,9 +50,12 @@ export default function App() {
         return (
             <Provider store={store}>
                 <NavigationContainer theme={MyTheme}>
-                    <Stack.Navigator screenOptions={{
-                        headerShown: false,
-                    }} initialRouteName='SignInScreen'>
+                    <Stack.Navigator
+                        screenOptions={{
+                            headerShown: false,
+                        }}
+                        initialRouteName='SignInScreen'
+                    >
                         <Stack.Screen name="SignInScreen" component={SignInScreen} />
                         <Stack.Screen name="SignupScreen" component={SignupScreen} />
                         <Stack.Screen name="MenuDrawer" component={MenuDrawer} />

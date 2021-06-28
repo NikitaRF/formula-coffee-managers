@@ -1,5 +1,5 @@
 import React from "react";
-import {Linking, Platform, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Linking, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
 
 import {THEME} from "../theme";
@@ -18,55 +18,65 @@ export const ContactsScreen = () => {
 
     return (
         <View style={styles.center}>
-            <View style={styles.infoBlock}>
-                <Text style={styles.textTitle}>Адрес</Text>
-                <Text style={styles.textBody}>628406, Сургут</Text>
-                <Text style={styles.textBody}>Югорский тракт 4, офис 5</Text>
-            </View>
+            <ScrollView alwaysBounceVertical={true} >
 
-            <View style={{...styles.infoBlock, flexDirection: 'row', alignItems: 'center',}}>
-                <Text style={styles.textTitle}>Телефон</Text>
-                <TouchableOpacity onPress={dialCall}>
-                    <Text style={{...styles.textBody, marginTop: 0,}}>+7 922 428 00 35</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View style={{...styles.infoBlock, flexDirection: 'row', alignItems: 'center',}}>
-                <Text style={styles.textTitle}>Email</Text>
-                <TouchableOpacity onPress={sendMail}>
-                    <Text style={{...styles.textBody, marginTop: 0,}}>info@formula-coffee.ru</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View style={styles.infoBlock}>
-                <Text style={styles.textTitle}>Часы работы</Text>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                    <Text style={styles.textBody}>Будние дни</Text>
-                    <Text style={styles.textBody}>8:30 - 23:00</Text>
-                </View>
-                <View style={{flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: 20}}>
-                    <View style={{flexDirection: 'column'}}>
-                        <Text style={styles.textBody}>Завтраки</Text>
-                        <Text style={styles.textBody}>9:00 - 16:00</Text>
+                <View style={styles.infoBlock}>
+                    <View style={{borderBottomWidth: 1, borderColor: THEME.COLOR_MAIN_DARK, width: '100%', paddingBottom: 10 }}>
+                        <Text style={styles.textTitle}>Адрес</Text>
                     </View>
-                    <View style={{flexDirection: 'column'}}>
-                        <Text style={styles.textBody}>Бизнес-ланч</Text>
-                        <Text style={styles.textBody}>12:00 - 17:00</Text>
+
+                    <Text style={styles.textBody}>628406, Сургут</Text>
+                    <Text style={styles.textBody}>Югорский тракт 4, офис 5</Text>
+                </View>
+
+                <View style={{...styles.infoBlock, flexDirection: 'row', alignItems: 'center',}}>
+                    <Text style={styles.textTitle}>Телефон</Text>
+                    <TouchableOpacity onPress={dialCall}>
+                        <Text style={{...styles.textBody, marginTop: 0,}}>+7 922 428 00 35</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{...styles.infoBlock, flexDirection: 'row', alignItems: 'center',}}>
+                    <Text style={styles.textTitle}>Email</Text>
+                    <TouchableOpacity onPress={sendMail}>
+                        <Text style={{...styles.textBody, marginTop: 0,}}>info@formula-coffee.ru</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.infoBlock}>
+                    <View style={{borderBottomWidth: 1, borderColor: THEME.COLOR_MAIN_DARK, width: '100%',  paddingBottom: 10  }}>
+                        <Text style={styles.textTitle}>Часы работы</Text>
+                    </View>
+
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                        <Text style={{...styles.textBody, fontFamily: 'open-bold',}}>Будние дни</Text>
+                        <Text style={styles.textBody}>8:30 - 23:00</Text>
+                    </View>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: 20}}>
+                        <View style={{flexDirection: 'column'}}>
+                            <Text style={styles.textBody}>Завтраки</Text>
+                            <Text style={styles.textBody}>9:00 - 16:00</Text>
+                        </View>
+                        <View style={{flexDirection: 'column'}}>
+                            <Text style={styles.textBody}>Бизнес-ланч</Text>
+                            <Text style={styles.textBody}>12:00 - 17:00</Text>
+                        </View>
+                    </View>
+
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                        <Text style={{...styles.textBody, fontFamily: 'open-bold',}}>Выходные дни</Text>
+                        <Text style={styles.textBody}>7:30 - 23:00</Text>
+                    </View>
+
+                    <View style={{flexDirection: 'row', justifyContent: 'space-around', width: '100%'}}>
+                        <View style={{flexDirection: 'column'}}>
+                            <Text style={styles.textBody}>Завтраки</Text>
+                            <Text style={styles.textBody}>7:30 - 16:00</Text>
+                        </View>
                     </View>
                 </View>
 
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                    <Text style={styles.textBody}>Выходные дни</Text>
-                    <Text style={styles.textBody}>7:30 - 23:00</Text>
-                </View>
-
-                <View style={{flexDirection: 'row', justifyContent: 'space-around', width: '100%'}}>
-                    <View style={{flexDirection: 'column'}}>
-                        <Text style={styles.textBody}>Завтраки</Text>
-                        <Text style={styles.textBody}>7:30 - 16:00</Text>
-                    </View>
-                </View>
-            </View>
+            </ScrollView>
         </View>
     )
 }
@@ -80,6 +90,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         marginTop: 20,
+        marginHorizontal: 20,
     },
     infoBlock: {
         marginBottom: 20,
@@ -98,7 +109,8 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontFamily: 'open-bold',
-        color: THEME.COLOR_MAIN_DARK
+        color: THEME.COLOR_MAIN_DARK,
+
     },
     textBody: {
         marginTop: 15,

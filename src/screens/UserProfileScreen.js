@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, Text, View, ActivityIndicator, TextInput, Button, ScrollView} from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    ActivityIndicator,
+    TextInput,
+    Button,
+    ScrollView,
+    Keyboard,
+    TouchableWithoutFeedback
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import firebase from "firebase";
 import { AntDesign } from '@expo/vector-icons';
@@ -18,6 +28,7 @@ export const UserProfileScreen = () => {
     const [state, setState] = useState({
         isLoading: false
     })
+
 
     const dispatch = useDispatch()
 
@@ -66,7 +77,7 @@ export const UserProfileScreen = () => {
     }
 
     return (
-
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.center}>
 
                 <View style={styles.inputContainer}>
@@ -145,7 +156,7 @@ export const UserProfileScreen = () => {
                 <Text>{userData.lastName}</Text>
                 <Text>{userData.email}</Text>
             </View>
-
+        </TouchableWithoutFeedback >
     )
 }
 
@@ -194,6 +205,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 5,
         opacity: 0.7,
+
     },
 
 })

@@ -1,5 +1,16 @@
 import React, {useState} from "react";
-import {Button, Image, StyleSheet, Text, TextInput, View, ActivityIndicator, Alert} from "react-native";
+import {
+    Button,
+    Image,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+    ActivityIndicator,
+    Alert,
+    TouchableWithoutFeedback,
+    Keyboard
+} from "react-native";
 import firebase from '../database/firebase';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -66,62 +77,64 @@ export const SignInScreen = ({navigation}) => {
 
 
     return (
-        <View style={styles.container}>
-            <Image
-                style={styles.logo}
-                source={require('../../assets/logo2.png')}
-            />
-            <Text style={styles.title}>Вход</Text>
-            <View style={styles.inputWrap}>
-                <TextInput
-                    autoCorrect={false}
-                    autoCapitalize='none'
-                    keyboardType='email-address'
-                    placeholder='Email'
-                    textContentType='emailAddress'
-                    style={styles.input}
-                    maxLength={35}
-                    onChangeText={(val) => updateInputVal(val, 'email')}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={styles.container}>
+                <Image
+                    style={styles.logo}
+                    source={require('../../assets/logo2.png')}
                 />
-                <View style={styles.passwordView}>
+                <Text style={styles.title}>Вход</Text>
+                <View style={styles.inputWrap}>
                     <TextInput
                         autoCorrect={false}
                         autoCapitalize='none'
-                        secureTextEntry={secure}
-                        placeholder='Password'
-                        textContentType='password'
+                        keyboardType='email-address'
+                        placeholder='Email'
+                        textContentType='emailAddress'
                         style={styles.input}
-                        maxLength={25}
-                        onChangeText={(val) => updateInputVal(val, 'password')}
+                        maxLength={35}
+                        onChangeText={(val) => updateInputVal(val, 'email')}
                     />
+                    <View style={styles.passwordView}>
+                        <TextInput
+                            autoCorrect={false}
+                            autoCapitalize='none'
+                            secureTextEntry={secure}
+                            placeholder='Password'
+                            textContentType='password'
+                            style={styles.input}
+                            maxLength={25}
+                            onChangeText={(val) => updateInputVal(val, 'password')}
+                        />
 
-                    <Ionicons
-                        style={styles.checkbox}
-                        name={secure ? 'eye' : 'eye-off'}
-                        size={24}
-                        color={THEME.COLOR_MAIN_DARK}
-                        onPress={() => setSecure(!secure)}
-                    />
+                        <Ionicons
+                            style={styles.checkbox}
+                            name={secure ? 'eye' : 'eye-off'}
+                            size={24}
+                            color={THEME.COLOR_MAIN_DARK}
+                            onPress={() => setSecure(!secure)}
+                        />
 
+                    </View>
+
+                    <View style={styles.buttonWrap}>
+                        <Button
+                            color={THEME.COLOR_MAIN_DARK}
+                            title='Вход'
+                            onPress={() => userLogin()}
+                        />
+                    </View>
                 </View>
-
-                <View style={styles.buttonWrap}>
-                    <Button
-                        color={THEME.COLOR_MAIN_DARK}
-                        title='Вход'
-                        onPress={() => userLogin()}
-                    />
+                <View style={styles.textBottomWrap}>
+                    <Text
+                        onPress={() => navigation.navigate('SignupScreen')}
+                        style={styles.textBottom}
+                    >
+                        Нет аккаунта? Зарегистрироваться
+                    </Text>
                 </View>
             </View>
-            <View style={styles.textBottomWrap}>
-                <Text
-                    onPress={() => navigation.navigate('SignupScreen')}
-                    style={styles.textBottom}
-                >
-                    Нет аккаунта? Зарегистрироваться
-                </Text>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     )
 }
 

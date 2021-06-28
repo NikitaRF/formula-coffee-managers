@@ -1,5 +1,16 @@
 import React, {useState} from "react";
-import {Alert, Button, Image, StyleSheet, Text, TextInput, View, ActivityIndicator} from "react-native";
+import {
+    Alert,
+    Button,
+    Image,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+    ActivityIndicator,
+    Keyboard,
+    TouchableWithoutFeedback
+} from "react-native";
 import firebase from '../database/firebase';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -98,73 +109,76 @@ export const SignupScreen = ({navigation}) => {
 
 
     return (
-        <View style={styles.container}>
-            <Image
-                style={styles.logo}
-                source={require('../../assets/logo2.png')}
-            />
-            <Text style={styles.title}>Регистрация</Text>
-            <View style={styles.inputWrap}>
-                <TextInput
-                    autoCorrect={false}
-                    value={state.firstName}
-                    placeholder='Имя'
-                    style={styles.input}
-                    maxLength={40}
-                    onChangeText={(val) => updateInputVal(val, 'firstName')}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+
+            <View style={styles.container}>
+                <Image
+                    style={styles.logo}
+                    source={require('../../assets/logo2.png')}
                 />
-                <TextInput
-                    autoCorrect={false}
-                    placeholder='Фамилия'
-                    style={styles.input}
-                    maxLength={40}
-                    onChangeText={(val) => updateInputVal(val, 'lastName')}
-                />
-                <TextInput
-                    autoCorrect={false}
-                    autoCapitalize='none'
-                    keyboardType='email-address'
-                    placeholder='Email'
-                    textContentType='emailAddress'
-                    style={styles.input}
-                    maxLength={35}
-                    onChangeText={(val) => updateInputVal(val, 'email')}
-                />
-                <View style={styles.passwordView}>
+                <Text style={styles.title}>Регистрация</Text>
+                <View style={styles.inputWrap}>
+                    <TextInput
+                        autoCorrect={false}
+                        value={state.firstName}
+                        placeholder='Имя'
+                        style={styles.input}
+                        maxLength={40}
+                        onChangeText={(val) => updateInputVal(val, 'firstName')}
+                    />
+                    <TextInput
+                        autoCorrect={false}
+                        placeholder='Фамилия'
+                        style={styles.input}
+                        maxLength={40}
+                        onChangeText={(val) => updateInputVal(val, 'lastName')}
+                    />
                     <TextInput
                         autoCorrect={false}
                         autoCapitalize='none'
-                        secureTextEntry={secure}
-                        placeholder='Password'
-                        textContentType='password'
+                        keyboardType='email-address'
+                        placeholder='Email'
+                        textContentType='emailAddress'
                         style={styles.input}
-                        maxLength={25}
-                        onChangeText={(val) => updateInputVal(val, 'password')}
+                        maxLength={35}
+                        onChangeText={(val) => updateInputVal(val, 'email')}
                     />
+                    <View style={styles.passwordView}>
+                        <TextInput
+                            autoCorrect={false}
+                            autoCapitalize='none'
+                            secureTextEntry={secure}
+                            placeholder='Password'
+                            textContentType='password'
+                            style={styles.input}
+                            maxLength={25}
+                            onChangeText={(val) => updateInputVal(val, 'password')}
+                        />
 
-                    <Ionicons
-                        style={styles.checkbox}
-                        name={secure ? 'eye' : 'eye-off'}
-                        size={24}
-                        color={THEME.COLOR_MAIN_DARK}
-                        onPress={() => setSecure(!secure)}
-                    />
+                        <Ionicons
+                            style={styles.checkbox}
+                            name={secure ? 'eye' : 'eye-off'}
+                            size={24}
+                            color={THEME.COLOR_MAIN_DARK}
+                            onPress={() => setSecure(!secure)}
+                        />
 
+                    </View>
+
+                    <View style={styles.buttonWrap}>
+                        <Button color={THEME.COLOR_MAIN_DARK} title='Зарегистрироваться' onPress={() => registerUser()}/>
+                    </View>
                 </View>
-
-                <View style={styles.buttonWrap}>
-                    <Button color={THEME.COLOR_MAIN_DARK} title='Зарегистрироваться' onPress={() => registerUser()}/>
+                <View style={styles.textBottomWrap}>
+                    <Text
+                        onPress={() => navigation.navigate('SignInScreen')}
+                        style={styles.textBottom}
+                    >
+                        Есть аккаунт? Вход
+                    </Text>
                 </View>
             </View>
-            <View style={styles.textBottomWrap}>
-                <Text
-                    onPress={() => navigation.navigate('SignInScreen')}
-                    style={styles.textBottom}
-                >
-                    Есть аккаунт? Вход
-                </Text>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     )
 }
 
