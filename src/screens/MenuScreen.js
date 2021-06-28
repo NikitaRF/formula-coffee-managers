@@ -1,6 +1,5 @@
 import React from "react";
-import {Platform, StyleSheet, Text, View} from "react-native";
-import {StatusBar} from "expo-status-bar";
+import {StyleSheet, Text, View} from "react-native";
 
 import {THEME} from "../theme";
 
@@ -9,7 +8,6 @@ export const MenuScreen = () => {
     return (
         <View style={styles.center}>
             <Text style={styles.text}>Меню</Text>
-            <StatusBar style="auto" />
         </View>
     )
 }

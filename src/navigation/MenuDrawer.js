@@ -3,25 +3,28 @@ import {Text, Image, StyleSheet, View, Linking, Button, TouchableOpacity} from "
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import firebase from "firebase";
+import {useDispatch, useSelector} from "react-redux";
 
-
+import { THEME } from "../theme";
 import {MainNavigation} from "./MainNavigation";
 import {AboutAppNavigation} from "./AboutAppNavigation";
 import {ContactsNavigation} from "./ContactsNavigation";
 import {MenuNavigation} from "./MenuNavigation";
 import {UserProfileNavigation} from "./UserProfileNavigation";
-import { THEME } from "../theme";
-import firebase from "firebase";
+import {userLogout} from "../store/actions/userLogout";
 
 
 
 
 function CustomDrawerContent(props) {
-    const userDisplayName = firebase.auth().currentUser.displayName
+    const dispatch = useDispatch()
+    const userDisplayName = useSelector(state => state.user.userAuth)
+
 
     const signOut = () => {
         firebase.auth().signOut().then(() => {
-            props.navigation.navigate('SignInScreen')
+            dispatch(userLogout())
         })
             .catch(error => console.log(error))
     }
@@ -37,7 +40,6 @@ function CustomDrawerContent(props) {
                     />
                     <View style={styles.infoBlock}>
                         <Text style={styles.infoBlockText}>Привет!</Text>
-                        {/*<Text style={styles.infoBlockText}></Text>*/}
                         <Text style={styles.infoBlockText}>{userDisplayName}</Text>
                         <TouchableOpacity
                             style={styles.buttonSignOutWrap}

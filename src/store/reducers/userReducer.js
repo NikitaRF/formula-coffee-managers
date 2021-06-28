@@ -1,8 +1,10 @@
-import {GET_USERS_INFO} from '../types'
+import {GET_USERS_INFO, USER_AUTH, USER_LOGOUT} from '../types'
 
 const initialState = {
+    userAuth: null,
     userInfo: {},
-    userHistoryOfOrder: []
+    userHistoryOfOrder: [],
+    isLoading: false,
 }
 
 export const userReducer = (state = initialState, action) => {
@@ -10,6 +12,14 @@ export const userReducer = (state = initialState, action) => {
         case GET_USERS_INFO: return {
             ...state,
             userInfo: action.payload
+        }
+        case USER_AUTH: return {
+            ...state,
+            userAuth: action.payload
+        }
+        case USER_LOGOUT: return {
+            ...state,
+            userAuth: null
         }
 
     }

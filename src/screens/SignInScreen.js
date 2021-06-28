@@ -15,9 +15,12 @@ import firebase from '../database/firebase';
 import { Ionicons } from '@expo/vector-icons';
 
 import {THEME} from "../theme";
+import {useDispatch, useSelector} from "react-redux";
+import {userAuth} from "../store/actions/userAuth";
 
 
 export const SignInScreen = ({navigation}) => {
+    const dispatch = useDispatch()
 
     const [state, setState] = useState({
         email: '',
@@ -52,13 +55,14 @@ export const SignInScreen = ({navigation}) => {
                 .auth()
                 .signInWithEmailAndPassword(state.email, state.password)
                 .then((res) => {
-                    console.log(res)
+                    // console.log(res)
                     console.log('Пользователь успешно авторизован')
                     setState({
                         isLoading: false,
                         email: '',
                         password: '',
                     })
+                    dispatch(userAuth())
                     navigation.navigate('MenuDrawer')
                 })
                 .catch(error => {

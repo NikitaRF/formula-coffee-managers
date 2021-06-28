@@ -53,7 +53,7 @@ export const SignupScreen = ({navigation}) => {
                 .createUserWithEmailAndPassword(state.email, state.password)
                 .then((res) => {
                     res.user.updateProfile({
-                        displayName: `${state.firstName} ${state.lastName}`,
+                        displayName: state.firstName,
                     })
                     console.log('Пользователь успешно создан');
 
