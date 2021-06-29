@@ -121,8 +121,8 @@ export const UserProfileScreen = () => {
                 {
                     text: 'Удалить',
                     style: 'destructive',
-                    onPress: async () => {
-                       await user.delete().then(() => {
+                    onPress: () => {
+                        user.delete().then(() => {
                            user.reauthenticateWithCredential(credential).then(() => {
                                console.log('Пользователь удален')
                                dispatch(userLogout())

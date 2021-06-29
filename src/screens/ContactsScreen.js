@@ -1,8 +1,19 @@
-import React from "react";
-import {Linking, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-
+import React, {useState} from "react";
+import {Linking, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Dimensions} from "react-native";
+import MapView, {Marker} from 'react-native-maps';
 
 import {THEME} from "../theme";
+
+
+const { width, height } = Dimensions.get('window');
+const heightNormal = 200
+
+const ASPECT_RATIO = width / height;
+const LATITUDE = 61.272759;
+const LONGITUDE = 73.349626;
+const LATITUDE_DELTA = 0.001747;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
 
 export const ContactsScreen = () => {
 
@@ -16,8 +27,38 @@ export const ContactsScreen = () => {
         Linking.openURL(`mailto:${email}`);
     };
 
+    const [height, setHeight] = useState(heightNormal)
+
+    const enlargeMap = () => {
+        if (height === heightNormal) {
+            setHeight(Dimensions.get('window').height)
+        } else {
+            setHeight(heightNormal)
+        }
+    }
+
+
     return (
         <View style={styles.center}>
+            <View style={styles.mapContainer}>
+                <MapView
+                    onPress={() => enlargeMap()}
+                    initialRegion={{
+                        latitude: LATITUDE,
+                        longitude: LONGITUDE,
+                        latitudeDelta: LATITUDE_DELTA,
+                        longitudeDelta: LONGITUDE_DELTA,
+                    }}
+                    style={{...styles.map, height: height}}
+                >
+                    <Marker
+                        coordinate={{
+                        latitude: LATITUDE,
+                        longitude: LONGITUDE,
+                        }}
+                    />
+                </ MapView>
+            </View>
             <ScrollView alwaysBounceVertical={true} >
 
                 <View style={styles.infoBlock}>
@@ -89,7 +130,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        marginTop: 20,
         marginHorizontal: 20,
     },
     infoBlock: {
@@ -116,6 +156,16 @@ const styles = StyleSheet.create({
         marginTop: 15,
         fontFamily: 'open-regular',
         color: THEME.COLOR_MAIN_DARK
+    },
+    mapContainer: {
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 20,
+    },
+    map: {
+        width: Dimensions.get('window').width,
+        height: 200,
     },
 
 
