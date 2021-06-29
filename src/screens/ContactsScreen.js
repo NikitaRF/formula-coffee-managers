@@ -39,7 +39,9 @@ export const ContactsScreen = () => {
 
 
     return (
-        <View style={styles.center}>
+        <View
+            style={styles.center}
+        >
             <View style={styles.mapContainer}>
                 <MapView
                     onPress={() => enlargeMap()}
@@ -59,7 +61,8 @@ export const ContactsScreen = () => {
                     />
                 </ MapView>
             </View>
-            <ScrollView alwaysBounceVertical={true} >
+
+            <ScrollView contentContainerStyle={{alignItems: 'center', paddingBottom: 100,}}>
 
                 <View style={styles.infoBlock}>
                     <View style={{borderBottomWidth: 1, borderColor: THEME.COLOR_MAIN_DARK, width: '100%', paddingBottom: 10 }}>
@@ -117,7 +120,10 @@ export const ContactsScreen = () => {
                     </View>
                 </View>
 
+
+
             </ScrollView>
+
         </View>
     )
 }
@@ -127,10 +133,6 @@ export const ContactsScreen = () => {
 const styles = StyleSheet.create({
     center: {
         flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        marginHorizontal: 20,
     },
     infoBlock: {
         marginBottom: 20,
