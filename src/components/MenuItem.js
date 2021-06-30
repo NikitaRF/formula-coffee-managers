@@ -1,10 +1,13 @@
-import React from "react";
+import React, {useState} from "react";
 import {ImageBackground, Text, TouchableOpacity, View, StyleSheet, Dimensions, Button} from "react-native";
 import {THEME} from "../theme";
 import {LoadIndicator} from "./LoadIndiacator";
 import Image from "react-native-image-progress";
+import {AntDesign} from "@expo/vector-icons";
 
 export const MenuItem = ({Item}) => {
+    const [price, setPrice] = useState(Item.price)
+    const [count, setCount] = useState(0)
     return (
         <View style={styles.mainWrap}>
 
@@ -22,13 +25,35 @@ export const MenuItem = ({Item}) => {
 
             <View style={styles.textBlock}>
                 <Text style={styles.textTitle}>{Item.name}</Text>
-                <Text style={styles.textBody}>{Item.description}</Text>
-                <Text style={styles.textBody}>{Item.weight} гр / {Item.price} руб</Text>
+                <Text style={styles.textDescription}>{Item.description}</Text>
+                <Text style={styles.textPrice}>{Item.weight} гр / {count > 0 ? price * count : Item.price} руб</Text>
                 <View style={styles.buttonWrap}>
                     <View>
-                        <TouchableOpacity>
-                            <Text style={styles.buttonText}>Добавить</Text>
-                        </TouchableOpacity>
+                        {count > 0  ?  (
+                            <View style={styles.buttonCount}>
+                                <AntDesign
+                                name="minuscircle"
+                                size={24}
+                                style={styles.allowIcon}
+                                color={THEME.COLOR_MAIN_DARK}
+                                onPress={() => setCount(count - 1)}
+                                />
+                                    <View style={styles.wrapCount}>
+                                        <Text style={styles.textCount}>{count}</Text>
+                                    </View>
+                                <AntDesign
+                                name="pluscircle"
+                                size={24}
+                                style={styles.allowIcon}
+                                color={THEME.COLOR_MAIN_DARK}
+                                onPress={() => setCount(count + 1)}
+                                />
+                            </View>
+                        ) : (
+                            <TouchableOpacity onPress={() => setCount(count + 1)}>
+                                <Text style={styles.buttonText}>Добавить</Text>
+                            </TouchableOpacity>
+                        )}
                     </View>
 
                 </View>
@@ -75,8 +100,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 5,
     },
-    textBody: {
+    textDescription: {
         fontFamily: 'open-regular',
+        color: THEME.COLOR_MAIN_DARK,
+    },
+    textPrice: {
+        fontFamily: 'open-bold',
         color: THEME.COLOR_MAIN_DARK,
     },
     buttonWrap: {
@@ -95,5 +124,17 @@ const styles = StyleSheet.create({
         color: THEME.COLOR_MAIN_DARK,
         fontFamily: 'open-regular',
         fontSize: 16,
+    },
+    buttonCount: {
+        flexDirection: 'row',
+    },
+    wrapCount: {
+        paddingHorizontal: 25,
+
+    },
+    textCount: {
+        fontFamily: 'open-bold',
+        fontSize: 18,
+        color: THEME.COLOR_MAIN_DARK,
     },
 })
