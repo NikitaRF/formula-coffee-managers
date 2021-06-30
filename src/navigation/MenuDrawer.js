@@ -1,7 +1,7 @@
 import React from "react";
 import {Text, Image, StyleSheet, View, Linking, Button, TouchableOpacity} from "react-native";
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
-import { AntDesign } from '@expo/vector-icons';
+import {AntDesign, FontAwesome, MaterialIcons, SimpleLineIcons} from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import firebase from "firebase";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,6 +13,7 @@ import {ContactsNavigation} from "./ContactsNavigation";
 import {MenuNavigation} from "./MenuNavigation";
 import {UserProfileNavigation} from "./UserProfileNavigation";
 import {userLogout} from "../store/actions/userLogout";
+import {BasketNavigation} from "./BasketNavigation";
 
 
 
@@ -95,8 +96,19 @@ export const MenuDrawer = () => {
                 name="Меню"
                 component={MenuNavigation}
                 options={{
-                    drawerIcon: ({focused}) => <AntDesign
-                        name='menu-fold'
+                    drawerIcon: ({focused}) => <MaterialIcons
+                        name="menu-book"
+                        size={iconSize}
+                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
+                    />
+                }}
+            />
+            <Drawer.Screen
+                name="Корзина"
+                component={BasketNavigation}
+                options={{
+                    drawerIcon: ({focused}) => <SimpleLineIcons
+                        name="basket"
                         size={iconSize}
                         color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
                     />
@@ -107,7 +119,7 @@ export const MenuDrawer = () => {
                 component={ContactsNavigation}
                 options={{
                     drawerIcon: ({focused}) => <AntDesign
-                        name='contacts'
+                        name='filetext1'
                         size={iconSize}
                         color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
                     />
@@ -117,8 +129,8 @@ export const MenuDrawer = () => {
                 name="Профиль"
                 component={UserProfileNavigation}
                 options={{
-                    drawerIcon: ({focused}) => <AntDesign
-                        name='profile'
+                    drawerIcon: ({focused}) => <FontAwesome
+                        name="user-circle-o"
                         size={iconSize}
                         color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
                     />
