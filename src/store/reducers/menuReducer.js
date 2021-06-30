@@ -1,8 +1,8 @@
-import {GET_MENU} from '../types'
+import {GET_MENU, LOAD_INDICATOR} from '../types'
 
 const initialState = {
     menu: [],
-    isLoading: false,
+    loading: false,
 }
 
 export const menuReducer = (state = initialState, action) => {
@@ -11,8 +11,10 @@ export const menuReducer = (state = initialState, action) => {
             ...state,
             menu: action.payload
         }
-
+        case LOAD_INDICATOR: return {
+            ...state,
+            loading: action.payload
+        }
     }
-
     return state
 }

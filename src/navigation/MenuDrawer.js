@@ -20,7 +20,7 @@ import {userLogout} from "../store/actions/userLogout";
 function CustomDrawerContent(props) {
     const dispatch = useDispatch()
     const userDisplayName = useSelector(state => state.user.userAuth)
-    console.log(firebase.auth().currentUser)
+    // console.log(firebase.auth().currentUser)
 
     const signOut = () => {
         firebase.auth().signOut().then(() => {
