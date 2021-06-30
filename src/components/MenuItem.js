@@ -1,40 +1,99 @@
 import React from "react";
-import {ImageBackground, Text, TouchableOpacity, View, StyleSheet} from "react-native";
+import {ImageBackground, Text, TouchableOpacity, View, StyleSheet, Dimensions, Button} from "react-native";
 import {THEME} from "../theme";
 import {LoadIndicator} from "./LoadIndiacator";
 import Image from "react-native-image-progress";
 
 export const MenuItem = ({Item}) => {
     return (
-        <View style={styles.center}>
-            <Text style={styles.text}>{Item.name}</Text>
-            <Image
-                style={styles.logo}
-                // source={{uri: 'https://firebasestorage.googleapis.com/v0/b/formula-coffee-d6f54.appspot.com/o/img%2Flogo.png?alt=media&token=9ee2f3eb-21ff-4f54-a982-b47a5611973d'}}
-                // onLoadStart={() => dispatch(setLoadIndicator(true))}
-                // onLoadEnd={() => dispatch(setLoadIndicator(false))}
-                source={{uri: Item.photo}}
-                indicator={LoadIndicator}
-            />
-            <Text>{Item.description}</Text>
-            <Text>{Item.price} руб.</Text>
+        <View style={styles.mainWrap}>
+
+            <View style={styles.imgBlock}>
+                <Image
+                    style={styles.logo}
+                    // source={{uri: 'https://firebasestorage.googleapis.com/v0/b/formula-coffee-d6f54.appspot.com/o/img%2Flogo.png?alt=media&token=9ee2f3eb-21ff-4f54-a982-b47a5611973d'}}
+                    // onLoadStart={() => dispatch(setLoadIndicator(true))}
+                    // onLoadEnd={() => dispatch(setLoadIndicator(false))}
+                    source={{uri: Item.photo}}
+                    indicator={LoadIndicator}
+                    resizeMode='cover'
+                />
+            </View>
+
+            <View style={styles.textBlock}>
+                <Text style={styles.textTitle}>{Item.name}</Text>
+                <Text style={styles.textBody}>{Item.description}</Text>
+                <Text style={styles.textBody}>{Item.weight} гр / {Item.price} руб</Text>
+                <View style={styles.buttonWrap}>
+                    <View>
+                        <TouchableOpacity>
+                            <Text style={styles.buttonText}>Добавить</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+            </View>
+
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    text: {
-        fontFamily: 'open-bold',
-        color: THEME.COLOR_MAIN_DARK
+    mainWrap: {
+        width: Dimensions.get('window').width,
+        marginVertical: 10,
+        flexDirection: 'row',
+        maxHeight: 150,
+        shadowColor: '#000',
+        shadowRadius: 2,
+        shadowOpacity: 0.3,
+        shadowOffset: { width: 2, height: 2 },
+        elevation: 8,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+
     },
-    center: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+    imgBlock: {
+        width: '30%'
+
     },
     logo: {
-        width: 95,
-        maxWidth: '50%',
-        height: 120,
+        minHeight: 70,
+        width: "100%",
+        height: "100%",
+    },
+    textBlock: {
+        flex: 1,
+        marginHorizontal: 20,
+
+        // borderStyle: 'solid',
+        // borderWidth: 1,
+    },
+    textTitle: {
+        fontFamily: 'open-bold',
+        color: THEME.COLOR_MAIN_DARK,
+        marginBottom: 10,
+        marginTop: 5,
+    },
+    textBody: {
+        fontFamily: 'open-regular',
+        color: THEME.COLOR_MAIN_DARK,
+    },
+    buttonWrap: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '50%',
+        marginTop: 'auto',
+        backgroundColor: THEME.COLOR_MAIN_LIGHT,
+        borderRadius: 5,
+        paddingVertical: 5,
+        paddingHorizontal: 5,
+        marginBottom: 5,
+
+    },
+    buttonText: {
+        color: THEME.COLOR_MAIN_DARK,
+        fontFamily: 'open-regular',
+        fontSize: 16,
     },
 })
