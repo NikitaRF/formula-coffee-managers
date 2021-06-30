@@ -16,8 +16,6 @@ import {userLogout} from "../store/actions/userLogout";
 import {BasketNavigation} from "./BasketNavigation";
 
 
-
-
 function CustomDrawerContent(props) {
     const dispatch = useDispatch()
     const userDisplayName = useSelector(state => state.user.userAuth)
@@ -155,10 +153,6 @@ export const MenuDrawer = () => {
 const styles = StyleSheet.create({
     mainWrapper:{
         flexDirection: 'column',
-        //justifyContent: 'space-around',
-        // borderWidth: 1,
-        // borderStyle: 'solid',
-        // borderColor: 'red',
         flex: 1,
         paddingTop: 50,
         paddingBottom: 35,
@@ -167,7 +161,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         paddingTop: 10,
-        // paddingLeft: 10,
         paddingRight: 20,
         paddingBottom: 15,
 
@@ -186,9 +179,6 @@ const styles = StyleSheet.create({
     },
     bottomWrapper: {
         alignItems: 'center',
-        // borderWidth: 1,
-        // borderStyle: 'solid',
-        // borderColor: 'grey',
         marginTop: 'auto',
     },
     socials:{
