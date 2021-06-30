@@ -1,37 +1,28 @@
 import React, {useEffect, useState} from "react";
-import {Image, StyleSheet, Text, View} from "react-native";
+import {FlatList, StyleSheet, Text, View} from "react-native";
 import {storageRef} from '../database/storage'
 import firebase from "firebase";
+import Image from 'react-native-image-progress';
+
 
 import {THEME} from "../theme";
 import {useDispatch, useSelector} from "react-redux";
 import {getMenu} from "../store/actions/getMenu";
 import {setLoadIndicator} from "../store/actions/setLoadIndicator";
 import {LoadIndicator} from "../components/LoadIndiacator";
+import {MenuItem} from "../components/MenuItem";
 
 export const MenuScreen = () => {
 
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     dispatch(getMenu())
-    // }, [])
-    //
-    // const menuData = useSelector(state => state.menu.menu)
-    //
-    // console.log("это меню", menuData)
+    useEffect(() => {
+        dispatch(getMenu('/menu/drinks/coffee'))
+    }, [])
 
+    const menuData = useSelector(state => state.menu.menu)
 
-
-
-
-
-
-
-
-
-
-
+    console.log("это меню", menuData)
 
 // Points to 'images'
     var imagesRef = storageRef.child('img');
@@ -48,37 +39,24 @@ export const MenuScreen = () => {
 // File name is 'space.jpg'
     var name = spaceRef.name;
 
-    const [load, setLoad] = useState(false)
-
-
-    const loading = useSelector(state => state.menu.loading)
-    //console.log("Loading", loading)
-    console.log("Loading", load)
-
-
-    if (load == true) {
-        return <LoadIndicator />
-    }
-
-    // useEffect(() => {
-    //     dispatch(setLoadIndicator(true))
-    // })
-
-
-
+    // <View style={styles.center}>
+    //     <Text style={styles.text}>Меню</Text>
+    //     <Image
+    //         style={styles.logo}
+    //         //source={{uri: 'https://firebasestorage.googleapis.com/v0/b/formula-coffee-d6f54.appspot.com/o/img%2Flogo.png?alt=media&token=9ee2f3eb-21ff-4f54-a982-b47a5611973d'}}
+    //         // onLoadStart={() => dispatch(setLoadIndicator(true))}
+    //         // onLoadEnd={() => dispatch(setLoadIndicator(false))}
+    //         indicator={LoadIndicator}
+    //     />
+    // </View>
 
 
     return (
         <View style={styles.center}>
-            <Text style={styles.text}>Меню</Text>
-            <Image
-                style={styles.logo}
-                source={{uri: 'https://firebasestorage.googleapis.com/v0/b/formula-coffee-d6f54.appspot.com/o/img%2Flogo.png?alt=media&token=9ee2f3eb-21ff-4f54-a982-b47a5611973d'}}
-                // onLoadStart={() => dispatch(setLoadIndicator(true))}
-                // onLoadEnd={() => dispatch(setLoadIndicator(false))}
-                onLoadStart={() => setLoad(true)}
-                onLoadEnd={() => setLoad(false)}
-
+            <FlatList
+                data={menuData}
+                keyExtractor={(menu) => menu.name}
+                renderItem={({item}) => <MenuItem Item={item} /> }
             />
         </View>
 
