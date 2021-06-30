@@ -2,6 +2,7 @@ import {GET_MENU, LOAD_INDICATOR} from '../types'
 
 const initialState = {
     menu: [],
+    basket: [],
     loading: false,
 }
 
