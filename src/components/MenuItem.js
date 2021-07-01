@@ -16,6 +16,8 @@ export const MenuItem = ({Item}) => {
         if (basketCount.length !== 0) {
             console.log('USE EFFECT', basketCount[0].count)
             setCount(basketCount[0].count)
+        } else {
+            setCount(0)
         }
     })
 
