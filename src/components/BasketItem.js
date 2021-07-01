@@ -9,7 +9,7 @@ import {addToBasket} from "../store/actions/addToBasket";
 import {deleteItemFromBasket} from "../store/actions/deleteItemFromBasket";
 
 export const BasketItem = ({Item}) => {
-    const [count, setCount] = useState(Item.count)
+    const [count, setCount] = useState()
 
     useEffect( () => setCount(Item.count)
     )

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ImageBackground, Text, TouchableOpacity, View, StyleSheet, Dimensions, Button} from "react-native";
 import {THEME} from "../theme";
 import {LoadIndicator} from "./LoadIndiacator";
@@ -9,6 +9,14 @@ import {addToBasket} from "../store/actions/addToBasket";
 
 export const MenuItem = ({Item}) => {
     const [count, setCount] = useState(0)
+
+    const basketCount = useSelector(state => state.menu.basket.filter(el => el.name == Item.name))
+
+    useEffect( () => {
+        if (basketCount.length !== 0) {
+            console.log('USE EFFECT', basketCount[0].count)
+        }
+    })
 
     const dispatch = useDispatch()
     const plusItem = () => {
