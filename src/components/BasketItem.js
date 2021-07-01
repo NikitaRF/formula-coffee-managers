@@ -7,10 +7,13 @@ import {AntDesign} from "@expo/vector-icons";
 import {useDispatch, useSelector} from "react-redux";
 import {addToBasket} from "../store/actions/addToBasket";
 
-export const MenuItem = ({Item}) => {
-    const [count, setCount] = useState(0)
+export const BasketItem = ({Item}) => {
+    const [count, setCount] = useState(Item.count)
+
+    console.log('В корзине', Item)
 
     const dispatch = useDispatch()
+
     const plusItem = () => {
         setCount(count + 1)
         dispatch(addToBasket(Item, count + 1))
@@ -44,21 +47,21 @@ export const MenuItem = ({Item}) => {
                         {count > 0  ?  (
                             <View style={styles.buttonCount}>
                                 <AntDesign
-                                name="minuscircle"
-                                size={24}
-                                style={styles.allowIcon}
-                                color={THEME.COLOR_MAIN_DARK}
-                                onPress={() => minusItem()}
+                                    name="minuscircle"
+                                    size={24}
+                                    style={styles.allowIcon}
+                                    color={THEME.COLOR_MAIN_DARK}
+                                    onPress={() => minusItem()}
                                 />
-                                    <View style={styles.wrapCount}>
-                                        <Text style={styles.textCount}>{count}</Text>
-                                    </View>
+                                <View style={styles.wrapCount}>
+                                    <Text style={styles.textCount}>{count}</Text>
+                                </View>
                                 <AntDesign
-                                name="pluscircle"
-                                size={24}
-                                style={styles.allowIcon}
-                                color={THEME.COLOR_MAIN_DARK}
-                                onPress={() => plusItem()}
+                                    name="pluscircle"
+                                    size={24}
+                                    style={styles.allowIcon}
+                                    color={THEME.COLOR_MAIN_DARK}
+                                    onPress={() => plusItem()}
                                 />
                             </View>
                         ) : (

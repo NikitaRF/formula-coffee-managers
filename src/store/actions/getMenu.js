@@ -24,9 +24,6 @@ export const getMenu = (path) => {
     }
 
 
-
-
-
     return async dispatch => {
         const menuInfo = await getMenuFirebase()
         dispatch({

@@ -16,7 +16,7 @@ export const MenuScreen = () => {
 
     const menuData = useSelector(state => state.menu.menu)
 
-    console.log("это меню", menuData)
+    console.log("Меню скрин", menuData)
 
 
 

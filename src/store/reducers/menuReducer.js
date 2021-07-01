@@ -1,4 +1,4 @@
-import {GET_MENU, LOAD_INDICATOR} from '../types'
+import {GET_MENU, LOAD_INDICATOR, ADD_TO_BASKET, DELETE_ITEM_FROM_BASKET} from '../types'
 
 const initialState = {
     menu: [],
@@ -15,6 +15,14 @@ export const menuReducer = (state = initialState, action) => {
         case LOAD_INDICATOR: return {
             ...state,
             loading: action.payload
+        }
+        case ADD_TO_BASKET: return {
+            ...state,
+            basket: [action.payload]
+        }
+        case DELETE_ITEM_FROM_BASKET: return {
+            ...state,
+            basket: this.basket.filter((item => item !== action.payload.name))
         }
     }
     return state
