@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ImageBackground, Text, TouchableOpacity, View, StyleSheet, Dimensions, Button} from "react-native";
 import {THEME} from "../theme";
 import {LoadIndicator} from "./LoadIndiacator";
@@ -6,11 +6,15 @@ import Image from "react-native-image-progress";
 import {AntDesign} from "@expo/vector-icons";
 import {useDispatch, useSelector} from "react-redux";
 import {addToBasket} from "../store/actions/addToBasket";
+import {deleteItemFromBasket} from "../store/actions/deleteItemFromBasket";
 
 export const BasketItem = ({Item}) => {
     const [count, setCount] = useState(Item.count)
 
-    console.log('В корзине', Item)
+    useEffect( () => setCount(Item.count)
+    )
+
+    console.log(`В корзине ${Item.name}`, Item.count)
 
     const dispatch = useDispatch()
 
@@ -21,6 +25,9 @@ export const BasketItem = ({Item}) => {
     const minusItem = () => {
         setCount(count - 1)
         dispatch(addToBasket(Item, count - 1))
+        if (count == 1) {
+            dispatch(deleteItemFromBasket(Item.name))
+        }
     }
 
     return (

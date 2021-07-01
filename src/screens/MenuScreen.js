@@ -28,6 +28,7 @@ export const MenuScreen = () => {
                 renderItem={({item}) => <MenuItem Item={item} /> }
             />
         </View>
+
     )
 }
 
