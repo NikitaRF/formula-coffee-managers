@@ -38,6 +38,9 @@ export const MenuItem = ({Item}) => {
     const minusItem = () => {
         setCount(count - 1)
         dispatch(addToBasket(Item, count - 1))
+        if (count == 1) {
+            dispatch(deleteItemFromBasket(Item.name))
+        }
     }
 
     return (
