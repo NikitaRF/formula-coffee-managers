@@ -28,7 +28,7 @@ export const MenuNavigation = () =>  {
 
     useEffect(() => {
         getBasketItemCount()
-    }, [totalCount])
+    }, [basketItems])
 
     return (
         <Stack.Navigator
@@ -43,7 +43,10 @@ export const MenuNavigation = () =>  {
                 headerRight: () => (
                     <View style={{marginRight: 20}}>
                         <View style={styles.basketMarkerWrap}>
-                            <Text style={styles.basketMarker}>{totalCount}</Text>
+                            <View style={styles.markerCircle}>
+                                <Text style={totalCount != 0 ? styles.basketMarker : {opacity: 0}}>{totalCount}</Text>
+                            </View>
+
                         </View>
                         <SimpleLineIcons
                             name="basket"
@@ -66,6 +69,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: -12,
+
+    },
+    markerCircle: {
+        //backgroundColor: THEME.COLOR_MAIN_LIGHT,
+
     },
     basketMarker: {
         color: THEME.COLOR_MAIN_DARK,
