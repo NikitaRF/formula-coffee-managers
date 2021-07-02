@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {FlatList, StyleSheet, Text, View} from "react-native";
+import React, {useCallback, useEffect, useState} from "react";
+import {FlatList, RefreshControl, StyleSheet, Text, View} from "react-native";
 
 import {THEME} from "../theme";
 import {useDispatch, useSelector} from "react-redux";
@@ -18,6 +18,13 @@ export const MenuScreen = () => {
 
     console.log("Меню скрин", menuData)
 
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+
+        dispatch(getMenu('/menu/drinks/coffee')).then(() => setRefreshing(false));
+    }, []);
 
 
     return (
@@ -25,6 +32,8 @@ export const MenuScreen = () => {
             <FlatList
                 data={menuData}
                 keyExtractor={(menu) => menu.name}
+                refreshing={true}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 renderItem={({item}) => <MenuItem Item={item} /> }
             />
         </View>

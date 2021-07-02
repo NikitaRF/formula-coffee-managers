@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ImageBackground, Text, TouchableOpacity, View, StyleSheet, Dimensions, Button} from "react-native";
+import {RefreshControl, Text, TouchableOpacity, View, StyleSheet, Dimensions} from "react-native";
 import {THEME} from "../theme";
 import {LoadIndicator} from "./LoadIndiacator";
 import Image from "react-native-image-progress";
