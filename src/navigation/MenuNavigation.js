@@ -1,16 +1,34 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {MenuScreen} from "../screens/MenuScreen";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import {AppHeaderIcon} from "../components/AppHeaderIcon";
 import {THEME} from "../theme";
-import {View} from "react-native";
+import {Text, View, StyleSheet} from "react-native";
+import {useSelector} from "react-redux";
 
 
 const Stack = createStackNavigator();
 
 export const MenuNavigation = () =>  {
+
+    const [totalCount, setTotalCount] = useState()
+
+    const basketItems = useSelector(state => state.menu.basket)
+
+    const getBasketItemCount = () => {
+        let result = 0
+        basketItems.forEach((el) => {
+            result += el.count
+        })
+        setTotalCount(result)
+        console.log("totalCount", totalCount)
+    }
+
+    useEffect(() => {
+        getBasketItemCount()
+    }, [totalCount])
 
     return (
         <Stack.Navigator
@@ -24,7 +42,15 @@ export const MenuNavigation = () =>  {
                 ),
                 headerRight: () => (
                     <View style={{marginRight: 20}}>
-                        <SimpleLineIcons name="basket" size={24} color={THEME.COLOR_MAIN_DARK} onPress={() => navigation.navigate('Корзина')}/>
+                        <View style={styles.basketMarkerWrap}>
+                            <Text style={styles.basketMarker}>{totalCount}</Text>
+                        </View>
+                        <SimpleLineIcons
+                            name="basket"
+                            size={24}
+                            color={THEME.COLOR_MAIN_DARK}
+                            onPress={() => navigation.navigate('Корзина')}
+                        />
                     </View>
 
                 )
@@ -34,4 +60,17 @@ export const MenuNavigation = () =>  {
         </Stack.Navigator>
     );
 }
+
+const styles = StyleSheet.create({
+    basketMarkerWrap: {
+        position: 'absolute',
+        right: 0,
+        top: -12,
+    },
+    basketMarker: {
+        color: THEME.COLOR_MAIN_DARK,
+        fontFamily: 'open-bold',
+    },
+})
+
 

@@ -25,9 +25,13 @@ export const BasketNavigation = () =>  {
                 ),
                 headerRight: () => (
                     <View style={{marginRight: 20}}>
-                        <MaterialIcons name="menu-book" size={24} color={THEME.COLOR_MAIN_DARK} onPress={() => navigation.navigate('Меню')}/>
+                        <MaterialIcons
+                            name="menu-book"
+                            size={24}
+                            color={THEME.COLOR_MAIN_DARK}
+                            onPress={() => navigation.navigate('Меню')}
+                        />
                     </View>
-
                 )
             })}
         >
