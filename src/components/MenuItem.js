@@ -6,6 +6,7 @@ import Image from "react-native-image-progress";
 import {AntDesign} from "@expo/vector-icons";
 import {useDispatch, useSelector} from "react-redux";
 import {addToBasket} from "../store/actions/addToBasket";
+import {deleteItemFromBasket} from "../store/actions/deleteItemFromBasket";
 
 export const MenuItem = ({Item}) => {
     const [count, setCount] = useState(0)
@@ -14,12 +15,20 @@ export const MenuItem = ({Item}) => {
 
     useEffect( () => {
         if (basketCount.length !== 0) {
-            console.log('USE EFFECT', basketCount[0].count)
+            //console.log('USE EFFECT', basketCount[0].count)
             setCount(basketCount[0].count)
         } else {
             setCount(0)
         }
     })
+
+    useEffect(() => {
+        if (Item.avaible == false && count > 0) {
+            //console.log('USE EFFECT НАСТАЛ')
+            dispatch(deleteItemFromBasket(Item.name))
+            setCount(0)
+        }
+    }, [Item.avaible])
 
     const dispatch = useDispatch()
     const plusItem = () => {
@@ -52,7 +61,7 @@ export const MenuItem = ({Item}) => {
                 <Text style={styles.textPrice}>{Item.weight} гр / {count > 0 ? Item.price * count : Item.price} руб</Text>
                 <View style={styles.buttonWrap}>
                     <View>
-                        {count > 0  ?  (
+                        {count > 0 && Item.avaible ? (
                             <View style={styles.buttonCount}>
                                 <AntDesign
                                 name="minuscircle"

@@ -50,8 +50,9 @@ export const BasketItem = ({Item}) => {
                 <Text style={styles.textDescription}>{Item.description}</Text>
                 <Text style={styles.textPrice}>{Item.weight} гр / {count > 0 ? Item.price * count : Item.price} руб</Text>
                 <View style={styles.buttonWrap}>
+
                     <View>
-                        {count > 0  ?  (
+                        {count > 0 ? (
                             <View style={styles.buttonCount}>
                                 <AntDesign
                                     name="minuscircle"
