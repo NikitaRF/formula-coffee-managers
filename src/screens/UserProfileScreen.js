@@ -25,9 +25,9 @@ import {userLogout} from "../store/actions/userLogout";
 export const UserProfileScreen = () => {
     const user = firebase.auth().currentUser;
 
-    const userUid = firebase.auth().currentUser.uid
-    const db = firebase.firestore();
-    const userInfo = db.collection("users").doc(userUid);
+    // const userUid = firebase.auth().currentUser.uid
+    // const db = firebase.firestore();
+    // const userInfo = db.collection("users").doc(userUid);
 
     const [state, setState] = useState({
         isLoading: false
@@ -73,34 +73,38 @@ export const UserProfileScreen = () => {
     }
 
     const saveChanges = async (key, data) => {
-        console.log('ДО UID', firebase.auth().currentUser.uid)
-        setState({
-            isLoading: true,
-        })
-        await userInfo.set({
-            [key]: data
-        }, { merge: true });
-        if (key === "firstName") {
+        if (firebase.auth().currentUser) {
+            const userUid = firebase.auth().currentUser.uid
+            const db = firebase.firestore();
+            const userInfo = db.collection("users").doc(userUid);
 
-            await user.updateProfile({
-                displayName: data
+            setState({
+                isLoading: true,
             })
-            dispatch(userAuth())
+            await userInfo.set({
+                [key]: data
+            }, {merge: true});
+            if (key === "firstName") {
 
-        }
-        if (key === 'email') {
-            await user.updateEmail(data).then(() => {
+                await user.updateProfile({
+                    displayName: data
+                })
+                dispatch(userAuth())
 
-                console.log('Email Changed')
-            }).catch((error) => {
-                Alert.alert(`${error}`)
-            });
+            }
+            if (key === 'email') {
+                await user.updateEmail(data).then(() => {
+
+                    console.log('Email Changed')
+                }).catch((error) => {
+                    Alert.alert(`${error}`)
+                });
+            }
+            setState({
+                isLoading: false,
+            })
+            asyncGetUserInfo()
         }
-        setState({
-            isLoading: false,
-        })
-        asyncGetUserInfo()
-        console.log('После UID', firebase.auth().currentUser.uid)
     }
 
 

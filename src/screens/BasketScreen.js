@@ -19,9 +19,6 @@ import {userAuth} from "../store/actions/userAuth";
 import firebase from "firebase";
 
 export const BasketScreen = () => {
-    const userUid = firebase.auth().currentUser.uid
-    const db = firebase.firestore();
-    const userInfo = db.collection("users").doc(userUid);
 
     const deliveryPrice = 250
     const itemsBasket = useSelector(state => state.menu.basket)
@@ -118,18 +115,23 @@ export const BasketScreen = () => {
     }
 
     const saveChanges = async (key, data) => {
-        setState({
-            isLoading: true,
-        })
+        if (firebase.auth().currentUser) {
+            const db = firebase.firestore();
+            const userInfo = db.collection("users").doc(firebase.auth().currentUser.uid);
 
-        await userInfo.set({
-            [key]: data
-        }, { merge: true });
+            setState({
+                isLoading: true,
+            })
 
-        setState({
-            isLoading: false,
-        })
-        asyncGetUserInfo()
+            await userInfo.set({
+                [key]: data
+            }, {merge: true});
+
+            setState({
+                isLoading: false,
+            })
+            asyncGetUserInfo()
+        }
     }
 
     if (modal) {

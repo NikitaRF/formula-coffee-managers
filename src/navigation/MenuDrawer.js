@@ -24,10 +24,12 @@ function CustomDrawerContent(props) {
 
 
     const signOut = () => {
-        firebase.auth().signOut().then(() => {
-            dispatch(userLogout())
-        })
-            .catch(error => console.log(error))
+        if (firebase.auth().currentUser) {
+            firebase.auth().signOut().then(() => {
+                dispatch(userLogout())
+            })
+                .catch(error => console.log('!!!', error))
+        }
     }
 
     const currentYear = new Date().getFullYear()
