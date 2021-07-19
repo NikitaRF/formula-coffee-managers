@@ -8,6 +8,7 @@ import {addToBasket} from "../store/actions/addToBasket";
 import {deleteItemFromBasket} from "../store/actions/deleteItemFromBasket";
 
 export const BasketScreen = ({navigation}) => {
+    const deliveryPrice = 250
     const itemsBasket = useSelector(state => state.menu.basket)
     const [modal, setModal] = useState(false)
 
@@ -51,7 +52,8 @@ export const BasketScreen = ({navigation}) => {
     console.log('Баскет скрин:', itemsBasket)
 
     const [state, setState] = useState({
-        isLoading: false
+        isLoading: false,
+        comment: '',
     })
     const userData = useSelector(state => state.user.userInfo)
 
@@ -82,8 +84,21 @@ export const BasketScreen = ({navigation}) => {
             <ScrollView contentContainerStyle={styles.modalWrap}>
                 <View><Text>Адрес</Text></View>
                 <TextInput />
-                <View><Text>Комментарий</Text></View>
-                <View><Text>Телефон</Text></View>
+                <View>
+                    <Text style={styles.itemTitle}>Комментарий</Text>
+                    <TextInput
+                        color={THEME.COLOR_MAIN_DARK}
+                        multiline = {true}
+                        autoCorrect={false}
+                        placeholder='Ваши пожелания'
+                        maxLength={255}
+                        numberOfLines = {4}
+                        style={styles.modalInputComment}
+                        onChangeText={(text) => setState({...state, comment: text})}
+                        value={state.comment}
+                    />
+                </View>
+                <View><Text style={styles.itemTitle}>Телефон</Text></View>
                 <View style={styles.inputWrap}>
                     <TextInput
                         color={THEME.COLOR_MAIN_DARK}
@@ -128,10 +143,33 @@ export const BasketScreen = ({navigation}) => {
                         </View>
                     </View>
                 </View>
-                <View><Text>Итого {totalPrice} руб</Text></View>
+                <Text style={styles.itemTitle}>Сумма {totalPrice} руб</Text>
+                <Text style={styles.itemTitle}>Доставка {deliveryPrice} руб</Text>
+                <View style={styles.total}><Text style={{...styles.itemTitle, marginTop: 50, fontSize: 20}}>Итого {totalPrice + deliveryPrice} руб</Text></View>
                 <View style={styles.modalButtons}>
-                    <Button title='Отменить' onPress={() => setModal(false)} color='red' />
-                    <Button title='Заказать' color={THEME.COLOR_MAIN_DARK}/>
+
+                    <TouchableOpacity
+                        style={styles.modalButton}
+                        onPress={() => setModal(false)}
+                    >
+                        <View style={styles.textWrap}>
+                            <Text style={styles.buttonText}>
+                                Отменить
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.modalButton}
+                        onPress={() => getOrder()}
+                    >
+                        <View style={styles.textWrap}>
+                            <Text style={styles.buttonText}>
+                                Заказать
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
                 </View>
             </ScrollView>
         </Modal>
@@ -179,7 +217,7 @@ const styles = StyleSheet.create({
     buttonWrap: {
         width: '70%',
         marginBottom: 40,
-        paddingHorizontal: 5,
+        paddingHorizontal: 25,
         paddingVertical: 5,
         borderRadius: 5,
         backgroundColor: THEME.COLOR_MAIN_LIGHT,
@@ -190,6 +228,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingHorizontal: 5,
         paddingVertical: 5,
+
     },
     buttonText: {
         textAlign: 'center',
@@ -202,18 +241,27 @@ const styles = StyleSheet.create({
     },
     modalPersonWrap: {
         flexDirection: 'row',
+        marginTop: 20,
+        marginBottom: 10,
     },
     modalPersonTitle: {
         color: THEME.COLOR_MAIN_DARK,
         fontFamily: 'open-regular',
-        marginRight: 15,
+        marginRight: 'auto',
         fontSize: 18,
     },
     modalButtons: {
         width: '100%',
-        marginTop: 10,
+        marginTop: 20,
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+
+    },
+    modalButton: {
+        paddingHorizontal: 25,
+        paddingVertical: 5,
+        borderRadius: 5,
+        backgroundColor: THEME.COLOR_MAIN_LIGHT,
     },
     buttonCount: {
         flexDirection: 'row',
@@ -236,6 +284,26 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         width: '100%',
         height: 45,
-        marginTop: 20,
     },
+    allowIcon: {
+        position: 'absolute',
+        right: 5,
+        opacity: 0.7,
+    },
+    itemTitle: {
+        color: THEME.COLOR_MAIN_DARK,
+        fontFamily: 'open-bold',
+        fontSize: 15,
+        marginBottom: 10,
+
+    },
+    total: {
+        alignItems: 'center'
+    },
+    modalInputComment: {
+        borderWidth: 1,
+        borderColor: THEME.COLOR_MAIN_DARK,
+        marginBottom: 20,
+        paddingVertical: 20,
+    }
 })
