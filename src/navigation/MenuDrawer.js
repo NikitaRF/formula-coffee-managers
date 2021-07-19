@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Text, Image, StyleSheet, View, Linking, Button, TouchableOpacity} from "react-native";
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
 import {AntDesign, FontAwesome, MaterialIcons, SimpleLineIcons} from '@expo/vector-icons';
@@ -20,6 +20,7 @@ function CustomDrawerContent(props) {
     const dispatch = useDispatch()
     const userDisplayName = useSelector(state => state.user.userAuth)
     // console.log(firebase.auth().currentUser)
+
 
     const signOut = () => {
         firebase.auth().signOut().then(() => {
@@ -69,6 +70,26 @@ export const MenuDrawer = () => {
     const Drawer = createDrawerNavigator();
     const iconSize = 20;
 
+    // Начало Счетчик товаров в Корзине
+    const [totalCount, setTotalCount] = useState()
+
+    const basketItems = useSelector(state => state.menu.basket)
+
+    const getBasketItemCount = () => {
+        let result = 0
+        basketItems.forEach((el) => {
+            result += el.count
+        })
+        setTotalCount(result)
+        console.log("totalCount", totalCount)
+    }
+
+    useEffect(() => {
+        getBasketItemCount()
+    }, [basketItems])
+
+    // Конец Счетчик товаров в Корзине
+
     return (
         <Drawer.Navigator
             drawerType='front'
@@ -105,13 +126,30 @@ export const MenuDrawer = () => {
                 name="Корзина"
                 component={BasketNavigation}
                 options={{
-                    drawerIcon: ({focused}) => <SimpleLineIcons
-                        name="basket"
-                        size={iconSize}
-                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
-                    />
+                    drawerIcon: ({focused}) => (
+                        <View>
+                            <View style={styles.basketMarkerWrap}>
+                                <View style={styles.markerCircle}>
+                                    <Text
+                                        style={totalCount != 0 ? (focused ? {...styles.basketMarker, color: THEME.COLOR_MAIN_LIGHT} : {...styles.basketMarker, color: THEME.COLOR_MAIN_DARK}) : {opacity: 0}}>
+                                        {totalCount}
+                                    </Text>
+                                </View>
+
+                            </View>
+                            <SimpleLineIcons
+                                name="basket"
+                                size={iconSize}
+                                color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
+                                onPress={() => navigation.navigate('Корзина')}
+                            />
+                        </View>
+
+                    )
                 }}
             />
+
+
             <Drawer.Screen
                 name="Контакты"
                 component={ContactsNavigation}
@@ -203,5 +241,19 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center',
         color: THEME.COLOR_MAIN_DARK
-    }
+    },
+    basketMarkerWrap: {
+        position: 'absolute',
+        right: 0,
+        top: -12,
+
+    },
+    markerCircle: {
+        //backgroundColor: THEME.COLOR_MAIN_LIGHT,
+
+    },
+    basketMarker: {
+        color: THEME.COLOR_MAIN_DARK,
+        fontFamily: 'open-bold',
+    },
 })
