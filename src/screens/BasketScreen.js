@@ -1,13 +1,22 @@
 import React, {useEffect, useState} from "react";
-import {Button, FlatList, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
-import {useSelector} from "react-redux";
+import {
+    ActivityIndicator,
+    FlatList,
+    Modal,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
+import {useDispatch, useSelector} from "react-redux";
 import {BasketItem} from "../components/BasketItem";
 import {THEME} from "../theme";
 import {AntDesign} from "@expo/vector-icons";
-import {addToBasket} from "../store/actions/addToBasket";
-import {deleteItemFromBasket} from "../store/actions/deleteItemFromBasket";
+import {getUserInfo} from "../store/actions/getUserInfo";
 
-export const BasketScreen = ({navigation}) => {
+export const BasketScreen = () => {
     const deliveryPrice = 250
     const itemsBasket = useSelector(state => state.menu.basket)
     const [modal, setModal] = useState(false)
@@ -15,11 +24,9 @@ export const BasketScreen = ({navigation}) => {
     // Начало Счетчик товаров в Корзине
     const [totalCount, setTotalCount] = useState()
 
-    const basketItems = useSelector(state => state.menu.basket)
-
     const getBasketItemCount = () => {
         let result = 0
-        basketItems.forEach((el) => {
+        itemsBasket.forEach((el) => {
             result += el.count
         })
         setTotalCount(result)
@@ -30,7 +37,7 @@ export const BasketScreen = ({navigation}) => {
     const [totalPrice, setTotalPrice] = useState()
     const getBasketTotalPrice = () => {
         let result = 0
-        basketItems.forEach((el) => {
+        itemsBasket.forEach((el) => {
             result += el.count * el.price
         })
         setTotalPrice(result)
@@ -41,20 +48,37 @@ export const BasketScreen = ({navigation}) => {
     useEffect(() => {
         getBasketItemCount()
         getBasketTotalPrice()
-    }, [basketItems])
+    }, [itemsBasket])
     // Конец Счетчик товаров в Корзине
 
     const getOrder = () => {
         setModal(true)
     }
-
-
     console.log('Баскет скрин:', itemsBasket)
 
     const [state, setState] = useState({
         isLoading: false,
         comment: '',
     })
+
+    useEffect(() => {
+        asyncGetUserInfo()
+    }, [])
+
+    const dispatch = useDispatch()
+    const asyncGetUserInfo = async () => {
+        setState({
+            ...state,
+            isLoading: true
+        })
+        const result = await dispatch(getUserInfo())
+        setState({
+            ...state,
+            isLoading: false
+        })
+        return result
+    }
+
     const userData = useSelector(state => state.user.userInfo)
 
     const updateInputVal = (val, prop) => {
@@ -76,6 +100,14 @@ export const BasketScreen = ({navigation}) => {
         if (countOfPerson == 1) {
             setCountOfPerson(1)
         }
+    }
+
+    if(state.isLoading){
+        return(
+            <View style={styles.preloader}>
+                <ActivityIndicator size="large" color={THEME.COLOR_MAIN_DARK}/>
+            </View>
+        )
     }
 
     if (modal) {
@@ -213,6 +245,16 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    preloader: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff'
     },
     buttonWrap: {
         width: '70%',
