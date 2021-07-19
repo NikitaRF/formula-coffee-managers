@@ -54,7 +54,7 @@ export const UserProfileScreen = () => {
     }, [])
 
     const userData = useSelector(state => state.user.userInfo)
-    console.log('Мы получили данные о пользователе', userData)
+    // console.log('Мы получили данные о пользователе', userData)
     console.log('Локальное состояние', state)
 
     if(state.isLoading){
@@ -73,6 +73,7 @@ export const UserProfileScreen = () => {
     }
 
     const saveChanges = async (key, data) => {
+        console.log('ДО UID', firebase.auth().currentUser.uid)
         setState({
             isLoading: true,
         })
@@ -80,10 +81,12 @@ export const UserProfileScreen = () => {
             [key]: data
         }, { merge: true });
         if (key === "firstName") {
+
             await user.updateProfile({
                 displayName: data
             })
             dispatch(userAuth())
+
         }
         if (key === 'email') {
             await user.updateEmail(data).then(() => {
@@ -97,6 +100,7 @@ export const UserProfileScreen = () => {
             isLoading: false,
         })
         asyncGetUserInfo()
+        console.log('После UID', firebase.auth().currentUser.uid)
     }
 
 

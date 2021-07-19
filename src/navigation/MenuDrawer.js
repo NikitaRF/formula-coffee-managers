@@ -16,10 +16,11 @@ import {userLogout} from "../store/actions/userLogout";
 import {BasketNavigation} from "./BasketNavigation";
 
 
+
 function CustomDrawerContent(props) {
     const dispatch = useDispatch()
     const userDisplayName = useSelector(state => state.user.userAuth)
-    // console.log(firebase.auth().currentUser)
+    //console.log('UID', firebase.auth().currentUser.uid)
 
 
     const signOut = () => {
@@ -81,7 +82,7 @@ export const MenuDrawer = () => {
             result += el.count
         })
         setTotalCount(result)
-        console.log("totalCount", totalCount)
+        //console.log("totalCount", totalCount)
     }
 
     useEffect(() => {

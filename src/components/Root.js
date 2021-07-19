@@ -19,7 +19,7 @@ const MyTheme = {
 
 export const Root = () => {
     const isAuth = useSelector(state => state.user.userAuth)
-    console.log("Состояние авторизации в редакс", isAuth)
+    //console.log("Состояние авторизации в редакс", isAuth)
 
     const Stack = createStackNavigator ( ) ;
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
-    ActivityIndicator,
+    ActivityIndicator, Alert,
     FlatList,
     Modal,
     ScrollView,
@@ -15,11 +15,18 @@ import {BasketItem} from "../components/BasketItem";
 import {THEME} from "../theme";
 import {AntDesign} from "@expo/vector-icons";
 import {getUserInfo} from "../store/actions/getUserInfo";
+import {userAuth} from "../store/actions/userAuth";
+import firebase from "firebase";
 
 export const BasketScreen = () => {
+    const userUid = firebase.auth().currentUser.uid
+    const db = firebase.firestore();
+    const userInfo = db.collection("users").doc(userUid);
+
     const deliveryPrice = 250
     const itemsBasket = useSelector(state => state.menu.basket)
     const [modal, setModal] = useState(false)
+
 
     // Начало Счетчик товаров в Корзине
     const [totalCount, setTotalCount] = useState()
@@ -108,6 +115,21 @@ export const BasketScreen = () => {
                 <ActivityIndicator size="large" color={THEME.COLOR_MAIN_DARK}/>
             </View>
         )
+    }
+
+    const saveChanges = async (key, data) => {
+        setState({
+            isLoading: true,
+        })
+
+        await userInfo.set({
+            [key]: data
+        }, { merge: true });
+
+        setState({
+            isLoading: false,
+        })
+        asyncGetUserInfo()
     }
 
     if (modal) {
