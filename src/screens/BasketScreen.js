@@ -17,13 +17,13 @@ import {AntDesign} from "@expo/vector-icons";
 import {getUserInfo} from "../store/actions/getUserInfo";
 import {userAuth} from "../store/actions/userAuth";
 import firebase from "firebase";
+import {addOrder} from "../store/actions/addOrder";
 
 export const BasketScreen = () => {
 
     const deliveryPrice = 250
     const itemsBasket = useSelector(state => state.menu.basket)
     const [modal, setModal] = useState(false)
-
 
     // Начало Счетчик товаров в Корзине
     const [totalCount, setTotalCount] = useState()
@@ -58,7 +58,29 @@ export const BasketScreen = () => {
     const getOrder = () => {
         setModal(true)
     }
-    console.log('Баскет скрин:', itemsBasket)
+
+    const checkOrder = () => {
+        dispatch(addOrder({
+            Date: 22,
+            timeToDelivery: 22,
+            address: 'dddd',
+            firstName: 1,
+            lastName: 2,
+            phone: 333,
+            email: 22,
+            order: itemsBasket,
+            totalPrice,
+            deliveryPrice,
+            totalResult: totalPrice + deliveryPrice,
+            countOfPerson,
+            comment: state.comment,
+        }))
+    }
+
+    const historyOfOrder = useSelector(state => state.user.userHistoryOfOrder)
+    console.log(historyOfOrder)
+
+    //console.log('Баскет скрин:', itemsBasket)
 
     const [state, setState] = useState({
         isLoading: false,
@@ -133,6 +155,8 @@ export const BasketScreen = () => {
             asyncGetUserInfo()
         }
     }
+
+    // Модалка
 
     if (modal) {
         return (
@@ -217,7 +241,7 @@ export const BasketScreen = () => {
 
                     <TouchableOpacity
                         style={styles.modalButton}
-                        onPress={() => getOrder()}
+                        onPress={() => checkOrder()}
                     >
                         <View style={styles.textWrap}>
                             <Text style={styles.buttonText}>
@@ -230,6 +254,8 @@ export const BasketScreen = () => {
             </ScrollView>
         </Modal>
     )}
+
+    // Скрин
 
     return (
         <View style={styles.center}>

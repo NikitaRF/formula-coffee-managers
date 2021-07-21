@@ -1,4 +1,4 @@
-import {GET_USERS_INFO, USER_AUTH, USER_LOGOUT} from '../types'
+import {GET_USERS_INFO, USER_AUTH, USER_LOGOUT, ADD_ORDER} from '../types'
 
 const initialState = {
     userAuth: null,
@@ -22,6 +22,10 @@ export const userReducer = (state = initialState, action) => {
             userInfo: {},
             userHistoryOfOrder: [],
             isLoading: false,
+        }
+        case ADD_ORDER: return {
+            ...state,
+            userHistoryOfOrder: action.payload
         }
     }
 
