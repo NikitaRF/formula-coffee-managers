@@ -59,8 +59,8 @@ export const BasketScreen = () => {
         setModal(true)
     }
 
-    const checkOrder = () => {
-        dispatch(addOrder({
+    const checkOrder = async () => {
+        const data = {
             Date: 22,
             timeToDelivery: 22,
             address: 'dddd',
@@ -74,11 +74,28 @@ export const BasketScreen = () => {
             totalResult: totalPrice + deliveryPrice,
             countOfPerson,
             comment: state.comment,
-        }))
+        }
+
+        if (firebase.auth().currentUser) {
+            const userUid = firebase.auth().currentUser.uid
+            const db = firebase.firestore();
+            const userInfo = db.collection("users").doc(userUid);
+
+            setState({
+                isLoading: true,
+            })
+            await userInfo.set({
+                historyOfOrder: data
+            }, {merge: true});
+            // dispatch(addOrder(data))
+            setState({
+                isLoading: false,
+            })
+        }
     }
 
-    const historyOfOrder = useSelector(state => state.user.userHistoryOfOrder)
-    console.log(historyOfOrder)
+    // const historyOfOrder = useSelector(state => state.user.userHistoryOfOrder)
+    // console.log(historyOfOrder)
 
     //console.log('Баскет скрин:', itemsBasket)
 
