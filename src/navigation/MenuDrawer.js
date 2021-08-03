@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Text, Image, StyleSheet, View, Linking, Button, TouchableOpacity} from "react-native";
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
-import {AntDesign, FontAwesome, MaterialIcons, SimpleLineIcons} from '@expo/vector-icons';
+import {AntDesign, FontAwesome, FontAwesome5, MaterialIcons, SimpleLineIcons} from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import firebase from "firebase";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,6 +14,8 @@ import {MenuNavigation} from "./MenuNavigation";
 import {UserProfileNavigation} from "./UserProfileNavigation";
 import {userLogout} from "../store/actions/userLogout";
 import {BasketNavigation} from "./BasketNavigation";
+import {HistoryScreen} from "../screens/HistoryScreen";
+import {HistoryNavigation} from "./HistoryNavigation";
 
 
 
@@ -170,6 +172,17 @@ export const MenuDrawer = () => {
                 options={{
                     drawerIcon: ({focused}) => <FontAwesome
                         name="user-circle-o"
+                        size={iconSize}
+                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
+                    />
+                }}
+            />
+            <Drawer.Screen
+                name="История заказов"
+                component={HistoryNavigation}
+                options={{
+                    drawerIcon: ({focused}) => <FontAwesome5
+                        name="history"
                         size={iconSize}
                         color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
                     />
