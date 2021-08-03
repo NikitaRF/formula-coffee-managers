@@ -1,4 +1,4 @@
-import {GET_MENU, LOAD_INDICATOR, ADD_TO_BASKET, DELETE_ITEM_FROM_BASKET} from '../types'
+import {GET_MENU, LOAD_INDICATOR, ADD_TO_BASKET, DELETE_ITEM_FROM_BASKET, CLEAR_BASKET} from '../types'
 
 const initialState = {
     menu: [],
@@ -43,6 +43,10 @@ export const menuReducer = (state = initialState, action) => {
             return {
             ...state,
             basket: result
+        }
+        case CLEAR_BASKET: return {
+            ...state,
+            basket: action.payload,
         }
     }
     return state

@@ -18,6 +18,7 @@ import {getUserInfo} from "../store/actions/getUserInfo";
 import {userAuth} from "../store/actions/userAuth";
 import firebase from "firebase";
 import {addOrder} from "../store/actions/addOrder";
+import {clearBasket} from "../store/actions/clearBasket";
 
 export const BasketScreen = () => {
 
@@ -60,8 +61,11 @@ export const BasketScreen = () => {
     }
 
     const checkOrder = async () => {
+        const date = new Date()
+        const currentDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+
         const data = {
-            Date: 22,
+            date: currentDate,
             timeToDelivery: 22,
             address: 'dddd',
             firstName: 1,
@@ -73,7 +77,7 @@ export const BasketScreen = () => {
             deliveryPrice,
             totalResult: totalPrice + deliveryPrice,
             countOfPerson,
-            comment: state.comment,
+            comment: state.comment === '' ? 'Комментарий отсутсвует' : state.comment,
         }
 
         if (firebase.auth().currentUser) {
@@ -82,14 +86,26 @@ export const BasketScreen = () => {
             const userInfo = db.collection("users").doc(userUid);
 
             setState({
+                ...state,
                 isLoading: true,
             })
-            await userInfo.set({
-                historyOfOrder: data
-            }, {merge: true});
+            await userInfo.update({'historyOfOrder' : firebase.firestore.FieldValue.arrayUnion(data)})
+
+            //и еще добавляем сам заказ в общий список (будущий) для приложения менеджеров
+            // await db.collection("users").add({
+            //     historyOfOrder2: "Tokyo",
+            // })
+
             // dispatch(addOrder(data))
             setState({
+                ...state,
                 isLoading: false,
+            })
+            setModal(false)
+            dispatch(clearBasket())
+            setState({
+                ...state,
+                comment: ''
             })
         }
     }
@@ -272,7 +288,7 @@ export const BasketScreen = () => {
         </Modal>
     )}
 
-    // Скрин
+    // Баскет Скрин
 
     return (
         <View style={styles.center}>
