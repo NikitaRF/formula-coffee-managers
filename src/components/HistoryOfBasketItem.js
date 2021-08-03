@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {ImageBackground, Text, TouchableOpacity, View, StyleSheet, Dimensions, Button} from "react-native";
+import {THEME} from "../theme";
 
 
 export const HistoryOfBasketItem = ({Item}) => {
@@ -14,25 +15,24 @@ export const HistoryOfBasketItem = ({Item}) => {
         })
     }
 
-    //console.log('MAP', Item.order.map(element => element.count))
 
     return (
         <View style={styles.mainWrap}>
             <TouchableOpacity style={styles.infoBlock} onPress={() => showFullInfo()}>
-                <Text>{Item.date}</Text>
-                <Text>Адрес: {Item.address}</Text>
-                <Text style={state.full ? styles.isShow : styles.isNotShow}>Комментарий: {Item.comment}</Text>
-                <Text style={state.full ? styles.isShow : styles.isNotShow}>Количество персон: {Item.countOfPerson}</Text>
+                <Text style={styles.mainBold}>{Item.date}</Text>
+                <Text style={styles.mainText}>Адрес: {Item.address}</Text>
+                <Text style={state.full ? styles.mainText : styles.isNotShow}>Комментарий: {Item.comment}</Text>
+                <Text style={state.full ? styles.mainText : styles.isNotShow}>Количество персон: {Item.countOfPerson}</Text>
 
                     <View style={state.full ? styles.itemsOfOrder : styles.isNotShow}>
                         {Item.order.map((el) =>
-                            <Text>{el.name}  x {el.count} = {el.count * el.price} руб. </Text>
+                            <Text style={styles.mainText}>{el.name}  x {el.count} = {el.count * el.price} руб. </Text>
                         )}
                     </View>
 
-                <Text style={state.full ? styles.isShow : styles.isNotShow}>Стоимость блюд: {Item.totalPrice} руб.</Text>
-                <Text style={state.full ? styles.isShow : styles.isNotShow}>Стоимость доставки: {Item.deliveryPrice} руб.</Text>
-                <Text>Итого: {Item.totalResult} руб.</Text>
+                <Text style={state.full ? styles.mainText : styles.isNotShow}>Стоимость блюд: {Item.totalPrice} руб.</Text>
+                <Text style={state.full ? styles.mainText : styles.isNotShow}>Стоимость доставки: {Item.deliveryPrice} руб.</Text>
+                <Text style={{...styles.mainText, fontFamily: THEME.FONT_BOLD}}>Итого: {Item.totalResult} руб.</Text>
             </TouchableOpacity>
         </View>
     )
@@ -61,9 +61,16 @@ const styles = StyleSheet.create({
         display: 'none'
     },
     isShow: {
-
     },
     itemsOfOrder: {
         marginVertical: 15,
-    }
+    },
+    mainText: {
+        fontFamily: THEME.FONT_MAIN,
+        color: THEME.COLOR_MAIN_DARK
+    },
+    mainBold: {
+        fontFamily: THEME.FONT_BOLD,
+        color: THEME.COLOR_MAIN_LIGHT
+    },
 })

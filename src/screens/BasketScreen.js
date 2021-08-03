@@ -62,7 +62,17 @@ export const BasketScreen = () => {
 
     const checkOrder = async () => {
         const date = new Date()
-        const currentDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+        //const currentDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+        const formatter = new Intl.DateTimeFormat("ru", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            weekday: "long",
+        });
+        const currentDate = formatter.format(date)
 
         const data = {
             date: currentDate,
