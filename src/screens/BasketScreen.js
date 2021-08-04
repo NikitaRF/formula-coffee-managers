@@ -366,7 +366,7 @@ export const BasketScreen = ({navigation}) => {
     // Модалка успех заказа
     const luckModalClose = () => {
         setModalLuckWindow(false)
-        navigation.navigate('История заказов')
+        navigation.navigate('Главная')
     }
 
     if (modalLuckWindow) {
