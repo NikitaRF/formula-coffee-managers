@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
-    ActivityIndicator, Button,
+    ActivityIndicator, Alert, Button,
     FlatList, Image,
     Modal,
     ScrollView,
@@ -22,11 +22,13 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 export const BasketScreen = ({navigation}) => {
     const deliveryPrice = 200
 
+    const userData = useSelector(state => state.user.userInfo)
     const itemsBasket = useSelector(state => state.menu.basket)
     const [modal, setModal] = useState(false)
     const [modalLuckWindow, setModalLuckWindow] = useState(false)
     const [isChosenTime, setChosenTime] = useState(false)
     const [state, setState] = useState({
+        phone: userData.phone,
         isLoading: false,
         comment: '',
     })
@@ -106,6 +108,13 @@ export const BasketScreen = ({navigation}) => {
         });
 
         const currentDate = formatter.format(nowDate)
+        console.log('userData.phone', userData.phone)
+        console.log('userData.phone.length', userData.phone.length)
+
+        if (userData.phone === '' || userData.phone == null || userData.phone == undefined || userData.phone.length != 11) {
+            Alert.alert('Введите свой номер телефона')
+            return
+        }
 
         const data = {
             date: currentDate,
@@ -114,7 +123,7 @@ export const BasketScreen = ({navigation}) => {
             address: 'dddd',
             firstName: userData.firstName,
             lastName: userData.lastName,
-            phone: 333,
+            phone: userData.phone,
             email: userData.email,
             order: itemsBasket,
             totalPrice,
@@ -181,8 +190,6 @@ export const BasketScreen = ({navigation}) => {
         })
         return result
     }
-
-    const userData = useSelector(state => state.user.userInfo)
 
     const updateInputVal = (val, prop) => {
         setState({
@@ -371,6 +378,7 @@ export const BasketScreen = ({navigation}) => {
     }
 
     if (modalLuckWindow) {
+        const date = new Date()
         return (
             <Modal visible={modalLuckWindow} animationType='slide' transparent={false}>
                 <ScrollView contentContainerStyle={styles.modalWrap}>

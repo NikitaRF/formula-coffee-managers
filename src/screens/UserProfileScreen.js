@@ -19,6 +19,7 @@ import {THEME} from "../theme";
 import {getUserInfo} from "../store/actions/getUserInfo";
 import {userAuth} from "../store/actions/userAuth";
 import {userLogout} from "../store/actions/userLogout";
+import {useIsFocused} from "@react-navigation/native";
 
 
 
@@ -49,9 +50,10 @@ export const UserProfileScreen = () => {
         return result
     }
 
+    const isFocused = useIsFocused();
     useEffect(() => {
         asyncGetUserInfo()
-    }, [])
+    }, [isFocused])
 
     const userData = useSelector(state => state.user.userInfo)
     // console.log('Мы получили данные о пользователе', userData)
@@ -66,6 +68,9 @@ export const UserProfileScreen = () => {
     }
 
     const updateInputVal = (val, prop) => {
+        if (userData.phone === '' || userData.phone == null || userData.phone == undefined || userData.phone.length != 11) {
+            Alert.alert('Введите свой номер телефона')
+        }
         setState({
             ...state,
             [prop]: val
