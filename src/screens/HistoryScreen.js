@@ -1,15 +1,16 @@
 import React, {useCallback, useEffect, useState} from "react";
+import {useFocusEffect, useIsFocused} from '@react-navigation/native'
 import {
     ActivityIndicator,
     FlatList, RefreshControl,
-    StyleSheet, View
+    StyleSheet, Text, View
 } from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {getOrder} from "../store/actions/getOrder";
 import {HistoryOfBasketItem} from "../components/HistoryOfBasketItem";
 import {THEME} from "../theme";
 
-export const HistoryScreen = () => {
+export const HistoryScreen = ({navigation}) => {
 
     const [state, setState] = useState({
         isLoading: false
@@ -32,9 +33,10 @@ export const HistoryScreen = () => {
     const historyData = useSelector(state => state.user.userHistoryOfOrder)
     // console.log('historyData:', historyData)
 
+    const isFocused = useIsFocused();
     useEffect(() => {
         asyncGetOrderInfo()
-    }, [])
+    }, [isFocused])
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -42,6 +44,7 @@ export const HistoryScreen = () => {
         setRefreshing(true);
         dispatch(getOrder()).then(() => setRefreshing(false));
     }, []);
+
 
 
     if(state.isLoading){

@@ -21,6 +21,7 @@ export const HistoryOfBasketItem = ({Item}) => {
             <TouchableOpacity style={styles.infoBlock} onPress={() => showFullInfo()}>
                 <Text style={styles.mainBold}>{Item.date}</Text>
                 <Text style={styles.mainText}>Адрес: {Item.address}</Text>
+                <Text style={styles.mainText}>Время доставки: {String(Item.timeToDelivery)}</Text>
                 <Text style={state.full ? styles.mainText : styles.isNotShow}>Комментарий: {Item.comment}</Text>
                 <Text style={state.full ? styles.mainText : styles.isNotShow}>Количество персон: {Item.countOfPerson}</Text>
 

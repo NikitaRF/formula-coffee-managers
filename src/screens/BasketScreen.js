@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
     ActivityIndicator, Button,
-    FlatList,
+    FlatList, Image,
     Modal,
     ScrollView,
     StyleSheet,
@@ -19,12 +19,17 @@ import firebase from "firebase";
 import {clearBasket} from "../store/actions/clearBasket";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-export const BasketScreen = () => {
-
+export const BasketScreen = ({navigation}) => {
     const deliveryPrice = 200
+
     const itemsBasket = useSelector(state => state.menu.basket)
     const [modal, setModal] = useState(false)
+    const [modalLuckWindow, setModalLuckWindow] = useState(false)
     const [isChosenTime, setChosenTime] = useState(false)
+    const [state, setState] = useState({
+        isLoading: false,
+        comment: '',
+    })
 
     // Начало Время доставки
     const curDate = new Date()
@@ -33,6 +38,7 @@ export const BasketScreen = () => {
 
     const [date, setDate] = useState(new Date);
     const [show, setShow] = useState(false);
+
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -87,7 +93,7 @@ export const BasketScreen = () => {
     }
 
     const checkOrder = async () => {
-        const date = new Date()
+        const nowDate = new Date()
         //const currentDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         const formatter = new Intl.DateTimeFormat("ru", {
             year: "numeric",
@@ -99,11 +105,11 @@ export const BasketScreen = () => {
             weekday: "long",
         });
 
-        const currentDate = formatter.format(date)
+        const currentDate = formatter.format(nowDate)
 
         const data = {
             date: currentDate,
-            timeToDelivery: 22,
+            timeToDelivery: !isChosenTime? 'Как можно скорее' : date.toLocaleString('ru-Ru'),
             address: 'dddd',
             firstName: userData.firstName,
             lastName: userData.lastName,
@@ -140,6 +146,9 @@ export const BasketScreen = () => {
             })
             setModal(false)
             dispatch(clearBasket())
+            setChosenTime(false)
+            setShow(false)
+            setModalLuckWindow(true)
             setState({
                 ...state,
                 comment: ''
@@ -152,10 +161,7 @@ export const BasketScreen = () => {
 
     //console.log('Баскет скрин:', itemsBasket)
 
-    const [state, setState] = useState({
-        isLoading: false,
-        comment: '',
-    })
+
 
     useEffect(() => {
         asyncGetUserInfo()
@@ -309,6 +315,7 @@ export const BasketScreen = () => {
                             locale='ru-RU'
                             is24Hour={true}
                             display="spinner"
+                            textColor={THEME.COLOR_MAIN_DARK}
                             onChange={onChange}
                             minimumDate={minTimeToOrder}
                             maximumDate={maxTimeToOrder}
@@ -327,7 +334,11 @@ export const BasketScreen = () => {
 
                     <TouchableOpacity
                         style={styles.modalButton}
-                        onPress={() => setModal(false)}
+                        onPress={() => {
+                            setModal(false)
+                            setChosenTime(false)
+                            setShow(false)
+                        }}
                     >
                         <View style={styles.textWrap}>
                             <Text style={styles.buttonText}>
@@ -351,6 +362,37 @@ export const BasketScreen = () => {
             </ScrollView>
         </Modal>
     )}
+
+    // Модалка успех заказа
+    const luckModalClose = () => {
+        setModalLuckWindow(false)
+        navigation.navigate('История заказов')
+    }
+
+    if (modalLuckWindow) {
+        return (
+            <Modal visible={modalLuckWindow} animationType='slide' transparent={false}>
+                <ScrollView contentContainerStyle={styles.modalWrap}>
+                    <View style={styles.containerLuck}>
+                        <Image
+                            style={styles.logo}
+                            source={require('../../assets/logo2.png')}
+                        />
+                        <Text style={styles.textLuckBold}>Ваш заказ успешно принят</Text>
+                        <Text style={styles.textLuckRegular}>{date.toLocaleString('ru-Ru')}</Text>
+                        <View style={{...styles.buttonWrap, marginTop: 20}}>
+                            <Button
+                                color={THEME.COLOR_MAIN_DARK}
+                                title='Готово'
+                                onPress={() => luckModalClose()}
+                            />
+                        </View>
+                        <Text></Text>
+                    </View>
+                </ScrollView>
+            </Modal>
+        )
+    }
 
     // Баскет Скрин
 
@@ -503,5 +545,24 @@ const styles = StyleSheet.create({
     timeToDeliveryWrap: {
         marginBottom: 10,
         flexDirection: 'row',
+    },
+    containerLuck: {
+        //flex: 1,
+        alignItems: 'center',
+        marginTop: '35%',
+    },
+    logo: {
+        width: 95,
+        height: 120,
+    },
+    textLuckRegular: {
+        marginTop: 10,
+        fontFamily: THEME.FONT_MAIN,
+        color: THEME.COLOR_MAIN_DARK,
+    },
+    textLuckBold: {
+        marginTop: 10,
+        fontFamily: THEME.FONT_BOLD,
+        color: THEME.COLOR_MAIN_DARK,
     },
 })
