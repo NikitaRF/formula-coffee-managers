@@ -8,6 +8,7 @@ import firebase from "firebase";
 export const MainScreen = () => {
 
     // выборка из БД, пример
+
     // const db = firebase.firestore();
     // db.collection('users').get().then((querySnapshot) => {
     //     querySnapshot.forEach((doc) => {
