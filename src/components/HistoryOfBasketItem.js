@@ -20,6 +20,13 @@ export const HistoryOfBasketItem = ({Item}) => {
         <View style={styles.mainWrap}>
             <TouchableOpacity style={styles.infoBlock} onPress={() => showFullInfo()}>
                 <Text style={styles.mainBold}>{Item.date}</Text>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.mainText}>Статус:</Text>
+                    {Item.status === 'В обработке' ? <Text style={styles.statusInProcess}>{Item.status}</Text> : <></>}
+                    {Item.status === 'Принят' ? <Text style={styles.statusAllow}>{Item.status}</Text> : <></>}
+                    {Item.status === 'Отклонен' ? <Text style={styles.statusDeny}>{Item.status}</Text> : <></>}
+                    {Item.status === 'Выполнен' ? <Text style={styles.statusComplete}>{Item.status}</Text> : <></>}
+                </View>
                 <Text style={styles.mainText}>Адрес: {Item.address}</Text>
                 <Text style={styles.mainText}>Время доставки: {String(Item.timeToDelivery)}</Text>
                 <Text style={state.full ? styles.mainText : styles.isNotShow}>Комментарий: {Item.comment}</Text>
@@ -73,5 +80,25 @@ const styles = StyleSheet.create({
     mainBold: {
         fontFamily: THEME.FONT_BOLD,
         color: THEME.COLOR_MAIN_LIGHT
+    },
+    statusInProcess: {
+        fontFamily: THEME.FONT_BOLD,
+        color: THEME.COLOR_STATUS_IN_PROCESS,
+        marginLeft: 5,
+    },
+    statusAllow: {
+        fontFamily: THEME.FONT_BOLD,
+        color: THEME.COLOR_STATUS_ALLOW,
+        marginLeft: 5,
+    },
+    statusDeny: {
+        fontFamily: THEME.FONT_BOLD,
+        color: THEME.COLOR_STATUS_DENY,
+        marginLeft: 5,
+    },
+    statusComplete: {
+        fontFamily: THEME.FONT_BOLD,
+        color: THEME.COLOR_STATUS_COMPLETE,
+        marginLeft: 5,
     },
 })

@@ -32,6 +32,14 @@ export const HistoryScreen = ({navigation}) => {
     }
     const historyData = useSelector(state => state.user.userHistoryOfOrder)
     // console.log('historyData:', historyData)
+    // console.log('historyDataFiltered:', historyData.sort(function (el1, el2){
+    //     return el1.date < el2.date
+    // }))
+
+    const filteredHistoryData = historyData.sort(function (el1, el2){
+        return el1.date < el2.date
+    })
+    
 
     const isFocused = useIsFocused();
     useEffect(() => {
@@ -57,7 +65,7 @@ export const HistoryScreen = ({navigation}) => {
 
     return (
         <FlatList
-            data={historyData}
+            data={filteredHistoryData}
             keyExtractor={(basket) => basket.name}
             refreshing={true}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
