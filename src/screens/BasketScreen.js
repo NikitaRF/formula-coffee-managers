@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
-    ActivityIndicator, Alert,
+    ActivityIndicator, Button,
     FlatList,
     Modal,
     ScrollView,
@@ -15,17 +15,42 @@ import {BasketItem} from "../components/BasketItem";
 import {THEME} from "../theme";
 import {AntDesign} from "@expo/vector-icons";
 import {getUserInfo} from "../store/actions/getUserInfo";
-import {userAuth} from "../store/actions/userAuth";
 import firebase from "firebase";
-import {addOrder} from "../store/actions/addOrder";
 import {clearBasket} from "../store/actions/clearBasket";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export const BasketScreen = () => {
 
-    const deliveryPrice = 250
+    const deliveryPrice = 200
     const itemsBasket = useSelector(state => state.menu.basket)
-
     const [modal, setModal] = useState(false)
+    const [isChosenTime, setChosenTime] = useState(false)
+
+    // Начало Время доставки
+    const curDate = new Date()
+    const maxTimeToOrder = new Date(curDate.getFullYear(), curDate.getMonth(), curDate.getDate(), 23, 0, 0, 0)
+    const minTimeToOrder = curDate.setMinutes(curDate.getMinutes() + 90);
+
+    const [date, setDate] = useState(new Date);
+    const [show, setShow] = useState(false);
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(true);
+        setDate(currentDate);
+    };
+
+    const acceptChoiceTime = () => {
+        setShow(false)
+        setChosenTime(true)
+        console.log(date.toLocaleString('ru-RU'))
+    }
+
+    const showTimepicker = () => {
+        setShow(true);
+    };
+    // Конец Время доставки
+
 
     // Начало Счетчик товаров в Корзине
     const [totalCount, setTotalCount] = useState()
@@ -201,7 +226,7 @@ export const BasketScreen = () => {
         }
     }
 
-    // Модалка
+    // Модалка оформление заказа
 
     if (modal) {
         return (
@@ -268,6 +293,33 @@ export const BasketScreen = () => {
                         </View>
                     </View>
                 </View>
+                <View style={styles.timeToDeliveryWrap}>
+                    <Text style={styles.timeToDeliveryText}>Время доставки</Text>
+                    <Text style={{...styles.timeToDeliveryText, marginLeft: 'auto'}}>{!isChosenTime ? 'Как можно скорее': date.toLocaleString('ru-RU')}</Text>
+                </View>
+                    <View>
+                        <Button onPress={showTimepicker} title="Выбрать время" color={THEME.COLOR_MAIN_LIGHT} />
+                    </View>
+                    <View style={{width: '100%'}}>
+                    {show && (<>
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={date}
+                            mode='time'
+                            locale='ru-RU'
+                            is24Hour={true}
+                            display="spinner"
+                            onChange={onChange}
+                            minimumDate={minTimeToOrder}
+                            maximumDate={maxTimeToOrder}
+                        />
+                        <Button onPress={acceptChoiceTime} title="Выбрать" color={THEME.COLOR_MAIN_LIGHT} />
+                        </>
+                    )}
+
+                    </View>
+
+
                 <Text style={styles.itemTitle}>Сумма {totalPrice} руб</Text>
                 <Text style={styles.itemTitle}>Доставка {deliveryPrice} руб</Text>
                 <View style={styles.total}><Text style={{...styles.itemTitle, marginTop: 50, fontSize: 20}}>Итого {totalPrice + deliveryPrice} руб</Text></View>
@@ -442,5 +494,14 @@ const styles = StyleSheet.create({
         borderColor: THEME.COLOR_MAIN_DARK,
         marginBottom: 20,
         paddingVertical: 20,
-    }
+    },
+    timeToDeliveryText: {
+        color: THEME.COLOR_MAIN_DARK,
+        fontFamily: 'open-regular',
+        fontSize: 18,
+    },
+    timeToDeliveryWrap: {
+        marginBottom: 10,
+        flexDirection: 'row',
+    },
 })

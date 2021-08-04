@@ -11,10 +11,9 @@ export const MainScreen = () => {
             <Text style={styles.text}>Главная</Text>
             <StatusBar style="auto" />
         </View>
+
     )
 }
-
-
 
 const styles = StyleSheet.create({
     text: {
