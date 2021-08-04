@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {ImageBackground, Text, TouchableOpacity, View, StyleSheet, Dimensions, Button} from "react-native";
+import React, {useState} from "react";
+import {Text, TouchableOpacity, View, StyleSheet, Dimensions} from "react-native";
 import {THEME} from "../theme";
 
 
@@ -26,7 +26,7 @@ export const HistoryOfBasketItem = ({Item}) => {
 
                     <View style={state.full ? styles.itemsOfOrder : styles.isNotShow}>
                         {Item.order.map((el) =>
-                            <Text style={styles.mainText}>{el.name}  x {el.count} = {el.count * el.price} руб. </Text>
+                            <Text style={styles.mainText}>{el.name} x {el.count} = {el.count * el.price} руб. </Text>
                         )}
                     </View>
 

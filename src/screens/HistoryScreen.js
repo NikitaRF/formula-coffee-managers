@@ -2,12 +2,11 @@ import React, {useCallback, useEffect, useState} from "react";
 import {
     ActivityIndicator,
     FlatList, RefreshControl,
-    StyleSheet, Text, View,
+    StyleSheet, View
 } from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {getOrder} from "../store/actions/getOrder";
 import {HistoryOfBasketItem} from "../components/HistoryOfBasketItem";
-import {getMenu} from "../store/actions/getMenu";
 import {THEME} from "../theme";
 
 export const HistoryScreen = () => {

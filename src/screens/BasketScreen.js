@@ -24,6 +24,7 @@ export const BasketScreen = () => {
 
     const deliveryPrice = 250
     const itemsBasket = useSelector(state => state.menu.basket)
+
     const [modal, setModal] = useState(false)
 
     // Начало Счетчик товаров в Корзине
@@ -72,22 +73,23 @@ export const BasketScreen = () => {
             second: 'numeric',
             weekday: "long",
         });
+
         const currentDate = formatter.format(date)
 
         const data = {
             date: currentDate,
             timeToDelivery: 22,
             address: 'dddd',
-            firstName: 1,
-            lastName: 2,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
             phone: 333,
-            email: 22,
+            email: userData.email,
             order: itemsBasket,
             totalPrice,
             deliveryPrice,
             totalResult: totalPrice + deliveryPrice,
             countOfPerson,
-            comment: state.comment === '' ? 'Комментарий отсутсвует' : state.comment,
+            comment: state.comment === '' ? 'Комментарий отсутствует' : state.comment,
         }
 
         if (firebase.auth().currentUser) {
