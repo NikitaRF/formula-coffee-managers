@@ -329,9 +329,12 @@ export const BasketScreen = ({navigation}) => {
                     <Text style={styles.timeToDeliveryText}>Время доставки</Text>
                     <Text style={{...styles.timeToDeliveryText, marginLeft: 'auto'}}>{!isChosenTime ? 'Как можно скорее': date.toLocaleString('ru-RU')}</Text>
                 </View>
-                    <View>
-                        <Button onPress={showTimepicker} title="Выбрать время" color={THEME.COLOR_MAIN_LIGHT} />
-                    </View>
+                <TouchableOpacity
+                    style={styles.buttonWrap2}
+                    onPress={() => showTimepicker()}
+                >
+                    <Text style={styles.buttonText2}>Выбрать время</Text>
+                </TouchableOpacity>
                     <View style={{width: '100%'}}>
                     {show && (<>
                         <DateTimePicker
@@ -346,7 +349,12 @@ export const BasketScreen = ({navigation}) => {
                             minimumDate={minTimeToOrder}
                             maximumDate={maxTimeToOrder}
                         />
-                        <Button onPress={acceptChoiceTime} title="Выбрать" color={THEME.COLOR_MAIN_LIGHT} />
+                            <TouchableOpacity
+                                style={styles.buttonWrap2}
+                                onPress={() => acceptChoiceTime()}
+                            >
+                                <Text style={styles.buttonText2}>Выбрать</Text>
+                            </TouchableOpacity>
                         </>
                     )}
 
@@ -490,6 +498,21 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         paddingVertical: 5,
 
+    },
+    buttonWrap2:{
+        width: '100%',
+        marginTop: 20,
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+        borderRadius: 5,
+        backgroundColor: THEME.COLOR_MAIN_LIGHT,
+    },
+    buttonText2: {
+        fontFamily: THEME.FONT_BOLD,
+        color: THEME.COLOR_MAIN_DARK,
+        textAlign: 'center',
+        paddingVertical: 5,
+        fontSize: 15,
     },
     buttonText: {
         textAlign: 'center',
