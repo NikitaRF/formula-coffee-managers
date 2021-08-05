@@ -36,10 +36,18 @@ export const HistoryScreen = ({navigation}) => {
     //     return el1.date < el2.date
     // }))
 
+    if (!historyData) {
+        return (
+            <View style={styles.historyIsEmptyBlock}>
+                <Text style={styles.historyIsEmptyText}>Заказов пока не было</Text>
+            </View>
+        )
+    }
+
     const filteredHistoryData = historyData.sort(function (el1, el2){
         return el1.date < el2.date
     })
-    
+
 
     const isFocused = useIsFocused();
     useEffect(() => {
@@ -63,15 +71,15 @@ export const HistoryScreen = ({navigation}) => {
         )
     }
 
-    return (
-        <FlatList
-            data={filteredHistoryData}
-            keyExtractor={(basket) => basket.name}
-            refreshing={true}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            renderItem={({item}) => <HistoryOfBasketItem Item={item}/>}
-        />
-    )
+        return (
+            <FlatList
+                data={filteredHistoryData}
+                keyExtractor={(basket) => basket.name}
+                refreshing={true}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                renderItem={({item}) => <HistoryOfBasketItem Item={item}/>}
+            />
+        )
 }
 
 
@@ -86,4 +94,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#fff'
     },
+    historyIsEmptyText: {
+        color: THEME.COLOR_MAIN_DARK,
+        fontFamily: THEME.FONT_BOLD,
+    },
+    historyIsEmptyBlock: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+    }
 })

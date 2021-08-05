@@ -23,6 +23,7 @@ import {useIsFocused} from "@react-navigation/native";
 
 
 export const UserProfileScreen = () => {
+    const db = firebase.firestore();
     const user = firebase.auth().currentUser;
 
     // const userUid = firebase.auth().currentUser.uid
@@ -127,12 +128,15 @@ export const UserProfileScreen = () => {
 
     const deleteAccount = () => {
 
-        // const credential = firebase
-        //     .auth()
-        //     .signInWithEmailAndPassword(userData.email, userData.password)
-        //     .then((res) => {
-        //         return res
-        //         console.log("Заново")})
+        //const credential = firebase.auth.user.reauthenticateWithPopup( firebase.auth.EmailAuthProvider ).then();
+
+        const user = firebase.auth().currentUser;
+        const credential = firebase.auth.EmailAuthProvider.credential(
+            'cc@cc.ru',
+            '111222'
+        );
+        // Now you can use that to reauthenticate
+
 
         Alert.alert(
             'Удаление аккаунта',
@@ -146,8 +150,9 @@ export const UserProfileScreen = () => {
                     text: 'Удалить',
                     style: 'destructive',
                     onPress: () => {
+
+                        user.reauthenticateWithCredential(credential).then(() => {
                         user.delete().then(() => {
-                           user.reauthenticateWithCredential(credential).then(() => {
                                console.log('Пользователь удален')
                                dispatch(userLogout())
 
