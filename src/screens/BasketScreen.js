@@ -120,7 +120,7 @@ export const BasketScreen = ({navigation}) => {
             date: currentDate,
             status: 'В обработке',
             timeToDelivery: !isChosenTime? 'Как можно скорее' : date.toLocaleString('ru-Ru'),
-            address: 'dddd',
+            address: state.address,
             firstName: userData.firstName,
             lastName: userData.lastName,
             phone: userData.phone,
@@ -171,6 +171,14 @@ export const BasketScreen = ({navigation}) => {
 
     //console.log('Баскет скрин:', itemsBasket)
 
+    // Фокус для реакции на галочку в инпуте
+    const [focusInput, setFocusInput] = useState(false)
+    const onFocus = () => {
+        setFocusInput(true)
+    }
+    const onBlur = () => {
+        setFocusInput(false)
+    }
 
 
     useEffect(() => {
@@ -246,8 +254,17 @@ export const BasketScreen = ({navigation}) => {
         return (
         <Modal visible={modal} animationType='slide' transparent={false}>
             <ScrollView contentContainerStyle={styles.modalWrap}>
-                <View><Text>Адрес</Text></View>
-                <TextInput />
+                <View><Text style={styles.itemTitle}>Адрес</Text></View>
+                <TextInput
+                    style={styles.modalInputAddress}
+                    color={THEME.COLOR_MAIN_DARK}
+                    autoCorrect={false}
+                    placeholder='Ваш адрес'
+                    maxLength={255}
+                    onChangeText={(text) => setState({...state, address: text})}
+                    value={state.address}
+
+                />
                 <View>
                     <Text style={styles.itemTitle}>Комментарий</Text>
                     <TextInput
@@ -268,6 +285,8 @@ export const BasketScreen = ({navigation}) => {
                         color={THEME.COLOR_MAIN_DARK}
                         autoCorrect={false}
                         value={state.phone}
+                        onFocus={() => onFocus()}
+                        onBlur={() => onBlur()}
                         placeholder='Телефон'
                         style={styles.input}
                         maxLength={11}
@@ -278,7 +297,7 @@ export const BasketScreen = ({navigation}) => {
                     <AntDesign
                         name="checksquare"
                         size={24}
-                        style={styles.allowIcon}
+                        style={focusInput ? {...styles.allowIcon, opacity: 1} : styles.allowIcon}
                         color={THEME.COLOR_MAIN_DARK}
                         onPress={() => saveChanges('phone', state.phone)}
                     />
@@ -338,6 +357,8 @@ export const BasketScreen = ({navigation}) => {
                 <Text style={styles.itemTitle}>Сумма {totalPrice} руб</Text>
                 <Text style={styles.itemTitle}>Доставка {deliveryPrice} руб</Text>
                 <View style={styles.total}><Text style={{...styles.itemTitle, marginTop: 50, fontSize: 20}}>Итого {totalPrice + deliveryPrice} руб</Text></View>
+                {totalPrice < 500 ? <Text style={styles.itemMinimal}>Минимальная сумма заказа, без учета доставки 500 руб</Text> : <></>}
+
                 <View style={styles.modalButtons}>
 
                     <TouchableOpacity
@@ -356,8 +377,9 @@ export const BasketScreen = ({navigation}) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={styles.modalButton}
+                        style={totalPrice < 500 ? styles.modalButtonDisabled : styles.modalButton}
                         onPress={() => checkOrder()}
+                        disabled={totalPrice < 500 ? true : false}
                     >
                         <View style={styles.textWrap}>
                             <Text style={styles.buttonText}>
@@ -503,6 +525,13 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: THEME.COLOR_MAIN_LIGHT,
     },
+    modalButtonDisabled: {
+        paddingHorizontal: 25,
+        paddingVertical: 5,
+        borderRadius: 5,
+        backgroundColor: THEME.COLOR_MAIN_LIGHT,
+        opacity: 0.2,
+    },
     buttonCount: {
         flexDirection: 'row',
     },
@@ -535,7 +564,13 @@ const styles = StyleSheet.create({
         fontFamily: 'open-bold',
         fontSize: 15,
         marginBottom: 10,
-
+    },
+    itemMinimal: {
+        color: THEME.COLOR_STATUS_DENY,
+        fontFamily: 'open-bold',
+        fontSize: 15,
+        marginBottom: 10,
+        textAlign: 'center',
     },
     total: {
         alignItems: 'center'
@@ -545,6 +580,12 @@ const styles = StyleSheet.create({
         borderColor: THEME.COLOR_MAIN_DARK,
         marginBottom: 20,
         paddingVertical: 20,
+    },
+    modalInputAddress: {
+        borderWidth: 1,
+        borderColor: THEME.COLOR_MAIN_DARK,
+        paddingVertical: 10,
+        marginBottom: 10,
     },
     timeToDeliveryText: {
         color: THEME.COLOR_MAIN_DARK,

@@ -30,6 +30,14 @@ export const SignupScreen = ({navigation}) => {
         isLoading: false
     })
 
+    // Фокус для реакции на галочку в инпуте
+    const [focusInput, setFocusInput] = useState(false)
+    const onFocus = () => {
+        setFocusInput(true)
+    }
+    const onBlur = () => {
+        setFocusInput(false)
+    }
 
     if (state.isLoading) {
         return (
@@ -152,6 +160,8 @@ export const SignupScreen = ({navigation}) => {
                             autoCorrect={false}
                             autoCapitalize='none'
                             secureTextEntry={secure}
+                            onFocus={() => onFocus()}
+                            onBlur={() => onBlur()}
                             placeholder='Password'
                             textContentType='password'
                             style={styles.input}
@@ -160,7 +170,7 @@ export const SignupScreen = ({navigation}) => {
                         />
 
                         <Ionicons
-                            style={styles.checkbox}
+                            style={focusInput ? {...styles.checkbox, opacity: 1} : styles.checkbox}
                             name={secure ? 'eye' : 'eye-off'}
                             size={24}
                             color={THEME.COLOR_MAIN_DARK}

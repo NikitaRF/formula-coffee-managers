@@ -6,7 +6,6 @@ import {
     ActivityIndicator,
     TextInput,
     Button,
-    ScrollView,
     Keyboard,
     TouchableWithoutFeedback, Alert
 } from "react-native";
@@ -34,6 +33,14 @@ export const UserProfileScreen = () => {
         isLoading: false
     })
 
+    // Фокус для реакции на галочку в инпуте
+    const [focusInput, setFocusInput] = useState(false)
+    const onFocus = (val) => {
+        setFocusInput(val)
+    }
+    const onBlur = () => {
+        setFocusInput(false)
+    }
 
     const dispatch = useDispatch()
 
@@ -57,7 +64,7 @@ export const UserProfileScreen = () => {
 
     const userData = useSelector(state => state.user.userInfo)
     // console.log('Мы получили данные о пользователе', userData)
-    console.log('Локальное состояние', state)
+    // console.log('Локальное состояние', state)
 
     if(state.isLoading){
         return(
@@ -82,7 +89,11 @@ export const UserProfileScreen = () => {
             const userUid = firebase.auth().currentUser.uid
             const db = firebase.firestore();
             const userInfo = db.collection("users").doc(userUid);
-
+            console.log('DATA', data)
+            if (data == undefined) {
+                Alert.alert(`Вы не изменили данные поля ${key}`)
+                return
+            }
             setState({
                 isLoading: true,
             })
@@ -165,6 +176,8 @@ export const UserProfileScreen = () => {
                     <View style={styles.inputWrap}>
                         <TextInput
                             color={THEME.COLOR_MAIN_DARK}
+                            onFocus={() => onFocus('firstName')}
+                            onBlur={() => onBlur()}
                             autoCorrect={false}
                             value={state.firstName}
                             placeholder='Имя'
@@ -176,7 +189,7 @@ export const UserProfileScreen = () => {
                         <AntDesign
                             name="checksquare"
                             size={24}
-                            style={styles.allowIcon}
+                            style={focusInput === 'firstName' ? {...styles.allowIcon, opacity: 1} : styles.allowIcon}
                             color={THEME.COLOR_MAIN_DARK}
                             onPress={() => saveChanges('firstName', state.firstName)}
                         />
@@ -190,6 +203,8 @@ export const UserProfileScreen = () => {
                     <View style={styles.inputWrap}>
                         <TextInput
                             color={THEME.COLOR_MAIN_DARK}
+                            onFocus={() => onFocus('lastName')}
+                            onBlur={() => onBlur()}
                             autoCorrect={false}
                             value={state.lastName}
                             placeholder='Фамилия'
@@ -201,7 +216,7 @@ export const UserProfileScreen = () => {
                         <AntDesign
                             name="checksquare"
                             size={24}
-                            style={styles.allowIcon}
+                            style={focusInput === 'lastName' ? {...styles.allowIcon, opacity: 1} : styles.allowIcon}
                             color={THEME.COLOR_MAIN_DARK}
                             onPress={() => saveChanges('lastName', state.lastName)}
                         />
@@ -215,6 +230,8 @@ export const UserProfileScreen = () => {
                     <View style={styles.inputWrap}>
                         <TextInput
                             color={THEME.COLOR_MAIN_DARK}
+                            onFocus={() => onFocus('email')}
+                            onBlur={() => onBlur()}
                             autoCorrect={false}
                             value={state.email}
                             placeholder='Email'
@@ -227,7 +244,7 @@ export const UserProfileScreen = () => {
                         <AntDesign
                             name="checksquare"
                             size={24}
-                            style={styles.allowIcon}
+                            style={focusInput === 'email' ? {...styles.allowIcon, opacity: 1} : styles.allowIcon}
                             color={THEME.COLOR_MAIN_DARK}
                             onPress={() => saveChanges('email', state.email)}
                         />
@@ -241,6 +258,8 @@ export const UserProfileScreen = () => {
                     <View style={styles.inputWrap}>
                         <TextInput
                             color={THEME.COLOR_MAIN_DARK}
+                            onFocus={() => onFocus('phone')}
+                            onBlur={() => onBlur()}
                             autoCorrect={false}
                             value={state.phone}
                             placeholder='Телефон'
@@ -253,7 +272,7 @@ export const UserProfileScreen = () => {
                         <AntDesign
                             name="checksquare"
                             size={24}
-                            style={styles.allowIcon}
+                            style={focusInput === 'phone' ? {...styles.allowIcon, opacity: 1} : styles.allowIcon}
                             color={THEME.COLOR_MAIN_DARK}
                             onPress={() => saveChanges('phone', state.phone)}
                         />
@@ -267,10 +286,6 @@ export const UserProfileScreen = () => {
                         onPress={() => deleteAccount()}
                     />
                 </View>
-
-                {/*<Text>{userData.firstName}</Text>*/}
-                {/*<Text>{userData.lastName}</Text>*/}
-                {/*<Text>{userData.email}</Text>*/}
             </View>
         </TouchableWithoutFeedback >
     )
@@ -322,7 +337,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 5,
         opacity: 0.7,
-
     },
     buttonWrap: {
 
@@ -333,6 +347,5 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderRadius: 5,
         backgroundColor: THEME.COLOR_MAIN_LIGHT,
-    }
-
+    },
 })
