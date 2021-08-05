@@ -9,7 +9,7 @@ import {
     ActivityIndicator,
     Alert,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard, TouchableOpacity
 } from "react-native";
 import firebase from '../database/firebase';
 import { Ionicons } from '@expo/vector-icons';
@@ -141,13 +141,14 @@ export const SignInScreen = ({navigation}) => {
 
                     </View>
 
-                    <View style={styles.buttonWrap}>
-                        <Button
-                            color={THEME.COLOR_MAIN_DARK}
-                            title='Вход'
+
+                        <TouchableOpacity
+                            style={styles.buttonWrap}
                             onPress={() => userLogin()}
-                        />
-                    </View>
+                        >
+                            <Text style={styles.buttonText}>Вход</Text>
+                        </TouchableOpacity>
+
                 </View>
                 <View style={styles.textBottomWrap}>
                     <Text
@@ -205,6 +206,13 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderRadius: 5,
         backgroundColor: THEME.COLOR_MAIN_LIGHT,
+    },
+    buttonText: {
+        fontFamily: THEME.FONT_BOLD,
+        color: THEME.COLOR_MAIN_DARK,
+        textAlign: 'center',
+        paddingVertical: 5,
+        fontSize: 15,
     },
     textBottomWrap:{
         marginTop: 20,

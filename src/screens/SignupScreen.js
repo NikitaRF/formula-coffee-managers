@@ -9,7 +9,7 @@ import {
     View,
     ActivityIndicator,
     Keyboard,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback, TouchableOpacity
 } from "react-native";
 import firebase from '../database/firebase';
 import { Ionicons } from '@expo/vector-icons';
@@ -179,9 +179,12 @@ export const SignupScreen = ({navigation}) => {
 
                     </View>
 
-                    <View style={styles.buttonWrap}>
-                        <Button color={THEME.COLOR_MAIN_DARK} title='Зарегистрироваться' onPress={() => registerUser()}/>
-                    </View>
+                    <TouchableOpacity
+                        style={styles.buttonWrap}
+                        onPress={() => registerUser()}
+                    >
+                        <Text style={styles.buttonText}>Зарегистрироваться</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.textBottomWrap}>
                     <Text
@@ -230,6 +233,13 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderRadius: 5,
         backgroundColor: THEME.COLOR_MAIN_LIGHT,
+    },
+    buttonText: {
+        fontFamily: THEME.FONT_BOLD,
+        color: THEME.COLOR_MAIN_DARK,
+        textAlign: 'center',
+        paddingVertical: 5,
+        fontSize: 15,
     },
     textBottomWrap:{
         marginTop: 20,
