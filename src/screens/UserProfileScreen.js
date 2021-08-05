@@ -7,7 +7,7 @@ import {
     TextInput,
     Button,
     Keyboard,
-    TouchableWithoutFeedback, Alert
+    TouchableWithoutFeedback, Alert, TouchableOpacity
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import firebase from "firebase";
@@ -284,13 +284,12 @@ export const UserProfileScreen = () => {
                     </View>
                 </View>
 
-                <View style={styles.buttonWrap}>
-                    <Button
-                        color={THEME.COLOR_MAIN_DARK}
-                        title='Удалить'
-                        onPress={() => deleteAccount()}
-                    />
-                </View>
+                <TouchableOpacity
+                    style={styles.buttonWrap}
+                    onPress={() => deleteAccount()}
+                >
+                    <Text style={styles.buttonText}>Удалить</Text>
+                </TouchableOpacity>
             </View>
         </TouchableWithoutFeedback >
     )
@@ -344,7 +343,6 @@ const styles = StyleSheet.create({
         opacity: 0.7,
     },
     buttonWrap: {
-
         width: '50%',
         marginTop: 'auto',
         marginBottom: 40,
@@ -352,5 +350,12 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderRadius: 5,
         backgroundColor: THEME.COLOR_MAIN_LIGHT,
+    },
+    buttonText: {
+        fontFamily: THEME.FONT_BOLD,
+        color: THEME.COLOR_MAIN_DARK,
+        textAlign: 'center',
+        paddingVertical: 5,
+        fontSize: 15,
     },
 })
