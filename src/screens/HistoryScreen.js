@@ -10,13 +10,13 @@ import {getOrder} from "../store/actions/getOrder";
 import {HistoryOfBasketItem} from "../components/HistoryOfBasketItem";
 import {THEME} from "../theme";
 
-export const HistoryScreen = ({navigation}) => {
-
+export const HistoryScreen = () => {
+    const dispatch = useDispatch()
+    const isFocused = useIsFocused();
     const [state, setState] = useState({
         isLoading: false
     })
-
-    const dispatch = useDispatch()
+    const historyData = useSelector(state => state.user.userHistoryOfOrder)
 
     const asyncGetOrderInfo = async () => {
         setState({
@@ -30,13 +30,20 @@ export const HistoryScreen = ({navigation}) => {
         })
         return result
     }
-    const historyData = useSelector(state => state.user.userHistoryOfOrder)
-    // console.log('historyData:', historyData)
-    // console.log('historyDataFiltered:', historyData.sort(function (el1, el2){
-    //     return el1.date < el2.date
-    // }))
 
-    if (!historyData) {
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        dispatch(getOrder()).then(() => setRefreshing(false));
+    }, []);
+
+    useEffect(() => {
+        asyncGetOrderInfo()
+    }, [isFocused])
+
+
+    if (historyData == undefined || historyData.length == 0) {
         return (
             <View style={styles.historyIsEmptyBlock}>
                 <Text style={styles.historyIsEmptyText}>Заказов пока не было</Text>
@@ -49,17 +56,10 @@ export const HistoryScreen = ({navigation}) => {
     })
 
 
-    const isFocused = useIsFocused();
-    useEffect(() => {
-        asyncGetOrderInfo()
-    }, [isFocused])
 
-    const [refreshing, setRefreshing] = useState(false);
 
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-        dispatch(getOrder()).then(() => setRefreshing(false));
-    }, []);
+
+
 
 
 
