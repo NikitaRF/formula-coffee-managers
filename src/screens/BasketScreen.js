@@ -96,7 +96,6 @@ export const BasketScreen = ({navigation}) => {
 
     const checkOrder = async () => {
         const nowDate = new Date()
-        //const currentDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         const formatter = new Intl.DateTimeFormat("ru", {
             year: "numeric",
             month: "2-digit",
@@ -108,11 +107,13 @@ export const BasketScreen = ({navigation}) => {
         });
 
         const currentDate = formatter.format(nowDate)
-        console.log('userData.phone', userData.phone)
-        console.log('userData.phone.length', userData.phone.length)
 
         if (userData.phone === '' || userData.phone == null || userData.phone == undefined || userData.phone.length != 11) {
             Alert.alert('Введите свой номер телефона')
+            return
+        }
+        if (state.address === '' || state.address == null || state.address == undefined) {
+            Alert.alert('Введите адрес')
             return
         }
 
@@ -165,11 +166,6 @@ export const BasketScreen = ({navigation}) => {
             })
         }
     }
-
-    // const historyOfOrder = useSelector(state => state.user.userHistoryOfOrder)
-    // console.log(historyOfOrder)
-
-    //console.log('Баскет скрин:', itemsBasket)
 
     // Фокус для реакции на галочку в инпуте
     const [focusInput, setFocusInput] = useState(false)
@@ -254,17 +250,19 @@ export const BasketScreen = ({navigation}) => {
         return (
         <Modal visible={modal} animationType='slide' transparent={false}>
             <ScrollView contentContainerStyle={styles.modalWrap}>
-                <View><Text style={styles.itemTitle}>Адрес</Text></View>
-                <TextInput
-                    style={styles.modalInputAddress}
-                    color={THEME.COLOR_MAIN_DARK}
-                    autoCorrect={false}
-                    placeholder='Ваш адрес'
-                    maxLength={255}
-                    onChangeText={(text) => setState({...state, address: text})}
-                    value={state.address}
-
-                />
+                <View>
+                    <Text style={styles.itemTitle}>Адрес</Text>
+                    <TextInput
+                        style={styles.modalInputAddress}
+                        color={THEME.COLOR_MAIN_DARK}
+                        autoCorrect={false}
+                        placeholder='Ваш адрес'
+                        maxLength={255}
+                        onChangeText={(text) => setState({...state, address: text})}
+                        value={state.address}
+                        placeholderTextColor={THEME.COLOR_MAIN_PLACEHOLDER}
+                    />
+                </View>
                 <View>
                     <Text style={styles.itemTitle}>Комментарий</Text>
                     <TextInput
@@ -277,6 +275,7 @@ export const BasketScreen = ({navigation}) => {
                         style={styles.modalInputComment}
                         onChangeText={(text) => setState({...state, comment: text})}
                         value={state.comment}
+                        placeholderTextColor={THEME.COLOR_MAIN_PLACEHOLDER}
                     />
                 </View>
                 <View><Text style={styles.itemTitle}>Телефон</Text></View>
@@ -578,14 +577,17 @@ const styles = StyleSheet.create({
     modalInputComment: {
         borderWidth: 1,
         borderColor: THEME.COLOR_MAIN_DARK,
-        marginBottom: 20,
-        paddingVertical: 20,
+        marginBottom: 10,
+        paddingVertical: 10,
+        paddingLeft: 10,
+        height: 50,
     },
     modalInputAddress: {
         borderWidth: 1,
         borderColor: THEME.COLOR_MAIN_DARK,
         paddingVertical: 10,
         marginBottom: 10,
+        paddingLeft: 10,
     },
     timeToDeliveryText: {
         color: THEME.COLOR_MAIN_DARK,
