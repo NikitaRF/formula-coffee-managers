@@ -330,10 +330,10 @@ export const BasketScreen = ({navigation}) => {
                     <Text style={{...styles.timeToDeliveryText, marginLeft: 'auto'}}>{!isChosenTime ? 'Как можно скорее': date.toLocaleString('ru-RU')}</Text>
                 </View>
                 <TouchableOpacity
-                    style={styles.buttonWrap2}
+                    style={styles.buttonWrapTime}
                     onPress={() => showTimepicker()}
                 >
-                    <Text style={styles.buttonText2}>Выбрать время</Text>
+                    <Text style={styles.buttonTextTime}>Выбрать время</Text>
                 </TouchableOpacity>
                     <View style={{width: '100%'}}>
                     {show && (<>
@@ -350,10 +350,10 @@ export const BasketScreen = ({navigation}) => {
                             maximumDate={maxTimeToOrder}
                         />
                             <TouchableOpacity
-                                style={styles.buttonWrap2}
+                                style={styles.buttonWrapTime}
                                 onPress={() => acceptChoiceTime()}
                             >
-                                <Text style={styles.buttonText2}>Выбрать</Text>
+                                <Text style={styles.buttonTextTime}>Выбрать</Text>
                             </TouchableOpacity>
                         </>
                     )}
@@ -361,7 +361,7 @@ export const BasketScreen = ({navigation}) => {
                     </View>
 
 
-                <Text style={styles.itemTitle}>Сумма {totalPrice} руб</Text>
+                <Text style={{...styles.itemTitle, marginTop: 10}}>Сумма {totalPrice} руб</Text>
                 <Text style={styles.itemTitle}>Доставка {deliveryPrice} руб</Text>
                 <View style={styles.total}><Text style={{...styles.itemTitle, marginTop: 50, fontSize: 20}}>Итого {totalPrice + deliveryPrice} руб</Text></View>
                 {totalPrice < 500 ? <Text style={styles.itemMinimal}>Минимальная сумма заказа, без учета доставки 500 руб</Text> : <></>}
@@ -499,7 +499,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
 
     },
-    buttonWrap2:{
+    buttonWrapTime:{
         width: '100%',
         marginTop: 20,
         paddingHorizontal: 5,
@@ -507,7 +507,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: THEME.COLOR_MAIN_LIGHT,
     },
-    buttonText2: {
+    buttonTextTime: {
         fontFamily: THEME.FONT_BOLD,
         color: THEME.COLOR_MAIN_DARK,
         textAlign: 'center',
@@ -537,9 +537,9 @@ const styles = StyleSheet.create({
     modalButtons: {
         width: '100%',
         marginTop: 20,
+        marginBottom: 100,
         flexDirection: 'row',
         justifyContent: 'space-around',
-
     },
     modalButton: {
         paddingHorizontal: 25,
