@@ -105,7 +105,7 @@ export const SignInScreen = ({navigation}) => {
                     style={styles.logo}
                     source={require('../../assets/logo2.png')}
                 />
-                <Text style={styles.title}>Вход</Text>
+                <Text style={styles.title}>Вход для менеджеров</Text>
                 <View style={styles.inputWrap}>
                     <TextInput
                         autoCorrect={false}
@@ -149,20 +149,6 @@ export const SignInScreen = ({navigation}) => {
                             <Text style={styles.buttonText}>Вход</Text>
                         </TouchableOpacity>
 
-                </View>
-                <View style={styles.textBottomWrap}>
-                    <Text
-                        onPress={() => navigation.navigate('SignupScreen')}
-                        style={styles.textBottom}
-                    >
-                        Нет аккаунта? Зарегистрироваться
-                    </Text>
-                    <Text
-                        onPress={() => navigation.navigate('PasswordReset')}
-                        style={styles.textBottom}
-                    >
-                        Забыли пароль?
-                    </Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>

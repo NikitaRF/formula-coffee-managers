@@ -34,8 +34,6 @@ export const Root = () => {
                 {isAuth == null ? (
                     <>
                         <Stack.Screen name="SignInScreen" component={SignInScreen} />
-                        <Stack.Screen name="SignupScreen" component={SignupScreen} />
-                        <Stack.Screen name="PasswordReset" component={PasswordReset} />
                     </>
                 ) : (
                     <Stack.Screen name="MenuDrawer" component={MenuDrawer} />
