@@ -21,7 +21,7 @@ export const MainNavigation = () =>  {
             ),
         })}
         >
-            <Stack.Screen name="Главная" component={MainScreen} />
+            <Stack.Screen name="Заказы" component={MainScreen} />
         </Stack.Navigator>
     );
 }

@@ -21,7 +21,7 @@ export const MenuScreen = () => {
         bakery: '/menu/eat/bakery',
     })
 
-    // Наше меню
+    // Наше меню !
 
     const [menuSelected, setMenuSelected] = useState({
         currentMenuSelected: 'drinks',
@@ -100,7 +100,7 @@ export const MenuScreen = () => {
                     keyExtractor={(menu) => menu.name}
                     refreshing={true}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                    renderItem={({item}) => <MenuItem Item={item} /> }
+                    renderItem={({item}) => <MenuItem Item={item} path={state.currentState} /> }
                 />
             </View>
         </View>

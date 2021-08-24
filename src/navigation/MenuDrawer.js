@@ -8,14 +8,9 @@ import {useDispatch, useSelector} from "react-redux";
 
 import { THEME } from "../theme";
 import {MainNavigation} from "./MainNavigation";
-import {AboutAppNavigation} from "./AboutAppNavigation";
-import {ContactsNavigation} from "./ContactsNavigation";
-import {MenuNavigation} from "./MenuNavigation";
-import {UserProfileNavigation} from "./UserProfileNavigation";
 import {userLogout} from "../store/actions/userLogout";
-import {BasketNavigation} from "./BasketNavigation";
-import {HistoryScreen} from "../screens/HistoryScreen";
-import {HistoryNavigation} from "./HistoryNavigation";
+import {MenuNavigation} from "./MenuNavigation";
+
 
 
 
@@ -75,26 +70,6 @@ export const MenuDrawer = () => {
     const Drawer = createDrawerNavigator();
     const iconSize = 20;
 
-    // Начало Счетчик товаров в Корзине
-    const [totalCount, setTotalCount] = useState()
-
-    const basketItems = useSelector(state => state.menu.basket)
-
-    const getBasketItemCount = () => {
-        let result = 0
-        basketItems.forEach((el) => {
-            result += el.count
-        })
-        setTotalCount(result)
-        //console.log("totalCount", totalCount)
-    }
-
-    useEffect(() => {
-        getBasketItemCount()
-    }, [basketItems])
-
-    // Конец Счетчик товаров в Корзине
-
     return (
         <Drawer.Navigator
             drawerType='front'
@@ -106,7 +81,7 @@ export const MenuDrawer = () => {
         >
 
             <Drawer.Screen
-                name="Главная"
+                name="Заказы"
                 component={MainNavigation}
                 options={{
                     drawerIcon: ({focused}) => <AntDesign
@@ -120,80 +95,8 @@ export const MenuDrawer = () => {
                 name="Меню"
                 component={MenuNavigation}
                 options={{
-                    drawerIcon: ({focused}) => <MaterialIcons
-                        name="menu-book"
-                        size={iconSize}
-                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
-                    />
-                }}
-            />
-            <Drawer.Screen
-                name="Корзина"
-                component={BasketNavigation}
-                options={{
-                    drawerIcon: ({focused}) => (
-                        <View>
-                            <View style={styles.basketMarkerWrap}>
-                                <View style={styles.markerCircle}>
-                                    <Text
-                                        style={totalCount != 0 ? (focused ? {...styles.basketMarker, color: THEME.COLOR_MAIN_LIGHT} : {...styles.basketMarker, color: THEME.COLOR_MAIN_DARK}) : {opacity: 0}}>
-                                        {totalCount}
-                                    </Text>
-                                </View>
-
-                            </View>
-                            <SimpleLineIcons
-                                name="basket"
-                                size={iconSize}
-                                color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
-                                onPress={() => navigation.navigate('Корзина')}
-                            />
-                        </View>
-
-                    )
-                }}
-            />
-
-
-            <Drawer.Screen
-                name="Контакты"
-                component={ContactsNavigation}
-                options={{
                     drawerIcon: ({focused}) => <AntDesign
-                        name='filetext1'
-                        size={iconSize}
-                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
-                    />
-                }}
-            />
-            <Drawer.Screen
-                name="Профиль"
-                component={UserProfileNavigation}
-                options={{
-                    drawerIcon: ({focused}) => <FontAwesome
-                        name="user-circle-o"
-                        size={iconSize}
-                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
-                    />
-                }}
-            />
-            <Drawer.Screen
-                name="История заказов"
-                component={HistoryNavigation}
-                options={{
-                    drawerIcon: ({focused}) => <FontAwesome5
-                        name="history"
-                        size={iconSize}
-                        color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
-                    />
-                }}
-            />
-            <Drawer.Screen
-                name="О приложении"
-                component={AboutAppNavigation}
-                options={{
-                    drawerIcon: ({focused}) => <AntDesign
-                        name='info'
+                        name='home'
                         size={iconSize}
                         color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
                     />

@@ -3,48 +3,25 @@ import {RefreshControl, Text, TouchableOpacity, View, StyleSheet, Dimensions} fr
 import {THEME} from "../theme";
 import {LoadIndicator} from "./LoadIndiacator";
 import Image from "react-native-image-progress";
-import {AntDesign} from "@expo/vector-icons";
+import firebase from "firebase";
 import {useDispatch, useSelector} from "react-redux";
-import {addToBasket} from "../store/actions/addToBasket";
-import {deleteItemFromBasket} from "../store/actions/deleteItemFromBasket";
 
-export const MenuItem = ({Item}) => {
-    const [count, setCount] = useState(0)
 
-    const basketCount = useSelector(state => state.menu.basket.filter(el => el.name == Item.name))
-
-    useEffect( () => {
-        if (basketCount.length !== 0) {
-            //console.log('USE EFFECT', basketCount[0].count)
-            setCount(basketCount[0].count)
-        } else {
-            setCount(0)
-        }
-    })
-
-    useEffect(() => {
-        if (Item.avaible == false && count > 0) {
-            //console.log('USE EFFECT НАСТАЛ')
-            dispatch(deleteItemFromBasket(Item.name))
-            setCount(0)
-        }
-    }, [Item.avaible])
+export const MenuItem = ({Item, path}) => {
 
     const dispatch = useDispatch()
-    const plusItem = () => {
-        setCount(count + 1)
-        dispatch(addToBasket(Item, count + 1))
-    }
-    const minusItem = () => {
-        setCount(count - 1)
-        dispatch(addToBasket(Item, count - 1))
-        if (count == 1) {
-            dispatch(deleteItemFromBasket(Item.name))
-        }
+
+    const setAvaibleToggle = async () => {
+        const db = firebase.firestore();
+        const item = db.collection(path).doc('Steyk iz govyadiny');
+        await item.set({
+            avaible: !Item.avaible
+        }, {merge: true});
     }
 
+
     return (
-        <View style={Item.avaible ? styles.mainWrap : {...styles.mainWrap, opacity: 0.3}}>
+        <View style={styles.mainWrap }>
 
             <View style={styles.imgBlock}>
                 <Image
@@ -61,36 +38,19 @@ export const MenuItem = ({Item}) => {
             <View style={styles.textBlock}>
                 <Text style={styles.textTitle}>{Item.name}</Text>
                 <Text style={styles.textDescription}>{Item.description}</Text>
-                <Text style={styles.textPrice}>{Item.weight} гр / {count > 0 ? Item.price * count : Item.price} руб</Text>
-                <View style={styles.buttonWrap}>
+                <Text style={styles.textPrice}>{Item.weight} гр / {Item.price} руб</Text>
+                <View style={Item.avaible ? styles.buttonWrap : styles.buttonWrapDark}>
                     <View>
-                        {count > 0 && Item.avaible ? (
-                            <View style={styles.buttonCount}>
-                                <AntDesign
-                                name="minuscircle"
-                                size={24}
-                                style={styles.allowIcon}
-                                color={THEME.COLOR_MAIN_DARK}
-                                onPress={() => minusItem()}
-                                />
-                                    <View style={styles.wrapCount}>
-                                        <Text style={styles.textCount}>{count}</Text>
-                                    </View>
-                                <AntDesign
-                                name="pluscircle"
-                                size={24}
-                                style={styles.allowIcon}
-                                color={THEME.COLOR_MAIN_DARK}
-                                onPress={() => plusItem()}
-                                />
-                            </View>
+                        {Item.avaible ? (
+                            <TouchableOpacity onPress={() => setAvaibleToggle()}>
+                                <Text style={styles.buttonText}>На стоп</Text>
+                            </TouchableOpacity>
                         ) : (
-                            <TouchableOpacity disabled={Item.avaible? false : true} onPress={() => plusItem()}>
-                                <Text style={styles.buttonText}>Добавить</Text>
+                            <TouchableOpacity onPress={() => setAvaibleToggle()}>
+                                <Text style={styles.buttonTextLight}>Появилось</Text>
                             </TouchableOpacity>
                         )}
                     </View>
-
                 </View>
             </View>
 
@@ -144,6 +104,7 @@ const styles = StyleSheet.create({
         color: THEME.COLOR_MAIN_DARK,
     },
     buttonWrap: {
+        opacity: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '50%',
@@ -155,8 +116,25 @@ const styles = StyleSheet.create({
         marginBottom: 5,
 
     },
+    buttonWrapDark: {
+        opacity: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '50%',
+        marginTop: 'auto',
+        backgroundColor: THEME.COLOR_MAIN_DARK,
+        borderRadius: 5,
+        paddingVertical: 5,
+        paddingHorizontal: 5,
+        marginBottom: 5,
+    },
     buttonText: {
         color: THEME.COLOR_MAIN_DARK,
+        fontFamily: 'open-regular',
+        fontSize: 16,
+    },
+    buttonTextLight: {
+        color: THEME.COLOR_MAIN_LIGHT,
         fontFamily: 'open-regular',
         fontSize: 16,
     },

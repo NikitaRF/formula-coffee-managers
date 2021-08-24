@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "formula-coffee",
-    "slug": "formula-coffee",
+    "name": "formula-coffee-managers",
+    "slug": "formula-coffee-managers",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
