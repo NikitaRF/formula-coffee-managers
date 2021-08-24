@@ -52,7 +52,7 @@ export const HistoryScreen = () => {
     }
 
     const filteredHistoryData = historyData.sort(function (el1, el2){
-        return el1.date < el2.date
+        return el1.timestamp < el2.timestamp
     })
 
 

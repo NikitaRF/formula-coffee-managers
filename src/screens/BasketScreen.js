@@ -119,6 +119,7 @@ export const BasketScreen = ({navigation}) => {
 
         const data = {
             date: currentDate,
+            timestamp: nowDate.getTime(),
             status: 'В обработке',
             timeToDelivery: !isChosenTime? 'Как можно скорее' : date.toLocaleString('ru-Ru'),
             address: state.address,
