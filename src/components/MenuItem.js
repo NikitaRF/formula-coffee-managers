@@ -1,24 +1,43 @@
 import React, {useEffect, useState} from "react";
-import {RefreshControl, Text, TouchableOpacity, View, StyleSheet, Dimensions} from "react-native";
+import {RefreshControl, Text, TouchableOpacity, View, StyleSheet, Dimensions, ActivityIndicator} from "react-native";
 import {THEME} from "../theme";
 import {LoadIndicator} from "./LoadIndiacator";
 import Image from "react-native-image-progress";
 import firebase from "firebase";
 import {useDispatch, useSelector} from "react-redux";
+import {getMenu} from "../store/actions/getMenu";
 
 
 export const MenuItem = ({Item, path}) => {
+
+    const [state, setState] = useState({
+        isLoading: false
+    })
 
     const dispatch = useDispatch()
 
     const setAvaibleToggle = async () => {
         const db = firebase.firestore();
-        const item = db.collection(path).doc('Steyk iz govyadiny');
+        const item = db.collection(path).doc(Item.name);
+        setState({
+            isLoading: true,
+        })
         await item.set({
             avaible: !Item.avaible
         }, {merge: true});
+        dispatch(getMenu(path))
+        setState({
+            isLoading: false,
+        })
     }
 
+    if(state.isLoading){
+        return(
+            <View style={styles.preloader}>
+                <ActivityIndicator size="large" color={THEME.COLOR_MAIN_DARK}/>
+            </View>
+        )
+    }
 
     return (
         <View style={styles.mainWrap }>
@@ -143,11 +162,18 @@ const styles = StyleSheet.create({
     },
     wrapCount: {
         paddingHorizontal: 25,
-
     },
     textCount: {
         fontFamily: 'open-bold',
         fontSize: 18,
         color: THEME.COLOR_MAIN_DARK,
+    },
+    preloader: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 50,
+        bottom: 0,
+        backgroundColor: '#fff'
     },
 })
