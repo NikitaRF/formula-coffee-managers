@@ -21,6 +21,8 @@ export const MenuScreen = () => {
         bakery: '/menu/eat/bakery',
     })
 
+    // Наше меню
+
     const [menuSelected, setMenuSelected] = useState({
         currentMenuSelected: 'drinks',
     })
