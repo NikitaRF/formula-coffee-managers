@@ -16,14 +16,14 @@ export const MenuItem = ({Item, path}) => {
 
     const dispatch = useDispatch()
 
-    const setAvaibleToggle = async () => {
+    const setAvaibleToggle = async (bool) => {
         const db = firebase.firestore();
         const item = db.collection(path).doc(Item.name);
         setState({
             isLoading: true,
         })
         await item.set({
-            avaible: !Item.avaible
+            avaible: bool
         }, {merge: true});
         dispatch(getMenu(path))
         setState({
@@ -61,11 +61,11 @@ export const MenuItem = ({Item, path}) => {
                 <View style={Item.avaible ? styles.buttonWrap : styles.buttonWrapDark}>
                     <View>
                         {Item.avaible ? (
-                            <TouchableOpacity onPress={() => setAvaibleToggle()}>
+                            <TouchableOpacity onPress={() => setAvaibleToggle(false)}>
                                 <Text style={styles.buttonText}>На стоп</Text>
                             </TouchableOpacity>
                         ) : (
-                            <TouchableOpacity onPress={() => setAvaibleToggle()}>
+                            <TouchableOpacity onPress={() => setAvaibleToggle(true)}>
                                 <Text style={styles.buttonTextLight}>Появилось</Text>
                             </TouchableOpacity>
                         )}

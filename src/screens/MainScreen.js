@@ -61,7 +61,7 @@ export const MainScreen = () => {
 
     return (
         <View style={styles.center}>
-            <ScrollView style={styles.scrollMenu} horizontal={true}>
+            <View style={styles.lineMenu}>
                 <TouchableOpacity onPress={() => menuToggle('new')} style={menuSelected.currentMenuSelected == 'new' ? styles.menuItemBlockSelected : styles.menuItemBlock}>
                     <Text style={styles.menuItemText}>Новые</Text>
                 </TouchableOpacity>
@@ -71,7 +71,7 @@ export const MainScreen = () => {
                 <TouchableOpacity onPress={() => menuToggle('completed')}  style={menuSelected.currentMenuSelected == 'completed' ? styles.menuItemBlockSelected : styles.menuItemBlock}>
                     <Text style={styles.menuItemText}>Завершенные</Text>
                 </TouchableOpacity>
-            </ScrollView>
+            </View>
             <View style={styles.flatList}>
                 {/*<FlatList*/}
                 {/*    data={menuData}*/}
@@ -91,7 +91,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    scrollMenu: {
+    lineMenu: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
         height: "5%",
         width: '100%',
         borderWidth: 1,
