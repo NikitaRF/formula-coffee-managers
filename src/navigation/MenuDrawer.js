@@ -6,8 +6,9 @@ import { Entypo } from '@expo/vector-icons';
 import firebase from "firebase";
 import {useDispatch, useSelector} from "react-redux";
 
+
 import { THEME } from "../theme";
-import {MainNavigation} from "./MainNavigation";
+import {OrdersNavigation} from "./OrdersNavigation";
 import {userLogout} from "../store/actions/userLogout";
 import {MenuNavigation} from "./MenuNavigation";
 
@@ -82,10 +83,10 @@ export const MenuDrawer = () => {
 
             <Drawer.Screen
                 name="Заказы"
-                component={MainNavigation}
+                component={OrdersNavigation}
                 options={{
-                    drawerIcon: ({focused}) => <AntDesign
-                        name='home'
+                    drawerIcon: ({focused}) => <FontAwesome5
+                        name='shopping-bag'
                         size={iconSize}
                         color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
                     />
@@ -95,8 +96,8 @@ export const MenuDrawer = () => {
                 name="Меню"
                 component={MenuNavigation}
                 options={{
-                    drawerIcon: ({focused}) => <AntDesign
-                        name='home'
+                    drawerIcon: ({focused}) => <MaterialIcons
+                        name='menu-book'
                         size={iconSize}
                         color={focused ? THEME.COLOR_MAIN_LIGHT : THEME.COLOR_MAIN_DARK}
                     />

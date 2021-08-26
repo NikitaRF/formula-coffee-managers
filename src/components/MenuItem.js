@@ -14,7 +14,7 @@ export const MenuItem = ({Item, path}) => {
         isLoading: false
     })
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch() 
 
     const setAvaibleToggle = async (bool) => {
         const db = firebase.firestore();

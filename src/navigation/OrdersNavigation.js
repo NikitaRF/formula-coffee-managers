@@ -1,5 +1,5 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import {MainScreen} from "../screens/MainScreen";
+import {OrdersScreen} from "../screens/OrdersScreen";
 import React from "react";
 import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import {AppHeaderIcon} from "../components/AppHeaderIcon";
@@ -7,7 +7,7 @@ import {AppHeaderIcon} from "../components/AppHeaderIcon";
 
 const Stack = createStackNavigator();
 
-export const MainNavigation = () =>  {
+export const OrdersNavigation = () =>  {
 
     return (
         <Stack.Navigator
@@ -21,7 +21,7 @@ export const MainNavigation = () =>  {
             ),
         })}
         >
-            <Stack.Screen name="Заказы" component={MainScreen} />
+            <Stack.Screen name="Заказы" component={OrdersScreen} />
         </Stack.Navigator>
     );
 }
