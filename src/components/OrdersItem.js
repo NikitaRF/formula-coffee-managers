@@ -2,8 +2,11 @@ import React, {useState} from "react";
 import {Text, TouchableOpacity, View, StyleSheet, Dimensions, ActivityIndicator} from "react-native";
 import {THEME} from "../theme";
 import firebase from "firebase";
+import {useDispatch} from "react-redux";
+import {getOrders} from "../store/actions/getOrders";
 
 export const OrdersItem = ({Item}) => {
+    const dispatch = useDispatch()
     const [state, setState] = useState({
         full: false,
         isLoading: false
@@ -23,24 +26,35 @@ export const OrdersItem = ({Item}) => {
         })
 
 
-        // const db = firebase.firestore();
-        // const userInfo = db.collection("users")
-        // const result = await userInfo.get().then((querySnapshot) => {
-        //     let arr = []
-        //     querySnapshot.forEach((doc) => {
-        //         let res = doc.data().historyOfOrder.filter(function (el) {
-        //             return el.status === status
-        //         })
-        //         arr = res.sort(function (el1, el2) {
-        //             return el1.timestamp < el2.timestamp
-        //         })
-        //     });
-        //     console.log(arr)
-        //     return arr
-        //
-        // }).catch((error) => {
-        //     console.log("Error getting document:", error);
-        // })
+        const db = firebase.firestore();
+        const userInfo = db.collection("users").doc(Item.userId)
+        const arr = []
+        await userInfo.get().then((doc) => {
+            if (doc.exists) {
+                const res = doc.data().historyOfOrder.forEach(el => {
+                    console.log(el)
+                    if (el.timestamp == Item.timestamp){
+                        let newEl = el
+                        newEl.status = status
+                        arr.push(newEl)
+                    } else {
+                        arr.push(el)
+                    }
+                    console.log(arr)
+                });
+
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+
+        // Обновляем уже в самой базе данных
+        await userInfo.set({
+            ['historyOfOrder']: arr
+        }, {merge: true});
 
         setState({
             ...state,
