@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Text, TouchableOpacity, View, StyleSheet, Dimensions, ActivityIndicator} from "react-native";
 import {THEME} from "../theme";
+import firebase from "firebase";
 
 export const OrdersItem = ({Item}) => {
     const [state, setState] = useState({
@@ -15,8 +16,36 @@ export const OrdersItem = ({Item}) => {
         })
     }
 
-    const changeStatus = (status) => {
+    const changeStatus = async (status) => {
+        setState({
+            ...state,
+            isLoading: true
+        })
 
+
+        // const db = firebase.firestore();
+        // const userInfo = db.collection("users")
+        // const result = await userInfo.get().then((querySnapshot) => {
+        //     let arr = []
+        //     querySnapshot.forEach((doc) => {
+        //         let res = doc.data().historyOfOrder.filter(function (el) {
+        //             return el.status === status
+        //         })
+        //         arr = res.sort(function (el1, el2) {
+        //             return el1.timestamp < el2.timestamp
+        //         })
+        //     });
+        //     console.log(arr)
+        //     return arr
+        //
+        // }).catch((error) => {
+        //     console.log("Error getting document:", error);
+        // })
+
+        setState({
+            ...state,
+            isLoading: false
+        })
     }
 
     if(state.isLoading){
@@ -57,10 +86,10 @@ export const OrdersItem = ({Item}) => {
                     {Item.status == 'В обработке' ?  (
                         <>
                             <TouchableOpacity style={styles.statusButton} onPress={() => changeStatus('Принят')}>
-                                <Text style={{color: THEME.COLOR_STATUS_COMPLETE}}>Принять</Text>
+                                <Text style={{...styles.statusButtonText, color: THEME.COLOR_STATUS_COMPLETE}}>Принять</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.statusButton} onPress={() => changeStatus('Отклонен')}>
-                                <Text style={{color: THEME.COLOR_STATUS_DENY}}>Отклонить</Text>
+                                <Text style={{...styles.statusButtonText, color: THEME.COLOR_STATUS_DENY}}>Отклонить</Text>
                             </TouchableOpacity>
                         </>
                     ) : (<></>) }
@@ -68,10 +97,10 @@ export const OrdersItem = ({Item}) => {
                     {Item.status == 'Принят' ?  (
                         <>
                             <TouchableOpacity style={styles.statusButton} onPress={() => changeStatus('Выполнен')}>
-                                <Text style={{color: THEME.COLOR_STATUS_COMPLETE}}>Завершить</Text>
+                                <Text style={{...styles.statusButtonText, color: THEME.COLOR_STATUS_COMPLETE}}>Завершить</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.statusButton} onPress={() => changeStatus('Отклонен')}>
-                                <Text style={{color: THEME.COLOR_STATUS_DENY}}>Отклонить</Text>
+                                <Text style={{...styles.statusButtonText, color: THEME.COLOR_STATUS_DENY}}>Отклонить</Text>
                             </TouchableOpacity>
                         </>
                     ) : (<></>) }
@@ -93,9 +122,13 @@ const styles = StyleSheet.create({
     },
     statusButton: {
         borderRadius: 5,
+        width: '40%',
         paddingVertical: 10,
         paddingHorizontal: 10,
         backgroundColor: THEME.COLOR_MAIN_LIGHT
+    },
+    statusButtonText: {
+        textAlign: "center",
     },
     preloader: {
         position: 'absolute',

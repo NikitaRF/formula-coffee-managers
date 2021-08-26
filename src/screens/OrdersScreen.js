@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
 import {THEME} from "../theme";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,14 +14,26 @@ export const OrdersScreen = () => {
         currentMenuSelected: 'В обработке',
     })
 
+    const [state, setState] = useState({
+        isLoading: false
+    })
+
     useEffect(() => {
+        setState({
+            ...state,
+            isLoading: true,
+        })
         dispatch(getOrders(menuSelected.currentMenuSelected))
+        setState({
+            ...state,
+            isLoading: false,
+        })
     }, [menuSelected.currentMenuSelected])
 
 
-    // console.log(state.currentState)
-     console.log(menuSelected.currentMenuSelected)
-     console.log('ordersData', ordersData)
+     // console.log(state.currentState)
+     // console.log(menuSelected.currentMenuSelected)
+     // console.log('ordersData', ordersData)
 
 
     const [refreshing, setRefreshing] = useState(false);
@@ -34,6 +46,14 @@ export const OrdersScreen = () => {
         setMenuSelected({
             currentMenuSelected: item
         })
+    }
+
+    if(state.isLoading){
+        return(
+            <View style={styles.preloader}>
+                <ActivityIndicator size="large" color={THEME.COLOR_MAIN_DARK}/>
+            </View>
+        )
     }
 
     return (
@@ -66,6 +86,14 @@ export const OrdersScreen = () => {
 }
 
 const styles = StyleSheet.create({
+    preloader: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 50,
+        bottom: 0,
+        backgroundColor: '#fff'
+    },
     center: {
         height: "100%",
         alignItems: 'center',
