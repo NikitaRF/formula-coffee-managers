@@ -56,6 +56,9 @@ export const OrdersItem = ({Item}) => {
             ['historyOfOrder']: arr
         }, {merge: true});
 
+        // Вызываем загрузку обновленного списка заказов, чтобы обновить экран
+        dispatch(getOrders(Item.status))
+
         setState({
             ...state,
             isLoading: false
