@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     preloader: {
         left: 0,
         right: 0,
-        top: 50,
+        top: 0,
         bottom: 0,
         backgroundColor: '#fff'
     },
