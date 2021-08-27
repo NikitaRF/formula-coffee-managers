@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     preloader: {
-        position: 'absolute',
         left: 0,
         right: 0,
         top: 50,

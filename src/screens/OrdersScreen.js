@@ -49,7 +49,7 @@ export const OrdersScreen = () => {
     }
 
     if(state.isLoading){
-        return(
+        return (
             <View style={styles.preloader}>
                 <ActivityIndicator size="large" color={THEME.COLOR_MAIN_DARK}/>
             </View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        top: 50,
+        top: '50%',
         bottom: 0,
         backgroundColor: '#fff'
     },
