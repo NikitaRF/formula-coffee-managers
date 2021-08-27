@@ -41,7 +41,8 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.9.0",
+    "@react-native-firebase/messaging": "^12.7.3"
   },
   "private": true
 }
