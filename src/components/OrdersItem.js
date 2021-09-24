@@ -12,6 +12,7 @@ export const OrdersItem = ({Item}) => {
         isLoading: false
     })
 
+
     const showFullInfo = () => {
         setState({
             ...state,

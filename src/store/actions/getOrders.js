@@ -8,16 +8,21 @@ export const getOrders = (status) => {
 
     const getOrdersFirebase = async () => {
         const result = await path.get().then((querySnapshot) => {
-            let arr = []
+            let sortOrders = []
+            let allOrders = []
             querySnapshot.forEach((doc) => {
                 let res = doc.data().historyOfOrder.filter(function (el) {
                     return el.status === status
                 })
-                arr = res.sort(function (el1, el2) {
-                    return el1.timestamp < el2.timestamp
+
+                res.forEach((el) => {
+                    allOrders.push(el)
                 })
             });
-            return arr
+            sortOrders = allOrders.sort(function (el1, el2) {
+                return el1.timestamp < el2.timestamp
+            })
+            return sortOrders
         }).catch((error) => {
             console.log("Error getting document:", error);
         })
