@@ -8,9 +8,19 @@ export const getOrders = (status) => {
 
     const getOrdersFirebase = async () => {
         const result = await path.get().then((querySnapshot) => {
+
             let sortOrders = []
             let allOrders = []
             querySnapshot.forEach((doc) => {
+
+                // Временный код, все из-за учетки сергея баристы. У него нет заказов, поэтому ошибка запроса к БД. Исправить
+                let test = doc.data().id
+                if (test === '5KiUOTXsU9PSMVrGVD6Dz11ZtHC3') {
+                    return
+                }
+                // Временный код, все из-за учетки сергея баристы. У него нет заказов, поэтому ошибка запроса к БД. Исправить
+
+
                 let res = doc.data().historyOfOrder.filter(function (el) {
                     return el.status === status
                 })
