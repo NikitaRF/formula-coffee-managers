@@ -26,35 +26,22 @@ export const OrdersItem = ({Item}) => {
             isLoading: true
         })
 
-
         const db = firebase.firestore();
-        const userInfo = db.collection("users").doc(Item.userId)
-        const arr = []
-        await userInfo.get().then((doc) => {
-            if (doc.exists) {
-                const res = doc.data().historyOfOrder.forEach(el => {
-                    console.log(el)
-                    if (el.timestamp == Item.timestamp){
-                        let newEl = el
-                        newEl.status = status
-                        arr.push(newEl)
-                    } else {
-                        arr.push(el)
-                    }
-                    console.log(arr)
-                });
-
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
+        const orderInfo = db.collection("orders").where('timestamp', '==', Item.timestamp)
+        let docId = ''
+        await orderInfo.get().then((doc) => {
+            doc.forEach((dat) => {
+                docId = dat.id
+            });
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
 
+
         // Обновляем уже в самой базе данных
-        await userInfo.set({
-            ['historyOfOrder']: arr
+        const newDoc = db.collection('orders').doc(docId)
+        await newDoc.set({
+            ['status']: status
         }, {merge: true});
 
         // Вызываем загрузку обновленного списка заказов, чтобы обновить экран
